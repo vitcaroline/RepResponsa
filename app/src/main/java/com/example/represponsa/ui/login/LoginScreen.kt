@@ -92,14 +92,14 @@ fun LoginScreen(
                 .align(Alignment.CenterHorizontally)
                 .padding(8.dp),
             colors = ButtonColors(
-                contentColor = MaterialTheme.colorScheme.secondary,
-                containerColor = MaterialTheme.colorScheme.secondary,
-                disabledContainerColor = MaterialTheme.colorScheme.tertiary,
-                disabledContentColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.surfaceContainer,
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                disabledContentColor = MaterialTheme.colorScheme.surfaceContainer,
             )
         )
         {
-            Text("Cadastrar sua república", color = Color.White)
+            Text("Cadastrar sua república", color = Color.Black)
         }
     }
 }

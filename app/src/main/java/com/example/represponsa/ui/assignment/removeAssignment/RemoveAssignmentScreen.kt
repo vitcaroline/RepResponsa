@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,12 +43,15 @@ fun RemoveAssignmentScreen(
         },
         floatingActionButton = {
             if (selectedIds.isNotEmpty()) {
-                FloatingActionButton(onClick = {
+                FloatingActionButton(
+                    onClick = {
                     viewModel.deleteAssignments(selectedIds.toList()) {
                         Toast.makeText(context, "Tarefa removida com sucesso!", Toast.LENGTH_SHORT).show()
                         selectedIds = emptySet()
                     }
-                }) {
+                },
+                    containerColor = MaterialTheme.colorScheme.tertiary
+                ) {
                     Icon(Icons.Default.Delete, contentDescription = "Remover Selecionados")
                 }
             }

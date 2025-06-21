@@ -20,9 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.represponsa.model.Assignment
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 @Composable
@@ -59,9 +61,9 @@ fun AssignmentItemSelectable(
     }
 
     val backgroundColor = if (isSelected) {
-        MaterialTheme.colorScheme.primaryContainer
+        MaterialTheme.colorScheme.surfaceBright
     } else {
-        MaterialTheme.colorScheme.onPrimaryContainer
+        MaterialTheme.colorScheme.surfaceContainer
     }
 
     Card(
@@ -92,20 +94,41 @@ fun AssignmentItemSelectable(
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Designado: ${assignment.assignedResidentName}",
-                        style = MaterialTheme.typography.labelLarge
-                    )
-                    Text(
-                        text = "Data limite: $formattedDate",
-                        style = MaterialTheme.typography.labelLarge
-                    )
-                }
+                Text(
+                    text = "Designado: ${assignment.assignedResidentName}",
+                    style = MaterialTheme.typography.labelLarge
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Data limite: $formattedDate",
+                    style = MaterialTheme.typography.labelLarge
+                )
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun AssignmentListSelectablePreview(){
+    AssignmentListSelectable(
+        assignments = listOf(
+            Assignment(
+                id = "id1",
+                title = "Limpeza da cozinha",
+                description = "Organizar limpeza semanal com todos os moradores.",
+                assignedResidentName = "Vitória",
+                dueDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 3) }.time
+            ),
+            Assignment(
+                id = "id2",
+                title = "Revisar contas",
+                description = "Verificar pendências da luz e internet.",
+                assignedResidentName = "Lucas",
+                dueDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 7) }.time
+            )
+        ),
+        selectedIds = setOf(),
+        onSelectionChange = { _, _ -> }
+    )
 }

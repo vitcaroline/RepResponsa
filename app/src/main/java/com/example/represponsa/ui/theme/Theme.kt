@@ -9,6 +9,8 @@ private val LightColors = lightColorScheme(
     secondary = PurpleGrey40,
     tertiary = Pink40,
     onPrimaryContainer = Purple80,
+    surfaceContainer = LightOrange,
+    surfaceBright = BrightOrange
 )
 
 private val DarkColors = darkColorScheme(
