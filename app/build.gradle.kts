@@ -73,5 +73,6 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.5.0")
     implementation("com.google.accompanist:accompanist-navigation-animation:0.33.2-alpha")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.6.1")
+    implementation ("com.google.code.gson:gson:2.10.1")
     debugImplementation(libs.androidx.ui.tooling)
 }

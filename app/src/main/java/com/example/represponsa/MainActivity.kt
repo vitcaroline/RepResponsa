@@ -5,9 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.SideEffect
-import com.example.represponsa.navigation.AppNavigation
+import com.example.represponsa.presentation.navigation.AppNavigation
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.example.represponsa.ui.theme.RepResponsaTheme
+import com.example.represponsa.presentation.ui.theme.RepResponsaTheme
 
 
 class MainActivity : ComponentActivity() {
