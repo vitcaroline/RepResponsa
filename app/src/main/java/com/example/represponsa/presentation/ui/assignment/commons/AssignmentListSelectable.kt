@@ -1,4 +1,4 @@
-package com.example.represponsa.presentation.ui.assignment.removeAssignment
+package com.example.represponsa.presentation.ui.assignment.commons
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

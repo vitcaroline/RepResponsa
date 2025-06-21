@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.represponsa.R
 import com.example.represponsa.di.RemoveAssignmentViewModelFactory
+import com.example.represponsa.presentation.ui.assignment.commons.AssignmentListSelectable
 import com.example.represponsa.presentation.ui.assignment.removeAssignment.viewModel.RemoveAssignmentViewModel
 import com.example.represponsa.presentation.ui.commons.EmptyState
 import com.example.represponsa.presentation.ui.commons.TopBar

@@ -29,7 +29,7 @@ import androidx.navigation.NavController
 import com.example.represponsa.R
 import com.example.represponsa.di.AssignmentListViewModelFactory
 import com.example.represponsa.presentation.ui.assignment.assigmentsList.viewModel.AssignmentListViewModel
-import com.example.represponsa.presentation.ui.assignment.removeAssignment.AssignmentListSelectable
+import com.example.represponsa.presentation.ui.assignment.commons.AssignmentListSelectable
 import com.example.represponsa.presentation.ui.commons.EmptyState
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.google.gson.Gson
