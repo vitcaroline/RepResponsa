@@ -1,4 +1,4 @@
-package com.example.represponsa.ui.registerRepublic
+package com.example.represponsa.ui.registerRepublic.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +9,7 @@ import com.example.represponsa.ui.commons.validateAddress
 import com.example.represponsa.ui.commons.validatePetCount
 import com.example.represponsa.ui.commons.validateRepublicName
 import com.example.represponsa.ui.commons.validateResidentCount
+import com.example.represponsa.ui.registerRepublic.RegisterRepublicState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

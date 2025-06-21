@@ -1,17 +1,18 @@
 package com.example.represponsa.ui.login
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.represponsa.R
 import com.example.represponsa.di.LoginViewModelFactory
+import com.example.represponsa.ui.login.viewModel.LoginViewModel
 
 @Composable
 fun LoginScreen(
@@ -72,19 +73,33 @@ fun LoginScreen(
             Text("Entrar")
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        errorMessage?.let {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Email ou senha incorretos",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
 
         TextButton(onClick = onNavigateToRegister) {
             Text("Não tem conta? Cadastre-se")
         }
 
-        TextButton(onClick = onNavigateToCreateRepublic) {
-            Text("Cadastrar sua república")
-        }
-
-        errorMessage?.let {
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Email ou senha incorretos", color = MaterialTheme.colorScheme.error)
+        Button(
+            onClick = onNavigateToCreateRepublic,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(8.dp),
+            colors = ButtonColors(
+                contentColor = MaterialTheme.colorScheme.secondary,
+                containerColor = MaterialTheme.colorScheme.secondary,
+                disabledContainerColor = MaterialTheme.colorScheme.tertiary,
+                disabledContentColor = MaterialTheme.colorScheme.secondary,
+            )
+        )
+        {
+            Text("Cadastrar sua república", color = Color.White)
         }
     }
 }

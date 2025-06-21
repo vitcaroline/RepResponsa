@@ -42,4 +42,19 @@ class AuthRepository(
     fun logout() {
         firebaseAuth.signOut()
     }
+
+    suspend fun getCurrentUser(): User? {
+        val uid = firebaseAuth.currentUser?.uid ?: return null
+
+        return try {
+            val snapshot = firestore.collection("users")
+                .document(uid)
+                .get()
+                .await()
+
+            snapshot.toObject(User::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
 }

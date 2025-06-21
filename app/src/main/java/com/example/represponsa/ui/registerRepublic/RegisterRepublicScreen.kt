@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.represponsa.di.RegisterRepublicViewModelFactory
 import com.example.represponsa.ui.commons.NumberDropdownField
 import com.example.represponsa.ui.commons.TopBar
+import com.example.represponsa.ui.registerRepublic.viewModel.RegisterRepublicViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

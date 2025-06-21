@@ -8,13 +8,14 @@ private val LightColors = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    onPrimaryContainer = PurpleGrey40,
+    onPrimaryContainer = Purple80,
 )
 
 private val DarkColors = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
-    tertiary = Pink80
+    tertiary = Pink80,
+    onPrimaryContainer = LightGrey
 )
 
 @Composable

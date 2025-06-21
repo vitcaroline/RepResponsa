@@ -1,8 +1,9 @@
-package com.example.represponsa.ui.login
+package com.example.represponsa.ui.login.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.represponsa.repository.AuthRepository
+import com.example.represponsa.ui.login.LoginState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

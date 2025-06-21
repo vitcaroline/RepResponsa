@@ -1,4 +1,4 @@
-package com.example.represponsa.ui.registerUser
+package com.example.represponsa.ui.registerUser.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +9,7 @@ import com.example.represponsa.repository.RepublicRepository
 import com.example.represponsa.ui.commons.validateName
 import com.example.represponsa.ui.commons.validatePassword
 import com.example.represponsa.ui.commons.validatePhone
+import com.example.represponsa.ui.registerUser.RegisterState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -109,12 +110,21 @@ class RegisterViewModel(
             )
         }
 
+        val selectedRepublic = _allRepublics.value.find { it.name == st.republic }
+
+        if (selectedRepublic == null) {
+            onError("República não encontrada.")
+            updateState { copy(isLoading = false) }
+            return@launch
+        }
+
         val newUser = User(
             firstName    = st.firstName,
             lastName     = st.lastName,
             email        = st.email,
             phone        = st.phone,
-            republicName = st.republic,
+            republicName = selectedRepublic.name,
+            republicId   = selectedRepublic.id,
             role         = st.role
         )
 

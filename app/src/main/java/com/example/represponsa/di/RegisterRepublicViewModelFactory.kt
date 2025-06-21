@@ -2,7 +2,7 @@ package com.example.represponsa.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.represponsa.ui.registerRepublic.RegisterRepublicViewModel
+import com.example.represponsa.ui.registerRepublic.viewModel.RegisterRepublicViewModel
 import com.example.represponsa.repository.RepublicRepository
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore

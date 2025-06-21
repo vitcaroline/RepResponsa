@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.represponsa.di.RegisterViewModelFactory
 import com.example.represponsa.ui.commons.TopBar
+import com.example.represponsa.ui.registerUser.viewModel.RegisterViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
