@@ -11,8 +11,8 @@ fun String.validateName(): String? =
 
 fun String.validatePhone(): String? =
     when {
-        !this.all { it.isDigit() }                  -> "Telefone deve conter apenas números"
-        else                                        -> null
+        !this.all { it.isDigit() } -> "Telefone deve conter apenas números"
+        else -> null
     }
 
 fun String.validatePassword(): String? =
