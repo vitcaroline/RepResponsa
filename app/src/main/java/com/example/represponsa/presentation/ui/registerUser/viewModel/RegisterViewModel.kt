@@ -8,6 +8,7 @@ import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.data.repository.RepublicRepository
 import com.example.represponsa.presentation.ui.commons.validateName
 import com.example.represponsa.presentation.ui.commons.validatePassword
+import com.example.represponsa.presentation.ui.commons.validatePasswordConfirmation
 import com.example.represponsa.presentation.ui.commons.validatePhone
 import com.example.represponsa.presentation.ui.registerUser.RegisterState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,20 +59,24 @@ class RegisterViewModel(
     }
 
     fun onPasswordChange(value: String) {
-        _state.update { it.copy(
-            password = value,
-            passwordError = value.validatePassword(),
-            confirmPwdError = if (_state.value.confirmPwd != value)
-                "As senhas não conferem" else null
-        ) }
+        _state.update {
+            it.copy(
+                password = value,
+                passwordError = value.validatePassword(),
+                confirmPwdError = if (it.hasTypedConfirmPwd && it.confirmPwd != value)
+                    "As senhas não conferem" else null
+            )
+        }
     }
 
     fun onConfirmPwdChange(value: String) {
-        _state.update { it.copy(
-            confirmPwd = value,
-            confirmPwdError = if (value != _state.value.password)
-                "As senhas não conferem" else null
-        ) }
+        _state.update {
+            it.copy(
+                confirmPwd = value,
+                hasTypedConfirmPwd = true,
+                confirmPwdError = if (value != it.password) "As senhas não conferem" else null
+            )
+        }
     }
     fun onRepublicChange(s: String)  = updateState { copy(republic = s) }
     fun onEmailChange(s: String)   = updateState { copy(email = s) }
@@ -84,7 +89,7 @@ class RegisterViewModel(
         val lastNameErr    = st.lastName.validateName()
         val phoneErr       = st.phone.validatePhone()
         val passwordErr    = st.password.validatePassword()
-        val confirmPwdErr  = if (st.confirmPwd != st.password) "As senhas não coincidem" else null
+        val confirmPwdErr = validatePasswordConfirmation(st.password, st.confirmPwd)
 
         if (listOf(firstNameErr, lastNameErr, phoneErr, passwordErr, confirmPwdErr).any { it != null }) {
             updateState {

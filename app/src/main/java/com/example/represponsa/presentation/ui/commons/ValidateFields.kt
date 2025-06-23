@@ -19,6 +19,10 @@ fun String.validatePassword(): String? =
     if (this.length < 6) "Senha deve ter ao menos 6 caracteres"
     else null
 
+fun validatePasswordConfirmation(password: String, confirmPwd: String): String? {
+    return if (confirmPwd != password) "As senhas não conferem" else null
+}
+
 
 //Republic
 fun String.validateRepublicName(): String? =

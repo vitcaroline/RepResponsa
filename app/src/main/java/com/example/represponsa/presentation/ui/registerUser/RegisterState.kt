@@ -13,6 +13,7 @@ data class RegisterState(
     val passwordError: String? = null,
     val confirmPwd: String = "",
     val confirmPwdError: String? = null,
+    val hasTypedConfirmPwd: Boolean = false,
     val role: String = "",
     val republic: String = "",
     val isLoading:  Boolean = false

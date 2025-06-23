@@ -50,7 +50,6 @@ fun RegisterScreen(
                 .padding(innerPadding),
             verticalArrangement = Arrangement.Center
         ) {
-            /* -------- Inputs -------- */
             OutlinedTextField(
                 value = state.firstName,
                 onValueChange = viewModel::onFirstNameChange,
@@ -97,7 +96,6 @@ fun RegisterScreen(
             }
             Spacer(Modifier.height(8.dp))
 
-            /* Senhas */
             OutlinedTextField(
                 value = state.password,
                 onValueChange = viewModel::onPasswordChange,
@@ -115,10 +113,14 @@ fun RegisterScreen(
                 value = state.confirmPwd,
                 onValueChange = viewModel::onConfirmPwdChange,
                 label = { Text("Confirmar senha") },
+                isError = state.confirmPwdError != null,
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
+            state.confirmPwdError?.let { err ->
+                Text(text = err, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+            }
             Spacer(Modifier.height(8.dp))
             ExposedDropdownMenuBox(
                 expanded = expanded,
