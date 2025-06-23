@@ -16,7 +16,7 @@ fun AppNavigation() {
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = "splash",
         enterTransition = { slideInHorizontally(initialOffsetX = { it }) + fadeIn() },
         exitTransition = { slideOutHorizontally(targetOffsetX = { -it }) + fadeOut() },
         popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) + fadeIn() },

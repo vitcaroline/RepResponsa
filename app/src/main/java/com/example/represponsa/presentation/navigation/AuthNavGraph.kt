@@ -4,11 +4,18 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.represponsa.presentation.ui.login.LoginScreen
+import com.example.represponsa.presentation.ui.login.SplashScreen
 import com.example.represponsa.presentation.ui.profile.ProfileScreen
 import com.example.represponsa.presentation.ui.registerRepublic.RegisterRepublicScreen
 import com.example.represponsa.presentation.ui.registerUser.RegisterScreen
 
 fun NavGraphBuilder.authNavGraph(navController: NavController) {
+    composable("splash") {
+        SplashScreen(
+            onNavigateToHome = { navController.navigate("home") { popUpTo("splash") { inclusive = true } } },
+            onNavigateToLogin = { navController.navigate("login") { popUpTo("splash") { inclusive = true } } }
+        )
+    }
     composable("login") {
         LoginScreen(
             onLoginSuccess = { navController.navigate("home") },

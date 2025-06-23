@@ -6,9 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.represponsa.data.model.Minute
 import com.example.represponsa.domain.useCases.GetMinutesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MinutesListViewModel(
+@HiltViewModel
+class MinutesListViewModel @Inject constructor(
     private val getMinutesUseCase: GetMinutesUseCase
 ) : ViewModel() {
 
