@@ -13,7 +13,7 @@ import com.example.represponsa.domain.useCases.CreateAssignmentUseCase
 import com.example.represponsa.presentation.ui.assignment.createAssignment.CreateAssignmentUiState
 import com.example.represponsa.presentation.ui.commons.validateAssignmentTitle
 import com.example.represponsa.presentation.ui.commons.validateDueDate
-import com.example.represponsa.presentation.ui.commons.validateSelectedResident
+import com.example.represponsa.presentation.ui.commons.validateSelectedResidents
 import kotlinx.coroutines.launch
 
 class CreateAssignmentViewModel(
@@ -40,8 +40,11 @@ class CreateAssignmentViewModel(
         _state.value = _state.value.copy(description = value)
     }
 
-    fun onResidentSelected(user: User) {
-        _state.value = _state.value.copy(selectedResident = user, residentError = null)
+    fun onResidentsSelected(users: List<User>) {
+        _state.value = _state.value.copy(
+            selectedResidents = users,
+            residentError = null
+        )
     }
 
     fun onDateSelected(date: Date) {
@@ -52,7 +55,7 @@ class CreateAssignmentViewModel(
         val current = _state.value
 
         val titleError = current.title.validateAssignmentTitle()
-        val residentError = current.selectedResident.validateSelectedResident()
+        val residentError = current.selectedResidents.validateSelectedResidents()
         val dateError = current.dueDate.validateDueDate()
 
         _state.value = current.copy(
@@ -64,7 +67,7 @@ class CreateAssignmentViewModel(
         return titleError == null && residentError == null && dateError == null
     }
 
-    fun fetchResidents() {
+    private fun fetchResidents() {
         viewModelScope.launch {
             try {
                 val currentUser = authRepo.getCurrentUser() ?: return@launch
@@ -80,19 +83,21 @@ class CreateAssignmentViewModel(
 
         val currentUser = authRepo.getCurrentUser()
         val stateValue = _state.value
-        val resident = stateValue.selectedResident
 
-        if (currentUser == null || resident == null) {
+        if (currentUser == null) {
             onError("Erro ao carregar dados.")
             return
         }
+
+        val assignedIds = stateValue.selectedResidents.map { it.uid }
+        val assignedNames = stateValue.selectedResidents.map { it.firstName }
 
         val assignment = Assignment(
             title = stateValue.title,
             description = stateValue.description,
             dueDate = stateValue.dueDate,
-            assignedResidentId = resident.uid,
-            assignedResidentName = resident.firstName
+            assignedResidentsIds = assignedIds,
+            assignedResidentsNames = assignedNames
         )
 
         viewModelScope.launch {

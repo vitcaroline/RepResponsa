@@ -25,6 +25,8 @@ class RegisterRepublicViewModel(
     fun onAddressChange(s: String) = updateState { copy(address = s, addressError = null) }
     fun onPetCountChange(s: String) = updateState { copy(petCount = s) }
     fun onResidentCountChange(s: String) = updateState { copy(residentCount = s, residentCountError = null) }
+    fun onBillsDueDayChange(day: Int) = updateState{ copy(billsDueDay = day) }
+    fun onRentDueDayChange(day: Int) = updateState{ copy(rentDueDay = day) }
 
     fun onRoleToggle(role: RolesEnum) = updateState {
         val updated = if (selectedRoles.contains(role)) {
@@ -50,7 +52,9 @@ class RegisterRepublicViewModel(
             address = state.value.address,
             petCount = petCount,
             residentCount = residentCount,
-            roles = state.value.selectedRoles.map { it.name }
+            roles = state.value.selectedRoles.map { it.name },
+            rentDueDay = state.value.rentDueDay,
+            billsDueDay = state.value.billsDueDay
         )
 
         val result = repository.createRepublic(republic)

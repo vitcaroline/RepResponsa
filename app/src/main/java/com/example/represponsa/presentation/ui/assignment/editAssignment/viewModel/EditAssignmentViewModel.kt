@@ -13,7 +13,7 @@ import com.example.represponsa.domain.useCases.UpdateAssignmentUseCase
 import com.example.represponsa.presentation.ui.assignment.editAssignment.EditAssignmentUiState
 import com.example.represponsa.presentation.ui.commons.validateAssignmentTitle
 import com.example.represponsa.presentation.ui.commons.validateDueDate
-import com.example.represponsa.presentation.ui.commons.validateSelectedResident
+import com.example.represponsa.presentation.ui.commons.validateSelectedResidents
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -42,13 +42,14 @@ class EditAssignmentViewModel(
                 val currentUser = authRepo.getCurrentUser() ?: return@launch
                 val resList = userRepository.getResidentsByRepublic(currentUser.republicId)
                 _residents.value = resList
-                val selected = resList.find { it.uid == assignment.assignedResidentId }
+
+                val selected = resList.filter { it.uid in assignment.assignedResidentsIds }
 
                 _state.value = EditAssignmentUiState(
                     title = assignment.title,
                     description = assignment.description,
                     dueDate = assignment.dueDate,
-                    selectedResident = selected
+                    selectedResidents = selected
                 )
             }
         }
@@ -66,15 +67,15 @@ class EditAssignmentViewModel(
         _state.value = _state.value.copy(dueDate = newDate, dateError = null)
     }
 
-    fun onResidentSelected(user: User) {
-        _state.value = _state.value.copy(selectedResident = user, residentError = null)
+    fun onResidentsSelected(users: List<User>) {
+        _state.value = _state.value.copy(selectedResidents = users, residentError = null)
     }
 
     fun validateFields(): Boolean {
         val current = _state.value
 
         val titleError = current.title.validateAssignmentTitle()
-        val residentError = current.selectedResident.validateSelectedResident()
+        val residentError = current.selectedResidents.validateSelectedResidents()
         val dateError = current.dueDate.validateDueDate()
 
         _state.value = current.copy(
@@ -85,22 +86,26 @@ class EditAssignmentViewModel(
 
         return titleError == null && residentError == null && dateError == null
     }
+
     fun saveEditedAssignment(
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
         val stateValue = _state.value
-        val resident = stateValue.selectedResident
+        val selectedResidents = stateValue.selectedResidents
 
-        if (!validateFields() || resident == null) return
+        if (!validateFields() || selectedResidents.isEmpty()) return
+
+        val assignedIds = stateValue.selectedResidents.map { it.uid }
+        val assignedNames = stateValue.selectedResidents.map { it.firstName }
 
         val updatedAssignment = Assignment(
             id = assignmentId,
             title = stateValue.title,
             description = stateValue.description,
             dueDate = stateValue.dueDate,
-            assignedResidentId = resident.uid,
-            assignedResidentName = resident.firstName
+            assignedResidentsIds = assignedIds,
+            assignedResidentsNames = assignedNames
         )
 
         viewModelScope.launch {

@@ -50,11 +50,11 @@ fun String.validatePetCount(): String? =
 fun String.validateAssignmentTitle(): String? =
     if (this.isBlank()) "O título não pode ficar em branco" else null
 
-fun User?.validateSelectedResident(): String? =
-    if (this == null) "Selecione um morador responsável" else null
-
 fun Date.validateDueDate(): String? =
     if (this.before(Date())) "A data deve ser no futuro" else null
+
+fun List<User>.validateSelectedResidents(): String? =
+    if (this.isEmpty()) "Selecione pelo menos um morador responsável" else null
 
 //Minute
 fun String.validateMinuteTitle(): String? =

@@ -22,7 +22,7 @@ fun AssignmentList(assignments: List<Assignment>) {
             AssignmentItem(
                 title = assignment.title,
                 description = assignment.description,
-                assignedResident = assignment.assignedResidentName,
+                assignedResidents = assignment.assignedResidentsNames,
                 dueDate = assignment.dueDate
             )
         }
@@ -33,7 +33,7 @@ fun AssignmentList(assignments: List<Assignment>) {
 fun AssignmentItem(
     title: String,
     description: String,
-    assignedResident: String,
+    assignedResidents: List<String>,
     dueDate: Date,
     modifier: Modifier = Modifier
 ) {
@@ -58,21 +58,17 @@ fun AssignmentItem(
                 style = MaterialTheme.typography.bodyMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = "Designado: $assignedResident",
-                    style = MaterialTheme.typography.labelLarge
-                )
-                Text(
-                    text = "Data limite: $formattedDate",
-                    style = MaterialTheme.typography.labelLarge
+            Text(
+                text = "Designado(s): ${assignedResidents.joinToString(", ")}",
+                style = MaterialTheme.typography.labelLarge
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Data limite: $formattedDate",
+                style = MaterialTheme.typography.labelLarge
                 )
             }
         }
-    }
 }
 
 @Preview
@@ -81,15 +77,19 @@ fun AssignmentListPreview(){
     AssignmentList(
         assignments = listOf(
             Assignment(
+                id = "id1",
                 title = "Limpeza da cozinha",
                 description = "Organizar limpeza semanal com todos os moradores.",
-                assignedResidentName = "Vitória",
+                assignedResidentsNames = listOf("Vitória","Beto"),
+                assignedResidentsIds = listOf("1,2"),
                 dueDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 3) }.time
             ),
             Assignment(
+                id = "id2",
                 title = "Revisar contas",
                 description = "Verificar pendências da luz e internet.",
-                assignedResidentName = "Lucas",
+                assignedResidentsNames = listOf("Lucas","Beto"),
+                assignedResidentsIds = listOf("1,2"),
                 dueDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 7) }.time
             )
         )

@@ -45,8 +45,8 @@ fun CreateAssignmentScreen(
                 description = state.description,
                 onDescriptionChange = viewModel::onDescriptionChange,
 
-                selectedResident = state.selectedResident,
-                onResidentSelected = viewModel::onResidentSelected,
+                selectedResidents = state.selectedResidents,
+                onResidentsSelected = viewModel::onResidentsSelected,
                 residentError = state.residentError,
                 residents = residents,
 

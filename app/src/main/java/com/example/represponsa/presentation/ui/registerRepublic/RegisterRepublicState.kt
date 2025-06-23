@@ -9,6 +9,8 @@ data class RegisterRepublicState(
     val residentCount: String = "",
     val selectedRoles: List<RolesEnum> = emptyList(),
     val isLoading: Boolean = false,
+    val billsDueDay: Int = 1,
+    val rentDueDay: Int = 1,
 
     val nameError: String? = null,
     val addressError: String? = null,

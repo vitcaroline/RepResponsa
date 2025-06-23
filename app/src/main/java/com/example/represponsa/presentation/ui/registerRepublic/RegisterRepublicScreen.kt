@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -33,7 +35,6 @@ import com.example.represponsa.presentation.ui.commons.NumberDropdownField
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.registerRepublic.viewModel.RegisterRepublicViewModel
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RegisterRepublicScreen(
     onCreateSuccess: () -> Unit,
@@ -45,6 +46,7 @@ fun RegisterRepublicScreen(
     val state by viewModel.state.collectAsState()
     val availableRoles = viewModel.getAvailableRoles()
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    val scrollState = rememberScrollState()
 
     Scaffold(
         topBar = {
@@ -58,6 +60,7 @@ fun RegisterRepublicScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 24.dp)
+                .verticalScroll(scrollState)
                 .padding(innerPadding),
             verticalArrangement = Arrangement.Top
         ) {
@@ -121,6 +124,8 @@ fun RegisterRepublicScreen(
             }
 
             Spacer(Modifier.height(16.dp))
+
+            Spacer(Modifier.height(16.dp))
             Text("Funções", style = MaterialTheme.typography.bodyLarge)
             Spacer(Modifier.height(4.dp))
 
@@ -160,7 +165,9 @@ fun RegisterRepublicScreen(
                         onError = { errorMessage = it }
                     )
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
             ) {
                 Text("Cadastrar República")
             }

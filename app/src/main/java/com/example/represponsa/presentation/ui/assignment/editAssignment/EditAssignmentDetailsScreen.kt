@@ -49,8 +49,8 @@ fun EditAssignmentDetailsScreen(
                 description = state.description,
                 onDescriptionChange = viewModel::onEditDescriptionChange,
 
-                selectedResident = state.selectedResident,
-                onResidentSelected = viewModel::onResidentSelected,
+                selectedResidents = state.selectedResidents,
+                onResidentsSelected = viewModel::onResidentsSelected,
                 residentError = state.residentError,
                 residents = residents,
 

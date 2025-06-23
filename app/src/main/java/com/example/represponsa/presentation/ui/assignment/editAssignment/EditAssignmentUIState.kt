@@ -6,7 +6,7 @@ import java.util.Date
 data class EditAssignmentUiState(
     val title: String = "",
     val description: String = "",
-    val selectedResident: User? = null,
+    val selectedResidents: List<User> = emptyList(),
     val dueDate: Date = Date(),
     val titleError: String? = null,
     val residentError: String? = null,

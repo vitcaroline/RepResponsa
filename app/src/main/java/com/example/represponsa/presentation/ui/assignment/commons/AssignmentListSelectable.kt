@@ -95,7 +95,7 @@ fun AssignmentItemSelectable(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Designado: ${assignment.assignedResidentName}",
+                    text = "Designado(s): ${assignment.assignedResidentsNames.joinToString(", ")}",
                     style = MaterialTheme.typography.labelLarge
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -117,14 +117,16 @@ fun AssignmentListSelectablePreview(){
                 id = "id1",
                 title = "Limpeza da cozinha",
                 description = "Organizar limpeza semanal com todos os moradores.",
-                assignedResidentName = "Vitória",
+                assignedResidentsNames = listOf("Vitória"),
+                assignedResidentsIds = listOf("1","2"),
                 dueDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 3) }.time
             ),
             Assignment(
                 id = "id2",
                 title = "Revisar contas",
                 description = "Verificar pendências da luz e internet.",
-                assignedResidentName = "Lucas",
+                assignedResidentsNames = listOf("Lucas"),
+                assignedResidentsIds = listOf("1","2"),
                 dueDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 7) }.time
             )
         ),

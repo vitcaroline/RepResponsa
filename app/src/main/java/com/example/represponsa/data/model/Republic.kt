@@ -6,5 +6,7 @@ data class Republic(
     val address: String = "",
     val petCount: Int = 0,
     val residentCount: Int = 0,
-    val roles: List<String> = emptyList()
+    val roles: List<String> = emptyList(),
+    val billsDueDay: Int = 1,
+    val rentDueDay: Int = 1
 )

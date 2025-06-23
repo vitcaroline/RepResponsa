@@ -8,7 +8,7 @@ data class Assignment (
     val id: String = "",
     val title: String = "",
     val description: String = "",
-    val assignedResidentId: String = "",
-    val assignedResidentName: String = "",
+    val assignedResidentsIds: List<String> = emptyList(),
+    val assignedResidentsNames: List<String> = emptyList(),
     val dueDate: Date = Date()
 )
