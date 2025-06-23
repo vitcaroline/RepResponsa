@@ -1,4 +1,4 @@
-package com.example.represponsa.di
+package com.example.represponsa.di.minutes
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

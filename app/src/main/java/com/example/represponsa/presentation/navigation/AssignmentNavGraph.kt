@@ -23,14 +23,14 @@ fun NavGraphBuilder.assignmentNavGraph(navController: NavController) {
 
     composable("create-assignment") {
         CreateAssignmentScreen(
-            onAssignmentCreated = { navController.popBackStack() },
+            onAssignmentCreated = { navController.navigate("assignments") { popUpTo("assignments") { inclusive = true }} },
             onNavigateBack = { navController.popBackStack() },
         )
     }
 
     composable("edit-assignment") {
         EditAssignmentScreen(
-            onNavigateBack = { navController.popBackStack() },
+            onNavigateBack = { navController.navigate("assignments") { popUpTo("assignments") { inclusive = true }} },
             navController = navController
         )
     }
@@ -43,12 +43,14 @@ fun NavGraphBuilder.assignmentNavGraph(navController: NavController) {
 
         EditAssignmentDetailsScreen(
             assignmentId = assignmentId,
-            onNavigateBack = { navController.popBackStack() },
+            onNavigateBack = { navController.navigate("assignments") { popUpTo("assignments") { inclusive = true }} },
             onNavigateToAssignmentList = { navController.navigate("assignments") }
         )
     }
 
     composable("remove-assignment") {
-        RemoveAssignmentScreen(onNavigateBack = { navController.popBackStack() })
+        RemoveAssignmentScreen(
+            onNavigateBack = { navController.navigate("assignments") { popUpTo("assignments") { inclusive = true } } }
+        )
     }
 }

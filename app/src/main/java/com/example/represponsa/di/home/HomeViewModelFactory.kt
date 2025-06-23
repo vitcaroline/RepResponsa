@@ -1,4 +1,4 @@
-package com.example.represponsa.di
+package com.example.represponsa.di.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -14,7 +14,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.RegisterViewModelFactory
+import com.example.represponsa.di.auth.RegisterViewModelFactory
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.registerUser.viewModel.RegisterViewModel
 

@@ -9,7 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.EditAssignmentViewModelFactory
+import com.example.represponsa.di.assignments.EditAssignmentViewModelFactory
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentForm
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentFormState
 import com.example.represponsa.presentation.ui.assignment.editAssignment.viewModel.EditAssignmentViewModel

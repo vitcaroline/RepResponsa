@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.HomeViewModelFactory
+import com.example.represponsa.di.home.HomeViewModelFactory
 import com.example.represponsa.presentation.ui.commons.HomeTopBar
 import com.example.represponsa.presentation.ui.home.viewModel.HomeViewModel
 import kotlinx.coroutines.launch

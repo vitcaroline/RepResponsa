@@ -30,7 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.represponsa.data.model.Minute
-import com.example.represponsa.di.MinuteDetailsViewModelFactory
+import com.example.represponsa.di.minutes.MinuteDetailsViewModelFactory
 import com.example.represponsa.presentation.ui.commons.ConfirmDeleteDialog
 import com.example.represponsa.presentation.ui.commons.ExpandableFab
 import com.example.represponsa.presentation.ui.commons.FabAction

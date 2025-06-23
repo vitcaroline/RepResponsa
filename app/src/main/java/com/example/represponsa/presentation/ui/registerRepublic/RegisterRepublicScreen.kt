@@ -28,7 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.RegisterRepublicViewModelFactory
+import com.example.represponsa.di.auth.RegisterRepublicViewModelFactory
 import com.example.represponsa.presentation.ui.commons.NumberDropdownField
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.registerRepublic.viewModel.RegisterRepublicViewModel

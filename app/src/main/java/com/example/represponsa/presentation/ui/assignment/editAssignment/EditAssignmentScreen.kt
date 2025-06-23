@@ -24,7 +24,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.represponsa.R
-import com.example.represponsa.di.AssignmentListViewModelFactory
+import com.example.represponsa.di.assignments.AssignmentListViewModelFactory
 import com.example.represponsa.presentation.ui.assignment.assigmentsList.viewModel.AssignmentListViewModel
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentListSelectable
 import com.example.represponsa.presentation.ui.commons.EmptyState

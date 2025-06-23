@@ -1,4 +1,4 @@
-package com.example.represponsa.di
+package com.example.represponsa.di.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

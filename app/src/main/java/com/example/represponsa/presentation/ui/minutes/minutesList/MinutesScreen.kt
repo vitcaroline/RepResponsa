@@ -21,7 +21,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.represponsa.R
 import com.example.represponsa.data.model.Minute
-import com.example.represponsa.di.MinutesListViewModelFactory
+import com.example.represponsa.di.minutes.MinutesListViewModelFactory
 import com.example.represponsa.presentation.ui.commons.EmptyState
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.minutes.minutesList.viewModel.MinutesListViewModel

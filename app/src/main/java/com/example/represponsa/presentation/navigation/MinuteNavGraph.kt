@@ -28,7 +28,7 @@ fun NavGraphBuilder.minuteNavGraph(navController: NavController) {
 
         MinuteDetailsScreen(
             minuteId = minuteId,
-            onNavigateBack = { navController.popBackStack() },
+            onNavigateBack = { navController.navigate("minutes") { popUpTo("minutes") { inclusive = true } }},
             onNavigateToEdit = { minute ->
                 navController.navigate("edit-minute/${minute.id}")
             }
@@ -42,7 +42,7 @@ fun NavGraphBuilder.minuteNavGraph(navController: NavController) {
         EditMinuteScreen(
             minuteId = minuteId,
             onNavigateBack = { navController.popBackStack() },
-            onNavigateToList = { navController.navigate("minutes") }
+            onNavigateToList = { navController.navigate("minutes") { popUpTo("minutes") { inclusive = true } } }
         )
     }
     composable("create-minute"){

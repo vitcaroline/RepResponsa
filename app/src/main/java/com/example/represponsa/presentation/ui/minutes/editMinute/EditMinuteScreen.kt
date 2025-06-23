@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.EditMinuteViewModelFactory
+import com.example.represponsa.di.minutes.EditMinuteViewModelFactory
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.minutes.commons.MinuteForm
 import com.example.represponsa.presentation.ui.minutes.commons.MinuteFormParams

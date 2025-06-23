@@ -11,7 +11,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.represponsa.R
-import com.example.represponsa.di.LoginViewModelFactory
+import com.example.represponsa.di.auth.LoginViewModelFactory
 import com.example.represponsa.presentation.ui.login.viewModel.LoginViewModel
 
 @Composable
