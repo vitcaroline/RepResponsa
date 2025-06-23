@@ -1,19 +1,34 @@
 package com.example.represponsa.presentation.ui.assignment.assigmentsList
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -102,8 +117,51 @@ fun AssignmentScreen(
             }
 
             else -> {
-                Box(modifier = Modifier.padding(innerPadding)) {
-                    AssignmentList(assignments = assignments)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Surface(
+                        tonalElevation = 4.dp,
+                        shadowElevation = 4.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp, vertical = 4.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            FilterChip(
+                                selected = viewModel.showOnlyMyAssignments.value,
+                                onClick = { viewModel.setFilter(onlyMine = true) },
+                                label = { Text("Minhas Tarefas") },
+                                leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Minhas Tarefas", tint = Color.LightGray) },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.secondary,
+                                    selectedLabelColor = Color.White,
+                                    selectedLeadingIconColor = Color.White,
+                                    containerColor = Color.White,
+                                    labelColor = Color.Black
+                                )
+                            )
+                            FilterChip(
+                                selected = !viewModel.showOnlyMyAssignments.value,
+                                onClick = { viewModel.setFilter(onlyMine = false) },
+                                label = { Text("Todas Tarefas") },
+                                leadingIcon = { Icon(Icons.Default.List, contentDescription = "Todas Tarefas", tint = Color.LightGray) },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.secondary,
+                                    selectedLabelColor = Color.White,
+                                    selectedLeadingIconColor = Color.White,
+                                    containerColor = Color.White,
+                                    labelColor = Color.Black
+                                )
+                            )
+                        }
+                    }
+                    AssignmentList(modifier = Modifier, assignments = assignments)
                 }
             }
         }

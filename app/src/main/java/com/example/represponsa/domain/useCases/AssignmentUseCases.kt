@@ -23,3 +23,18 @@ class CreateAssignmentUseCase @Inject constructor (private val repository: Assig
 class GetAssignmentByIdUseCase @Inject constructor (private val repo: AssignmentRepository) {
     suspend operator fun invoke(id: String): Assignment? = repo.getAssignmentById(id)
 }
+
+class GetFilteredAssignmentsUseCase @Inject constructor(
+    private val repository: AssignmentRepository
+) {
+    suspend operator fun invoke(onlyMine: Boolean): List<Assignment> {
+        val assignments = repository.getAssignments()
+
+        return if (!onlyMine) {
+            assignments
+        } else {
+            val currentUserId = repository.getCurrentUserId() ?: return emptyList()
+            assignments.filter { currentUserId in it.assignedResidentsIds }
+        }
+    }
+}

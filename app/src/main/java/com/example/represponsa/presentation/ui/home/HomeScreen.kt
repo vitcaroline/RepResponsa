@@ -24,8 +24,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.represponsa.R
 import com.example.represponsa.presentation.ui.commons.HomeTopBar
 import com.example.represponsa.presentation.ui.home.viewModel.HomeViewModel
 import kotlinx.coroutines.launch
@@ -74,7 +76,7 @@ fun HomeScreen(
                     }
                 )
                 NavigationDrawerItem(
-                    icon = { Icon(Icons.Outlined.CheckCircle, contentDescription = "Comprovantes", tint = Color(0xFF004D40)) },
+                    icon = { Icon(painter = painterResource(R.drawable.ic_receipts), contentDescription = "Comprovantes", tint = Color(0xFF004D40)) },
                     label = { Text("Comprovantes") },
                     selected = false,
                     onClick = {

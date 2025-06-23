@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.represponsa.data.model.Assignment
@@ -13,17 +14,21 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun AssignmentList(assignments: List<Assignment>) {
+fun AssignmentList(
+    modifier: Modifier,
+    assignments: List<Assignment>
+) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(assignments) { assignment ->
             AssignmentItem(
+                modifier = modifier,
                 title = assignment.title,
                 description = assignment.description,
                 assignedResidents = assignment.assignedResidentsNames,
-                dueDate = assignment.dueDate
+                dueDate = assignment.dueDate,
             )
         }
     }
@@ -31,11 +36,11 @@ fun AssignmentList(assignments: List<Assignment>) {
 
 @Composable
 fun AssignmentItem(
+    modifier: Modifier = Modifier,
     title: String,
     description: String,
     assignedResidents: List<String>,
     dueDate: Date,
-    modifier: Modifier = Modifier
 ) {
     val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(dueDate)
 
@@ -55,7 +60,9 @@ fun AssignmentItem(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = description,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -75,6 +82,7 @@ fun AssignmentItem(
 @Composable
 fun AssignmentListPreview(){
     AssignmentList(
+        modifier = Modifier,
         assignments = listOf(
             Assignment(
                 id = "id1",

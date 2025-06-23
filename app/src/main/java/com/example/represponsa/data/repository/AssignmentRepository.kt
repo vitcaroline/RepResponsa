@@ -66,4 +66,8 @@ class AssignmentRepository(
 
         return snapshot.toObject(Assignment::class.java)?.copy(id = snapshot.id)
     }
+
+    suspend fun getCurrentUserId(): String? {
+        return authRepo.getCurrentUser()?.uid
+    }
 }
