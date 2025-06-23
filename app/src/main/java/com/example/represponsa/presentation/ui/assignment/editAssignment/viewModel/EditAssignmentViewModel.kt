@@ -8,6 +8,7 @@ import com.example.represponsa.data.model.Assignment
 import com.example.represponsa.data.model.User
 import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.data.repository.UserRepository
+import com.example.represponsa.domain.useCases.GetAssignmentByIdUseCase
 import com.example.represponsa.domain.useCases.UpdateAssignmentUseCase
 import com.example.represponsa.presentation.ui.assignment.editAssignment.EditAssignmentUiState
 import com.example.represponsa.presentation.ui.commons.validateAssignmentTitle
@@ -17,12 +18,12 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 class EditAssignmentViewModel(
+    private val getAssignmentByIdUseCase: GetAssignmentByIdUseCase,
     private val updateAssignmentUseCase: UpdateAssignmentUseCase,
     private val authRepo: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val assignmentId: String
 ) : ViewModel() {
-
-    private var originalAssignmentId: String? = null
 
     private val _state = mutableStateOf(EditAssignmentUiState())
     val state: State<EditAssignmentUiState> = _state
@@ -30,20 +31,26 @@ class EditAssignmentViewModel(
     private val _residents = mutableStateOf<List<User>>(emptyList())
     val residents: State<List<User>> = _residents
 
-    fun startEditing(assignment: Assignment) {
-        originalAssignmentId = assignment.id
+    init {
+        fetchAssignmentAndResidents()
+    }
 
+    private fun fetchAssignmentAndResidents() {
         viewModelScope.launch {
-            fetchResidents()
-            val currentResidents = _residents.value
-            val selectedUser = currentResidents.find { it.uid == assignment.assignedResidentId }
+            val assignment = getAssignmentByIdUseCase(assignmentId)
+            if (assignment != null) {
+                val currentUser = authRepo.getCurrentUser() ?: return@launch
+                val resList = userRepository.getResidentsByRepublic(currentUser.republicId)
+                _residents.value = resList
+                val selected = resList.find { it.uid == assignment.assignedResidentId }
 
-            _state.value = EditAssignmentUiState(
-                title = assignment.title,
-                description = assignment.description,
-                dueDate = assignment.dueDate,
-                selectedResident = selectedUser
-            )
+                _state.value = EditAssignmentUiState(
+                    title = assignment.title,
+                    description = assignment.description,
+                    dueDate = assignment.dueDate,
+                    selectedResident = selected
+                )
+            }
         }
     }
 
@@ -63,12 +70,6 @@ class EditAssignmentViewModel(
         _state.value = _state.value.copy(selectedResident = user, residentError = null)
     }
 
-    private suspend fun fetchResidents() {
-        val currentUser = authRepo.getCurrentUser() ?: return
-        val residents = userRepository.getResidentsByRepublic(currentUser.republicId)
-        _residents.value = residents
-    }
-
     fun validateFields(): Boolean {
         val current = _state.value
 
@@ -84,7 +85,6 @@ class EditAssignmentViewModel(
 
         return titleError == null && residentError == null && dateError == null
     }
-
     fun saveEditedAssignment(
         onSuccess: () -> Unit,
         onError: (String) -> Unit
@@ -92,10 +92,10 @@ class EditAssignmentViewModel(
         val stateValue = _state.value
         val resident = stateValue.selectedResident
 
-        if (!validateFields() || originalAssignmentId == null || resident == null) return
+        if (!validateFields() || resident == null) return
 
         val updatedAssignment = Assignment(
-            id = originalAssignmentId!!,
+            id = assignmentId,
             title = stateValue.title,
             description = stateValue.description,
             dueDate = stateValue.dueDate,

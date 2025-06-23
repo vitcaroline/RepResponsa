@@ -4,13 +4,11 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.data.model.Assignment
 import com.example.represponsa.di.EditAssignmentViewModelFactory
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentForm
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentFormState
@@ -20,18 +18,18 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun EditAssignmentDetailsScreen(
-    assignmentToEdit: Assignment,
+    assignmentId: String,
     onNavigateBack: () -> Unit,
-    viewModel: EditAssignmentViewModel = viewModel(factory = EditAssignmentViewModelFactory)
+    onNavigateToAssignmentList : () -> Unit,
+    viewModel: EditAssignmentViewModel = viewModel(
+        factory = EditAssignmentViewModelFactory(assignmentId)
+    )
 ) {
     val state by viewModel.state
     val residents by viewModel.residents
+
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
-    LaunchedEffect(Unit) {
-        viewModel.startEditing(assignmentToEdit)
-    }
 
     Scaffold(
         topBar = {
@@ -67,7 +65,7 @@ fun EditAssignmentDetailsScreen(
                         viewModel.saveEditedAssignment(
                             onSuccess = {
                                 Toast.makeText(context, "Tarefa editada com sucesso!", Toast.LENGTH_SHORT).show()
-                                onNavigateBack()
+                                onNavigateToAssignmentList()
                             },
                             onError = { error ->
                                 Toast.makeText(context, error, Toast.LENGTH_SHORT).show()

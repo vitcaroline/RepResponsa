@@ -10,7 +10,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.represponsa.data.model.Assignment
 import com.example.represponsa.presentation.ui.assignment.assigmentsList.AssignmentScreen
 import com.example.represponsa.presentation.ui.assignment.createAssignment.CreateAssignmentScreen
 import com.example.represponsa.presentation.ui.assignment.editAssignment.EditAssignmentDetailsScreen
@@ -18,11 +17,13 @@ import com.example.represponsa.presentation.ui.assignment.editAssignment.EditAss
 import com.example.represponsa.presentation.ui.assignment.removeAssignment.RemoveAssignmentScreen
 import com.example.represponsa.presentation.ui.home.HomeScreen
 import com.example.represponsa.presentation.ui.login.LoginScreen
-import com.example.represponsa.presentation.ui.minutes.MinutesScreen
+import com.example.represponsa.presentation.ui.minutes.createMinute.CreateMinuteScreen
+import com.example.represponsa.presentation.ui.minutes.editMinute.EditMinuteScreen
+import com.example.represponsa.presentation.ui.minutes.minutesList.MinuteDetailsScreen
+import com.example.represponsa.presentation.ui.minutes.minutesList.MinutesScreen
 import com.example.represponsa.presentation.ui.registerRepublic.RegisterRepublicScreen
 import com.example.represponsa.presentation.ui.registerUser.RegisterScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.gson.Gson
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -90,15 +91,15 @@ fun AppNavigation() {
             )
         }
         composable(
-            "edit-assignment-details/{assignmentJson}",
-            arguments = listOf(navArgument("assignmentJson") { type = NavType.StringType })
+            "edit-assignment-details/{assignmentId}",
+            arguments = listOf(navArgument("assignmentId") { type = NavType.StringType })
         ) { backStackEntry ->
-            val json = backStackEntry.arguments?.getString("assignmentJson") ?: return@composable
-            val assignment = Gson().fromJson(json, Assignment::class.java)
+            val assignmentId = backStackEntry.arguments?.getString("assignmentId") ?: return@composable
 
             EditAssignmentDetailsScreen(
-                assignmentToEdit = assignment,
-                onNavigateBack = { navController.popBackStack() }
+                assignmentId = assignmentId,
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToAssignmentList = { navController.navigate("assignments") }
             )
         }
         composable("remove-assignment"){
@@ -106,8 +107,43 @@ fun AppNavigation() {
                 onNavigateBack = { navController.popBackStack() },
             )
         }
-        composable("minutes"){
+        composable("minutes") {
             MinutesScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToCreateMinute = { navController.navigate("create-minute") },
+                onNavigateToMinuteDetail = { minute ->
+                    navController.navigate("minute-details/${minute.id}")
+                }
+            )
+        }
+        composable(
+            route = "minute-details/{minuteId}",
+            arguments = listOf(navArgument("minuteId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val minuteId = backStackEntry.arguments?.getString("minuteId") ?: return@composable
+
+            MinuteDetailsScreen(
+                minuteId = minuteId,
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToEdit = { minute ->
+                    navController.navigate("edit-minute/${minute.id}")
+                }
+            )
+        }
+        composable(
+            "edit-minute/{minuteId}",
+            arguments = listOf(navArgument("minuteId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val minuteId = backStackEntry.arguments?.getString("minuteId") ?: return@composable
+            EditMinuteScreen(
+                minuteId = minuteId,
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToList = { navController.navigate("minutes") }
+            )
+        }
+        composable("create-minute"){
+            CreateMinuteScreen(
+                onMinuteCreated = { navController.navigate("minutes") { popUpTo("minutes") { inclusive = true } }},
                 onNavigateBack = { navController.popBackStack() }
             )
         }

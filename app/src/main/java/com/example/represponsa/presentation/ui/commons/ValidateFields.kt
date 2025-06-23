@@ -55,3 +55,10 @@ fun User?.validateSelectedResident(): String? =
 
 fun Date.validateDueDate(): String? =
     if (this.before(Date())) "A data deve ser no futuro" else null
+
+//Minute
+fun String.validateMinuteTitle(): String? =
+    if (this.isBlank()) "O título não pode ficar em branco" else null
+
+fun String.validateMinuteBody(): String? =
+    if (this.isBlank()) "O corpo não pode ficar em branco" else null

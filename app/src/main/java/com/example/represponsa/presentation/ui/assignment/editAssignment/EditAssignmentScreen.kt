@@ -1,7 +1,5 @@
 package com.example.represponsa.presentation.ui.assignment.editAssignment
 
-import android.net.Uri
-import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.FloatingActionButton
@@ -20,7 +18,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -32,7 +29,6 @@ import com.example.represponsa.presentation.ui.assignment.assigmentsList.viewMod
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentListSelectable
 import com.example.represponsa.presentation.ui.commons.EmptyState
 import com.example.represponsa.presentation.ui.commons.TopBar
-import com.google.gson.Gson
 
 @Composable
 fun EditAssignmentScreen(
@@ -44,7 +40,6 @@ fun EditAssignmentScreen(
     val isLoading by viewModel.isLoading
 
     var selectedId by remember { mutableStateOf<String?>(null) }
-    val context = LocalContext.current
 
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(Unit) {
@@ -65,12 +60,8 @@ fun EditAssignmentScreen(
             if (selectedId != null) {
                 FloatingActionButton(
                     onClick = {
-                        val assignment = assignments.find { it.id == selectedId }
-                        if (assignment != null) {
-                            val json = Uri.encode(Gson().toJson(assignment))
-                            navController.navigate("edit-assignment-details/$json")
-                        } else {
-                            Toast.makeText(context, "Tarefa não encontrada", Toast.LENGTH_SHORT).show()
+                        selectedId?.let { id ->
+                            navController.navigate("edit-assignment-details/$id")
                         }
                     },
                     containerColor = MaterialTheme.colorScheme.tertiary

@@ -18,3 +18,7 @@ class UpdateAssignmentUseCase(private val repository: AssignmentRepository) {
 class CreateAssignmentUseCase(private val repository: AssignmentRepository) {
     suspend operator fun invoke(assignment: Assignment) = repository.createAssignment(assignment)
 }
+
+class GetAssignmentByIdUseCase(private val repo: AssignmentRepository) {
+    suspend operator fun invoke(id: String): Assignment? = repo.getAssignmentById(id)
+}

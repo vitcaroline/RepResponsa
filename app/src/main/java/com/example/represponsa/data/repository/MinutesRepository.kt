@@ -1,33 +1,33 @@
 package com.example.represponsa.data.repository
 
-import com.example.represponsa.data.model.Assignment
+import com.example.represponsa.data.model.Minute
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-class AssignmentRepository(
+class MinutesRepository(
     private val authRepo: AuthRepository,
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
 
-    suspend fun getAssignments(): List<Assignment> {
+    suspend fun getMinutes(): List<Minute> {
         val currentUser = authRepo.getCurrentUser() ?: return emptyList()
         val snapshot = firestore.collection("republics")
             .document(currentUser.republicId)
-            .collection("assignments")
-            .orderBy("dueDate")
+            .collection("minutes")
+            .orderBy("date")
             .get()
             .await()
 
         return snapshot.documents.mapNotNull { doc ->
-            doc.toObject(Assignment::class.java)?.copy(id = doc.id)
+            doc.toObject(Minute::class.java)?.copy(id = doc.id)
         }
     }
 
-    suspend fun deleteAssignments(ids: List<String>) {
+    suspend fun deleteMinutes(ids: List<String>) {
         val currentUser = authRepo.getCurrentUser() ?: return
         val collection = firestore.collection("republics")
             .document(currentUser.republicId)
-            .collection("assignments")
+            .collection("minutes")
 
         val batch = firestore.batch()
         ids.forEach { id ->
@@ -36,34 +36,34 @@ class AssignmentRepository(
         batch.commit().await()
     }
 
-    suspend fun updateAssignment(assignment: Assignment) {
+    suspend fun updateMinute(minute: Minute) {
         val currentUser = authRepo.getCurrentUser() ?: return
         firestore.collection("republics")
             .document(currentUser.republicId)
-            .collection("assignments")
-            .document(assignment.id)
-            .set(assignment)
+            .collection("minutes")
+            .document(minute.id)
+            .set(minute)
             .await()
     }
 
-    suspend fun createAssignment(assignment: Assignment) {
+    suspend fun createMinute(minute: Minute) {
         val currentUser = authRepo.getCurrentUser() ?: return
         firestore.collection("republics")
             .document(currentUser.republicId)
-            .collection("assignments")
-            .add(assignment)
+            .collection("minutes")
+            .add(minute)
             .await()
     }
 
-    suspend fun getAssignmentById(id: String): Assignment? {
+    suspend fun getMinuteById(id: String): Minute? {
         val currentUser = authRepo.getCurrentUser() ?: return null
         val snapshot = firestore.collection("republics")
             .document(currentUser.republicId)
-            .collection("assignments")
+            .collection("minutes")
             .document(id)
             .get()
             .await()
 
-        return snapshot.toObject(Assignment::class.java)?.copy(id = snapshot.id)
+        return snapshot.toObject(Minute::class.java)?.copy(id = snapshot.id)
     }
 }

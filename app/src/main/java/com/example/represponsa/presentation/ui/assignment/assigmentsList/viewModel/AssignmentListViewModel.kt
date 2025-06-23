@@ -18,9 +18,6 @@ class AssignmentListViewModel(
     private val _isLoading = mutableStateOf(true)
     val isLoading: State<Boolean> = _isLoading
 
-    private val _editingAssignment = mutableStateOf<Assignment?>(null)
-    val editingAssignment: State<Assignment?> = _editingAssignment
-
     init {
         fetchAssignments()
     }
@@ -37,9 +34,4 @@ class AssignmentListViewModel(
             }
         }
     }
-
-    fun startEditing(assignment: Assignment) {
-        _editingAssignment.value = assignment
-    }
-
 }
