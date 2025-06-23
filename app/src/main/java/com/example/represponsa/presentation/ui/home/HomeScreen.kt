@@ -8,6 +8,8 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.ExitToApp
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -36,6 +38,7 @@ fun HomeScreen(
     onNavigateToAssignments: () -> Unit,
     onNavigateToMinutes: () -> Unit,
     onNavigateToReceipts: () -> Unit,
+    onNavigateToResidentsList: () -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory)
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -63,7 +66,7 @@ fun HomeScreen(
                     }
                 )
                 NavigationDrawerItem(
-                    icon = { Icon(Icons.Outlined.Create, contentDescription = "Lista de Tarefas", tint = Color(0xFF004D40)) },
+                    icon = { Icon(Icons.Outlined.Create, contentDescription = "Lista de Atas", tint = Color(0xFF004D40)) },
                     label = { Text("Atas") },
                     selected = false,
                     onClick = {
@@ -72,7 +75,7 @@ fun HomeScreen(
                     }
                 )
                 NavigationDrawerItem(
-                    icon = { Icon(Icons.Outlined.CheckCircle, contentDescription = "Lista de Tarefas", tint = Color(0xFF004D40)) },
+                    icon = { Icon(Icons.Outlined.CheckCircle, contentDescription = "Comprovantes", tint = Color(0xFF004D40)) },
                     label = { Text("Comprovantes") },
                     selected = false,
                     onClick = {
@@ -81,7 +84,16 @@ fun HomeScreen(
                     }
                 )
                 NavigationDrawerItem(
-                    icon = { Icon(Icons.Outlined.ExitToApp, contentDescription = "Lista de Tarefas", tint = Color(0xFF004D40)) },
+                    icon = { Icon(Icons.Outlined.Face, contentDescription = "Moradores", tint = Color(0xFF004D40)) },
+                    label = { Text("Moradores") },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        onNavigateToResidentsList()
+                    }
+                )
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Outlined.ExitToApp, contentDescription = "Sair", tint = Color(0xFF004D40)) },
                     label = { Text("Sair") },
                     selected = false,
                     onClick = {

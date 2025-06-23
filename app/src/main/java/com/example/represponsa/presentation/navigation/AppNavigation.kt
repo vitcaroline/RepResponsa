@@ -27,5 +27,6 @@ fun AppNavigation() {
         assignmentNavGraph(navController)
         minuteNavGraph(navController)
         receiptNavGraph(navController)
+        residentsNavGraph(navController)
     }
 }
