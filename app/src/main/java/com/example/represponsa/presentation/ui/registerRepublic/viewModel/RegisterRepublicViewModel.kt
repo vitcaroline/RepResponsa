@@ -10,11 +10,14 @@ import com.example.represponsa.presentation.ui.commons.validatePetCount
 import com.example.represponsa.presentation.ui.commons.validateRepublicName
 import com.example.represponsa.presentation.ui.commons.validateResidentCount
 import com.example.represponsa.presentation.ui.registerRepublic.RegisterRepublicState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegisterRepublicViewModel(
+@HiltViewModel
+class RegisterRepublicViewModel @Inject constructor(
     private val repository: RepublicRepository
 ) : ViewModel() {
 

@@ -1,4 +1,4 @@
-package com.example.represponsa.presentation.ui.residents.viewModel
+package com.example.represponsa.presentation.ui.profile.viewModel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -6,37 +6,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.represponsa.data.model.User
 import com.example.represponsa.data.repository.AuthRepository
-import com.example.represponsa.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ResidentListViewModel @Inject constructor(
-    private val userRepository: UserRepository,
+class ProfileViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    private val _residents = mutableStateOf<List<User>>(emptyList())
-    val residents: State<List<User>> = _residents
+    private val _user = mutableStateOf<User?>(null)
+    val user: State<User?> = _user
 
     private val _isLoading = mutableStateOf(true)
     val isLoading: State<Boolean> = _isLoading
 
     init {
-        fetchResidents()
+        loadUser()
     }
 
-    private fun fetchResidents() {
+    private fun loadUser() {
         viewModelScope.launch {
             try {
-                val user = authRepository.getCurrentUser()
-                if (user != null) {
-                    val list = userRepository.getResidentsByRepublic(user.republicId)
-                    _residents.value = list
-                }
+                _user.value = authRepository.getCurrentUser()
             } catch (e: Exception) {
-                _residents.value = emptyList()
+                _user.value = null
             } finally {
                 _isLoading.value = false
             }

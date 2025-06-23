@@ -6,10 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.assignments.CreateAssignmentViewModelFactory
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentForm
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentFormState
 import com.example.represponsa.presentation.ui.assignment.createAssignment.viewModel.CreateAssignmentViewModel
@@ -20,11 +19,12 @@ import kotlinx.coroutines.launch
 fun CreateAssignmentScreen(
     onAssignmentCreated: () -> Unit,
     onNavigateBack: () -> Unit,
-    viewModel: CreateAssignmentViewModel = viewModel(factory = CreateAssignmentViewModelFactory)
+    viewModel: CreateAssignmentViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
     val state by viewModel.state
     val residents by viewModel.residents
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     Scaffold(

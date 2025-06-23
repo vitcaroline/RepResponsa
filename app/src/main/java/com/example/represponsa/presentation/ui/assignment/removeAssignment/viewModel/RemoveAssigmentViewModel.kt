@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.represponsa.data.model.Assignment
 import com.example.represponsa.domain.useCases.DeleteAssignmentsUseCase
 import com.example.represponsa.domain.useCases.GetAssignmentsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RemoveAssignmentViewModel(
+@HiltViewModel
+class RemoveAssignmentViewModel @Inject constructor(
     private val deleteAssignmentsUseCase: DeleteAssignmentsUseCase,
     private val getAssignmentsUseCase: GetAssignmentsUseCase
 ) : ViewModel() {

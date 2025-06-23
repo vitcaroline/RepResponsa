@@ -14,12 +14,11 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.represponsa.R
-import com.example.represponsa.di.assignments.AssignmentListViewModelFactory
 import com.example.represponsa.presentation.ui.assignment.assigmentsList.viewModel.AssignmentListViewModel
 import com.example.represponsa.presentation.ui.commons.EmptyState
 import com.example.represponsa.presentation.ui.commons.ExpandableFab
@@ -32,7 +31,7 @@ fun AssignmentScreen(
     onNavigateToCreateAssignment: () -> Unit,
     onNavigateToEditAssignment: () -> Unit,
     onNavigateToRemoveAssignment: () -> Unit,
-    viewModel: AssignmentListViewModel = viewModel(factory = AssignmentListViewModelFactory)
+    viewModel: AssignmentListViewModel = hiltViewModel()
 ) {
     val assignments by viewModel.assignments
 

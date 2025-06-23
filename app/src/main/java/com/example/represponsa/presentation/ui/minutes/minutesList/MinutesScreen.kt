@@ -15,13 +15,12 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.represponsa.R
 import com.example.represponsa.data.model.Minute
-import com.example.represponsa.di.minutes.MinutesListViewModelFactory
 import com.example.represponsa.presentation.ui.commons.EmptyState
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.minutes.minutesList.viewModel.MinutesListViewModel
@@ -31,7 +30,7 @@ fun MinutesScreen(
     onNavigateBack: () -> Unit,
     onNavigateToCreateMinute: () -> Unit,
     onNavigateToMinuteDetail: (Minute) -> Unit,
-    viewModel: MinutesListViewModel = viewModel(factory = MinutesListViewModelFactory)
+    viewModel: MinutesListViewModel = hiltViewModel()
 ) {
     val minutes by viewModel.minutes
 

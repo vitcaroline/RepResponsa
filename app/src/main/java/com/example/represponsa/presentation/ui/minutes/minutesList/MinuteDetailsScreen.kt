@@ -28,9 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.data.model.Minute
-import com.example.represponsa.di.minutes.MinuteDetailsViewModelFactory
 import com.example.represponsa.presentation.ui.commons.ConfirmDeleteDialog
 import com.example.represponsa.presentation.ui.commons.ExpandableFab
 import com.example.represponsa.presentation.ui.commons.FabAction
@@ -42,7 +41,7 @@ fun MinuteDetailsScreen(
     minuteId: String,
     onNavigateBack: () -> Unit,
     onNavigateToEdit: (Minute) -> Unit,
-    viewModel: MinuteDetailsViewModel = viewModel(factory = MinuteDetailsViewModelFactory(minuteId))
+    viewModel: MinuteDetailsViewModel = hiltViewModel()
 ) {
     val minute by viewModel.minute
     val context = LocalContext.current

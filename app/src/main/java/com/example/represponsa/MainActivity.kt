@@ -8,8 +8,9 @@ import androidx.compose.runtime.SideEffect
 import com.example.represponsa.presentation.navigation.AppNavigation
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.example.represponsa.presentation.ui.theme.RepResponsaTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -13,8 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.auth.RegisterViewModelFactory
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.registerUser.viewModel.RegisterViewModel
 
@@ -24,7 +23,7 @@ fun RegisterScreen(
     onRegisterSuccess: () -> Unit,
     onNavigateBack:    () -> Unit,
     onNavigateToRegisterRepublic: () -> Unit,
-    viewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory)
+    viewModel: RegisterViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
 

@@ -8,8 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.assignments.EditAssignmentViewModelFactory
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentForm
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentFormState
 import com.example.represponsa.presentation.ui.assignment.editAssignment.viewModel.EditAssignmentViewModel
@@ -18,17 +17,15 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun EditAssignmentDetailsScreen(
-    assignmentId: String,
     onNavigateBack: () -> Unit,
     onNavigateToAssignmentList : () -> Unit,
-    viewModel: EditAssignmentViewModel = viewModel(
-        factory = EditAssignmentViewModelFactory(assignmentId)
-    )
+    viewModel: EditAssignmentViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
     val state by viewModel.state
     val residents by viewModel.residents
 
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     Scaffold(

@@ -11,12 +11,15 @@ import com.example.represponsa.presentation.ui.commons.validatePassword
 import com.example.represponsa.presentation.ui.commons.validatePasswordConfirmation
 import com.example.represponsa.presentation.ui.commons.validatePhone
 import com.example.represponsa.presentation.ui.registerUser.RegisterState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegisterViewModel(
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
     private val repository: AuthRepository,
     private val republicRepository: RepublicRepository
 ) : ViewModel() {

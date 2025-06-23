@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt)
 }
 
 android {
@@ -75,5 +77,9 @@ dependencies {
     implementation("com.google.accompanist:accompanist-navigation-animation:0.33.2-alpha")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.6.1")
     implementation ("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
     debugImplementation(libs.androidx.ui.tooling)
 }

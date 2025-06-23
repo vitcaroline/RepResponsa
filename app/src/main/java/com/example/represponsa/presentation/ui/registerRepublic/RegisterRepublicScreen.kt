@@ -28,8 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.auth.RegisterRepublicViewModelFactory
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.presentation.ui.commons.NumberDropdownField
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.registerRepublic.viewModel.RegisterRepublicViewModel
@@ -38,7 +37,7 @@ import com.example.represponsa.presentation.ui.registerRepublic.viewModel.Regist
 fun RegisterRepublicScreen(
     onCreateSuccess: () -> Unit,
     onNavigateBack: () -> Unit,
-    viewModel: RegisterRepublicViewModel = viewModel(factory = RegisterRepublicViewModelFactory)
+    viewModel: RegisterRepublicViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
 

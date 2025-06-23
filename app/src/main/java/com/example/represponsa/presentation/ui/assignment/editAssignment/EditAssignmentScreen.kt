@@ -18,13 +18,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.represponsa.R
-import com.example.represponsa.di.assignments.AssignmentListViewModelFactory
 import com.example.represponsa.presentation.ui.assignment.assigmentsList.viewModel.AssignmentListViewModel
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentListSelectable
 import com.example.represponsa.presentation.ui.commons.EmptyState
@@ -34,7 +33,7 @@ import com.example.represponsa.presentation.ui.commons.TopBar
 fun EditAssignmentScreen(
     onNavigateBack: () -> Unit,
     navController: NavController,
-    viewModel: AssignmentListViewModel = viewModel(factory = AssignmentListViewModelFactory)
+    viewModel: AssignmentListViewModel = hiltViewModel()
 ) {
     val assignments by viewModel.assignments
     val isLoading by viewModel.isLoading

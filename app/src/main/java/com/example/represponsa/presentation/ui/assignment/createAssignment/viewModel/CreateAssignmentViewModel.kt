@@ -14,12 +14,15 @@ import com.example.represponsa.presentation.ui.assignment.createAssignment.Creat
 import com.example.represponsa.presentation.ui.commons.validateAssignmentTitle
 import com.example.represponsa.presentation.ui.commons.validateDueDate
 import com.example.represponsa.presentation.ui.commons.validateSelectedResidents
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CreateAssignmentViewModel(
+@HiltViewModel
+class CreateAssignmentViewModel @Inject constructor(
     private val createAssignmentUseCase: CreateAssignmentUseCase,
     private val authRepo: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     private val _state = mutableStateOf(CreateAssignmentUiState())

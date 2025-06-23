@@ -11,9 +11,12 @@ import com.example.represponsa.domain.useCases.UpdateMinuteUseCase
 import com.example.represponsa.presentation.ui.commons.validateMinuteBody
 import com.example.represponsa.presentation.ui.commons.validateMinuteTitle
 import com.example.represponsa.presentation.ui.minutes.createMinute.MinuteUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class EditMinuteViewModel(
+@HiltViewModel
+class EditMinuteViewModel @Inject constructor(
     private val getMinuteByIdUseCase: GetMinuteByIdUseCase,
     private val updateMinuteUseCase: UpdateMinuteUseCase,
     savedStateHandle: SavedStateHandle

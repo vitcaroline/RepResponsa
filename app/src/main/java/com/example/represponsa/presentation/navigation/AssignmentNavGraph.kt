@@ -36,15 +36,18 @@ fun NavGraphBuilder.assignmentNavGraph(navController: NavController) {
     }
 
     composable(
-        "edit-assignment-details/{assignmentId}",
+        route = "edit-assignment-details/{assignmentId}",
         arguments = listOf(navArgument("assignmentId") { type = NavType.StringType })
-    ) { backStackEntry ->
-        val assignmentId = backStackEntry.arguments?.getString("assignmentId") ?: return@composable
-
+    ) {
         EditAssignmentDetailsScreen(
-            assignmentId = assignmentId,
-            onNavigateBack = { navController.navigate("assignments") { popUpTo("assignments") { inclusive = true }} },
-            onNavigateToAssignmentList = { navController.navigate("assignments") }
+            onNavigateBack = {
+                navController.navigate("assignments") {
+                    popUpTo("assignments") { inclusive = true }
+                }
+            },
+            onNavigateToAssignmentList = {
+                navController.navigate("assignments")
+            }
         )
     }
 

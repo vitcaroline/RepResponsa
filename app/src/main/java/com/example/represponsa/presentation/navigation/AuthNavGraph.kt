@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.represponsa.presentation.ui.login.LoginScreen
+import com.example.represponsa.presentation.ui.profile.ProfileScreen
 import com.example.represponsa.presentation.ui.registerRepublic.RegisterRepublicScreen
 import com.example.represponsa.presentation.ui.registerUser.RegisterScreen
 
@@ -25,6 +26,11 @@ fun NavGraphBuilder.authNavGraph(navController: NavController) {
     composable("register-republic") {
         RegisterRepublicScreen(
             onCreateSuccess = { navController.navigate("login") { popUpTo("register-republic") { inclusive = true } } },
+            onNavigateBack = { navController.popBackStack() }
+        )
+    }
+    composable("profile-info") {
+        ProfileScreen (
             onNavigateBack = { navController.popBackStack() }
         )
     }

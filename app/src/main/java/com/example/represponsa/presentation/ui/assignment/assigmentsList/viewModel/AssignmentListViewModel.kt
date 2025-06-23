@@ -6,9 +6,12 @@ import com.example.represponsa.data.model.Assignment
 import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
 import com.example.represponsa.domain.useCases.GetAssignmentsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AssignmentListViewModel(
+@HiltViewModel
+class AssignmentListViewModel @Inject constructor(
     private val getAssignmentsUseCase: GetAssignmentsUseCase
 ) : ViewModel() {
 

@@ -10,9 +10,12 @@ import com.example.represponsa.domain.useCases.CreateMinuteUseCase
 import com.example.represponsa.presentation.ui.commons.validateMinuteBody
 import com.example.represponsa.presentation.ui.commons.validateMinuteTitle
 import com.example.represponsa.presentation.ui.minutes.createMinute.MinuteUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CreateMinuteViewModel(
+@HiltViewModel
+class CreateMinuteViewModel @Inject constructor(
     private val createMinuteUseCase: CreateMinuteUseCase,
     private val authRepo: AuthRepository,
 ) : ViewModel() {

@@ -8,9 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.represponsa.data.model.Minute
 import com.example.represponsa.domain.useCases.DeleteMinuteUseCase
 import com.example.represponsa.domain.useCases.GetMinuteByIdUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MinuteDetailsViewModel(
+@HiltViewModel
+class MinuteDetailsViewModel @Inject constructor(
     private val getMinuteByIdUseCase: GetMinuteByIdUseCase,
     private val deleteMinuteUseCase: DeleteMinuteUseCase,
     savedStateHandle: SavedStateHandle

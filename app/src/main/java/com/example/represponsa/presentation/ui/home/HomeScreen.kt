@@ -9,7 +9,6 @@ import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Face
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -26,8 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.home.HomeViewModelFactory
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.presentation.ui.commons.HomeTopBar
 import com.example.represponsa.presentation.ui.home.viewModel.HomeViewModel
 import kotlinx.coroutines.launch
@@ -39,7 +37,8 @@ fun HomeScreen(
     onNavigateToMinutes: () -> Unit,
     onNavigateToReceipts: () -> Unit,
     onNavigateToResidentsList: () -> Unit,
-    viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory)
+    onNavigateToProfile: () -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -111,7 +110,7 @@ fun HomeScreen(
                     userName = viewModel.userName.value,
                     onOptionSelected = { option ->
                         when (option) {
-                            "profile" -> { /* abrir tela de perfil */ }
+                            "profile" -> { onNavigateToProfile() }
                             "config" -> { /* abrir tela de configurações */ }
                             "logout" -> {
                                 viewModel.logout()

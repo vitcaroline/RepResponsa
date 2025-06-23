@@ -17,6 +17,7 @@ fun NavGraphBuilder.homeNavGraph(navController: NavController) {
             onNavigateToMinutes = { navController.navigate("minutes") },
             onNavigateToReceipts = { navController.navigate("receipts") },
             onNavigateToResidentsList = { navController.navigate("residents-list") },
+            onNavigateToProfile = { navController.navigate("profile-info") }
         )
     }
 }

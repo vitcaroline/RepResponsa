@@ -21,16 +21,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.data.model.User
-import com.example.represponsa.di.residents.ResidentListViewModelFactory
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.residents.viewModel.ResidentListViewModel
 
 @Composable
 fun ResidentsListScreen(
     onNavigateBack: () -> Unit,
-    viewModel: ResidentListViewModel = viewModel(factory = ResidentListViewModelFactory)
+    viewModel: ResidentListViewModel = hiltViewModel()
 ) {
     val residents by viewModel.residents
     val isLoading by viewModel.isLoading

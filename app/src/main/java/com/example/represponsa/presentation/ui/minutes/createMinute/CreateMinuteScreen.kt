@@ -8,8 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.represponsa.di.minutes.CreateMinuteViewModelFactory
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.minutes.commons.MinuteForm
 import com.example.represponsa.presentation.ui.minutes.commons.MinuteFormParams
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 fun CreateMinuteScreen(
     onMinuteCreated: () -> Unit,
     onNavigateBack: () -> Unit,
-    viewModel: CreateMinuteViewModel = viewModel(factory = CreateMinuteViewModelFactory)
+    viewModel: CreateMinuteViewModel = hiltViewModel()
 ) {
     val state by viewModel.state
     val context = LocalContext.current

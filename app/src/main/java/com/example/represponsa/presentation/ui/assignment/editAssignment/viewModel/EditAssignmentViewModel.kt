@@ -2,6 +2,7 @@ package com.example.represponsa.presentation.ui.assignment.editAssignment.viewMo
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.represponsa.data.model.Assignment
@@ -14,16 +15,21 @@ import com.example.represponsa.presentation.ui.assignment.editAssignment.EditAss
 import com.example.represponsa.presentation.ui.commons.validateAssignmentTitle
 import com.example.represponsa.presentation.ui.commons.validateDueDate
 import com.example.represponsa.presentation.ui.commons.validateSelectedResidents
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Date
+import javax.inject.Inject
 
-class EditAssignmentViewModel(
+@HiltViewModel
+class EditAssignmentViewModel @Inject constructor(
     private val getAssignmentByIdUseCase: GetAssignmentByIdUseCase,
     private val updateAssignmentUseCase: UpdateAssignmentUseCase,
     private val authRepo: AuthRepository,
     private val userRepository: UserRepository,
-    private val assignmentId: String
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val assignmentId = savedStateHandle.get<String>("assignmentId") ?: ""
 
     private val _state = mutableStateOf(EditAssignmentUiState())
     val state: State<EditAssignmentUiState> = _state
