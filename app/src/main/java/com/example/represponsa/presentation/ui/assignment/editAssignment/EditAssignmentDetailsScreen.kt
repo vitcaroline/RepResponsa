@@ -1,6 +1,8 @@
 package com.example.represponsa.presentation.ui.assignment.editAssignment
 
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -15,6 +17,7 @@ import com.example.represponsa.presentation.ui.assignment.editAssignment.viewMod
 import com.example.represponsa.presentation.ui.commons.TopBar
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EditAssignmentDetailsScreen(
     onNavigateBack: () -> Unit,

@@ -1,5 +1,7 @@
 package com.example.represponsa.presentation.ui.assignment.commons
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -52,6 +54,7 @@ data class AssignmentFormState(
     val submitButtonText: String
 )
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AssignmentForm(
     modifier: Modifier = Modifier,

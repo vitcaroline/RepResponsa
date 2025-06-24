@@ -11,7 +11,10 @@ import com.example.represponsa.presentation.ui.assignment.editAssignment.EditAss
 import com.example.represponsa.presentation.ui.assignment.editAssignment.EditAssignmentScreen
 import com.example.represponsa.presentation.ui.assignment.removeAssignment.RemoveAssignmentScreen
 
-fun NavGraphBuilder.assignmentNavGraph(navController: NavController) {
+fun NavGraphBuilder.assignmentNavGraph(
+    navController: NavController,
+)
+{
     composable("assignments") {
         AssignmentScreen(
             onNavigateBack = { navController.popBackStack() },

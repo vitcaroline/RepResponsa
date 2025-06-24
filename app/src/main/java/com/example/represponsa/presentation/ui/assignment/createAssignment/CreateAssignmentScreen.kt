@@ -1,6 +1,8 @@
 package com.example.represponsa.presentation.ui.assignment.createAssignment
 
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -15,11 +17,12 @@ import com.example.represponsa.presentation.ui.assignment.createAssignment.viewM
 import com.example.represponsa.presentation.ui.commons.TopBar
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CreateAssignmentScreen(
     onAssignmentCreated: () -> Unit,
     onNavigateBack: () -> Unit,
-    viewModel: CreateAssignmentViewModel = hiltViewModel()
+    viewModel: CreateAssignmentViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
 
