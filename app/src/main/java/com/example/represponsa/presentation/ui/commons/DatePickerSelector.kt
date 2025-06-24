@@ -48,12 +48,10 @@ fun DatePickerButton(
             confirmButton = {
                 TextButton(onClick = {
                     pickerState.selectedDateMillis?.let { utcMillis ->
-                        // ⚠️ Correção importante: forçar a interpretação como data local
                         val localDate = Instant.ofEpochMilli(utcMillis)
-                            .atZone(ZoneOffset.UTC) // ← aqui está o pulo do gato
+                            .atZone(ZoneOffset.UTC)
                             .toLocalDate()
 
-                        // Gerar Date com horário 00:00 no fuso local
                         val correctedDate = Date.from(
                             localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()
                         )
