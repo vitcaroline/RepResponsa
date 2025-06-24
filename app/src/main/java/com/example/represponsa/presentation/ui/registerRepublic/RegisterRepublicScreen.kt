@@ -97,14 +97,19 @@ fun RegisterRepublicScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 NumberDropdownField(
-                    label = "Pets",
+                    label = ("Pets"),
                     value = state.petCount,
                     onValueChange = viewModel::onPetCountChange,
                     options = (0..10).toList(),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
                 )
                 state.petCountError?.let {
-                    Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelSmall)
+                    Text(
+                        it,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
                 }
 
                 Column(modifier = Modifier.weight(1f)) {
@@ -116,7 +121,11 @@ fun RegisterRepublicScreen(
                         modifier = Modifier.fillMaxWidth()
                     )
                     state.residentCountError?.let {
-                        Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelSmall)
+                        Text(
+                            it,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall
+                        )
                     }
                 }
             }

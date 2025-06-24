@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.R
 import com.example.represponsa.presentation.ui.assignment.commons.AssignmentListSelectable
 import com.example.represponsa.presentation.ui.assignment.removeAssignment.viewModel.RemoveAssignmentViewModel
+import com.example.represponsa.presentation.ui.commons.ConfirmDeleteDialog
 import com.example.represponsa.presentation.ui.commons.EmptyState
 import com.example.represponsa.presentation.ui.commons.TopBar
 
@@ -36,6 +37,8 @@ fun RemoveAssignmentScreen(
     val isLoading by viewModel.isLoading
 
     var selectedIds by remember { mutableStateOf(setOf<String>()) }
+    var showDialog by remember { mutableStateOf(false) }
+
 
     Scaffold(
         topBar = {
@@ -44,12 +47,7 @@ fun RemoveAssignmentScreen(
         floatingActionButton = {
             if (selectedIds.isNotEmpty()) {
                 FloatingActionButton(
-                    onClick = {
-                    viewModel.deleteAssignments(selectedIds.toList()) {
-                        Toast.makeText(context, "Tarefa removida com sucesso!", Toast.LENGTH_SHORT).show()
-                        selectedIds = emptySet()
-                    }
-                },
+                    onClick = { showDialog = true },
                     containerColor = MaterialTheme.colorScheme.tertiary
                 ) {
                     Icon(Icons.Default.Delete, contentDescription = "Remover Selecionados")
@@ -90,5 +88,19 @@ fun RemoveAssignmentScreen(
                 }
             }
         }
+    }
+
+    if (showDialog) {
+        ConfirmDeleteDialog(
+            message = "Deseja realmente excluir esta tarefa? Esta ação não pode ser desfeita.",
+            onConfirm = {
+                showDialog = false
+                viewModel.deleteAssignments(selectedIds.toList()) {
+                    Toast.makeText(context, "Tarefa removida com sucesso!", Toast.LENGTH_SHORT).show()
+                    selectedIds = emptySet()
+                }
+            },
+            onDismiss = { showDialog = false }
+        )
     }
 }

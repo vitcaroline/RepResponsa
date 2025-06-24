@@ -43,7 +43,7 @@ fun NumberDropdownField(
                     onValueChange(it)
                 }
             },
-            label = { Text(label, style = MaterialTheme.typography.bodyLarge) },
+            label = { Text(label, style = MaterialTheme.typography.bodyMedium) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
             modifier = Modifier
