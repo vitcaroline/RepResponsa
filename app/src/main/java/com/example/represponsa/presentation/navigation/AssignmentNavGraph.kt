@@ -1,5 +1,7 @@
 package com.example.represponsa.presentation.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -11,6 +13,7 @@ import com.example.represponsa.presentation.ui.assignment.editAssignment.EditAss
 import com.example.represponsa.presentation.ui.assignment.editAssignment.EditAssignmentScreen
 import com.example.represponsa.presentation.ui.assignment.removeAssignment.RemoveAssignmentScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.assignmentNavGraph(
     navController: NavController,
 )
