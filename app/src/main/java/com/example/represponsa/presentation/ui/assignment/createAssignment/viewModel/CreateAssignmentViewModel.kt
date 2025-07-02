@@ -8,6 +8,7 @@ import java.util.Date
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
+import com.example.represponsa.core.notification.NotificationManager
 import com.example.represponsa.data.repository.UserRepository
 import com.example.represponsa.domain.useCases.CreateAssignmentUseCase
 import com.example.represponsa.presentation.ui.assignment.createAssignment.CreateAssignmentUiState
@@ -16,6 +17,7 @@ import com.example.represponsa.presentation.ui.commons.validateDueDate
 import com.example.represponsa.presentation.ui.commons.validateSelectedResidents
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +25,7 @@ class CreateAssignmentViewModel @Inject constructor(
     private val createAssignmentUseCase: CreateAssignmentUseCase,
     private val authRepo: AuthRepository,
     private val userRepository: UserRepository,
+    private val notificationManager: NotificationManager,
 ) : ViewModel() {
 
     private val _state = mutableStateOf(CreateAssignmentUiState())
@@ -106,10 +109,33 @@ class CreateAssignmentViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 createAssignmentUseCase(assignment)
+                scheduleAssignmentReminder(currentUser.uid, assignment)
                 onSuccess()
             } catch (e: Exception) {
                 onError(e.message ?: "Erro ao criar tarefa")
             }
+        }
+    }
+
+    private fun scheduleAssignmentReminder(currentUserId: String, assignment: Assignment) {
+        if (currentUserId !in assignment.assignedResidentsIds) return
+
+        val oneDayBefore = Calendar.getInstance().apply {
+            time = assignment.dueDate
+            add(Calendar.DAY_OF_YEAR, -1)
+            set(Calendar.HOUR_OF_DAY, 9)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }.time
+
+        if (oneDayBefore.after(Date())) {
+            notificationManager.scheduleNotification(
+                id = assignment.title.hashCode(),
+                triggerAt = oneDayBefore,
+                title = "Tarefa: ${assignment.title}",
+                message = "Sua tarefa vence amanhã!",
+                channelId = "assignment_channel"
+            )
         }
     }
 }
