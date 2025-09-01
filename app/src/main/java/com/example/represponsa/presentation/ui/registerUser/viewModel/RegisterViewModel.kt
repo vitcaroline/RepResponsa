@@ -3,6 +3,7 @@ package com.example.represponsa.presentation.ui.registerUser.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.represponsa.data.model.Republic
+import com.example.represponsa.data.model.RolesEnum
 import com.example.represponsa.data.model.User
 import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.data.repository.RepublicRepository
@@ -42,15 +43,15 @@ class RegisterViewModel @Inject constructor(
 
     fun onFirstNameChange(value: String) {
         _state.update { it.copy(
-            firstName = value,
-            firstNameError = value.validateName()
+            userName = value,
+            userNameError = value.validateName()
         ) }
     }
 
-    fun onLastNameChange(value: String) {
+    fun onNicknameChange(value: String) {
         _state.update { it.copy(
-            lastName = value,
-            lastNameError = value.validateName()
+            nickname = value,
+            nicknameError = value.validateName()
         ) }
     }
 
@@ -83,22 +84,21 @@ class RegisterViewModel @Inject constructor(
     }
     fun onRepublicChange(s: String)  = updateState { copy(republic = s) }
     fun onEmailChange(s: String)   = updateState { copy(email = s) }
-    fun onRoleChange(s: String)  = updateState { copy(role = s) }
 
     fun register(onSuccess: () -> Unit, onError: (String) -> Unit) = viewModelScope.launch {
         val st = state.value
 
-        val firstNameErr   = st.firstName.validateName()
-        val lastNameErr    = st.lastName.validateName()
+        val userNameErr   = st.userName.validateName()
+        val nickNameErr    = st.nickname.validateName()
         val phoneErr       = st.phone.validatePhone()
         val passwordErr    = st.password.validatePassword()
         val confirmPwdErr = validatePasswordConfirmation(st.password, st.confirmPwd)
 
-        if (listOf(firstNameErr, lastNameErr, phoneErr, passwordErr, confirmPwdErr).any { it != null }) {
+        if (listOf(userNameErr, nickNameErr, phoneErr, passwordErr, confirmPwdErr).any { it != null }) {
             updateState {
                 copy(
-                    firstNameError   = firstNameErr,
-                    lastNameError    = lastNameErr,
+                    userNameError   = userNameError,
+                    nicknameError    = nicknameError,
                     phoneError       = phoneErr,
                     passwordError    = passwordErr,
                     confirmPwdError  = confirmPwdErr
@@ -109,8 +109,8 @@ class RegisterViewModel @Inject constructor(
 
         updateState {
             copy(
-                firstNameError   = null,
-                lastNameError    = null,
+                userNameError   = null,
+                nicknameError    = null,
                 phoneError       = null,
                 passwordError    = null,
                 confirmPwdError  = null,
@@ -127,13 +127,13 @@ class RegisterViewModel @Inject constructor(
         }
 
         val newUser = User(
-            firstName    = st.firstName,
-            lastName     = st.lastName,
+            userName    = st.userName,
+            nickName     = st.nickname,
             email        = st.email,
             phone        = st.phone,
             republicName = selectedRepublic.name,
             republicId   = selectedRepublic.id,
-            role         = st.role
+            role         = st.selectedRoles.joinToString(",") { it.name }
         )
 
         val result = repository.register(newUser, st.password)
@@ -149,4 +149,15 @@ class RegisterViewModel @Inject constructor(
     private inline fun updateState(update: RegisterState.() -> RegisterState) {
         _state.value = _state.value.update()
     }
+
+    fun onRoleToggle(role: RolesEnum) {
+        val currentRoles = _state.value.selectedRoles.toMutableList()
+        if (currentRoles.contains(role)) {
+            currentRoles.remove(role)
+        } else {
+            currentRoles.add(role)
+        }
+        updateState { copy(selectedRoles = currentRoles) }
+    }
+
 }

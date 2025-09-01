@@ -1,10 +1,12 @@
 package com.example.represponsa.presentation.ui.registerUser
 
+import com.example.represponsa.data.model.RolesEnum
+
 data class RegisterState(
-    val firstName: String = "",
-    val firstNameError: String? = null,
-    val lastName: String = "",
-    val lastNameError: String? = null,
+    val userName: String = "",
+    val userNameError: String? = null,
+    val nickname: String = "",
+    val nicknameError: String? = null,
     val email: String = "",
     val emailError: String? = null,
     val phone: String = "",
@@ -14,7 +16,7 @@ data class RegisterState(
     val confirmPwd: String = "",
     val confirmPwdError: String? = null,
     val hasTypedConfirmPwd: Boolean = false,
-    val role: String = "",
+    val selectedRoles: List<RolesEnum> = emptyList(),
     val republic: String = "",
     val isLoading:  Boolean = false
 )

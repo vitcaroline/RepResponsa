@@ -12,7 +12,7 @@ object UserPreferences {
 
     private val KEY_UID = stringPreferencesKey("uid")
     private val KEY_FIRST_NAME = stringPreferencesKey("first_name")
-    private val KEY_LAST_NAME = stringPreferencesKey("last_name")
+    private val KEY_NICKNAME = stringPreferencesKey("nickName")
     private val KEY_EMAIL = stringPreferencesKey("email")
     private val KEY_PHONE = stringPreferencesKey("phone")
     private val KEY_ROLE = stringPreferencesKey("role")
@@ -22,8 +22,8 @@ object UserPreferences {
     suspend fun saveUser(context: Context, user: User) {
         context.dataStore.edit { prefs ->
             prefs[KEY_UID] = user.uid
-            prefs[KEY_FIRST_NAME] = user.firstName
-            prefs[KEY_LAST_NAME] = user.lastName
+            prefs[KEY_FIRST_NAME] = user.userName
+            prefs[KEY_NICKNAME] = user.nickName
             prefs[KEY_EMAIL] = user.email
             prefs[KEY_PHONE] = user.phone
             prefs[KEY_ROLE] = user.role
@@ -36,8 +36,8 @@ object UserPreferences {
         val prefs = context.dataStore.data.first()
         return if (prefs[KEY_UID].isNullOrBlank()) null else User(
             uid = prefs[KEY_UID] ?: "",
-            firstName = prefs[KEY_FIRST_NAME] ?: "",
-            lastName = prefs[KEY_LAST_NAME] ?: "",
+            userName = prefs[KEY_FIRST_NAME] ?: "",
+            nickName = prefs[KEY_NICKNAME] ?: "",
             email = prefs[KEY_EMAIL] ?: "",
             phone = prefs[KEY_PHONE] ?: "",
             role = prefs[KEY_ROLE] ?: "",

@@ -96,7 +96,7 @@ class CreateAssignmentViewModel @Inject constructor(
         }
 
         val assignedIds = stateValue.selectedResidents.map { it.uid }
-        val assignedNames = stateValue.selectedResidents.map { it.firstName }
+        val assignedNames = stateValue.selectedResidents.map { it.nickName }
 
         val assignment = Assignment(
             title = stateValue.title,
@@ -115,6 +115,15 @@ class CreateAssignmentViewModel @Inject constructor(
                 onError(e.message ?: "Erro ao criar tarefa")
             }
         }
+    }
+
+    fun fillFromExistingAssignment(existing: Assignment) {
+        _state.value = _state.value.copy(
+            title = existing.title,
+            description = existing.description,
+            dueDate = Date(),
+            selectedResidents = emptyList()
+        )
     }
 
     private fun scheduleAssignmentReminder(currentUserId: String, assignment: Assignment) {

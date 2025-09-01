@@ -17,6 +17,9 @@ class HomeViewModel @Inject constructor(
     private val _userName = mutableStateOf("")
     val userName: State<String> = _userName
 
+    private val _nickName = mutableStateOf("")
+    val nickName: State<String> = _nickName
+
     private val _republicName = mutableStateOf("")
     val republicName: State<String> = _republicName
 
@@ -24,8 +27,9 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val user = authRepository.getCurrentUser()
-            _userName.value = user?.firstName ?: ""
+            _userName.value = user?.userName ?: ""
             _republicName.value = user?.republicName ?: ""
+            _nickName.value = user?.nickName?: ""
         }
     }
 

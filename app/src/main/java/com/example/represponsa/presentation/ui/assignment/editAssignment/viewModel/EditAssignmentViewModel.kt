@@ -103,7 +103,7 @@ class EditAssignmentViewModel @Inject constructor(
         if (!validateFields() || selectedResidents.isEmpty()) return
 
         val assignedIds = stateValue.selectedResidents.map { it.uid }
-        val assignedNames = stateValue.selectedResidents.map { it.firstName }
+        val assignedNames = stateValue.selectedResidents.map { it.nickName }
 
         val updatedAssignment = Assignment(
             id = assignmentId,

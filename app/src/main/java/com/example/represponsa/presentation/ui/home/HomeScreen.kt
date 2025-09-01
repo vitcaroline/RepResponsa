@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Face
@@ -133,7 +132,7 @@ fun HomeScreen(
                     .padding(24.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Bem-vindo! ${viewModel.userName.value}", style = MaterialTheme.typography.headlineMedium)
+                Text("Bem-vindo! ${viewModel.nickName.value}", style = MaterialTheme.typography.headlineMedium)
             }
         }
     }

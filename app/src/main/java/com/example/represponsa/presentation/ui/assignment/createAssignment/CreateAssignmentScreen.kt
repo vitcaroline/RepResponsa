@@ -5,6 +5,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
@@ -22,6 +24,7 @@ import kotlinx.coroutines.launch
 fun CreateAssignmentScreen(
     onAssignmentCreated: () -> Unit,
     onNavigateBack: () -> Unit,
+    onNavigateToReuseAssignment: () -> Unit,
     viewModel: CreateAssignmentViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -34,7 +37,15 @@ fun CreateAssignmentScreen(
         topBar = {
             TopBar(
                 title = "Criar nova tarefa",
-                onBackClick = onNavigateBack
+                onBackClick = onNavigateBack,
+            )
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = onNavigateToReuseAssignment,
+                icon = { Icon(Icons.Default.List, contentDescription = null) },
+                text = { Text("Selecionar tarefa") },
+                contentColor = MaterialTheme.colorScheme.secondary
             )
         }
     ) { innerPadding ->
