@@ -13,7 +13,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.flowlayout.FlowRow
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.represponsa.data.model.RolesEnum
 import com.example.represponsa.presentation.ui.commons.TopBar
 import com.example.represponsa.presentation.ui.registerUser.viewModel.RegisterViewModel
 
@@ -50,26 +52,26 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Center
         ) {
             OutlinedTextField(
-                value = state.firstName,
+                value = state.userName,
                 onValueChange = viewModel::onFirstNameChange,
                 label = { Text("Nome") },
-                isError = state.firstNameError != null,
+                isError = state.userNameError != null,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
-            state.firstNameError?.let { err ->
+            state.userNameError?.let { err ->
                 Text(text = err, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
             }
             Spacer(Modifier.height(8.dp))
             OutlinedTextField(
-                value = state.lastName,
-                onValueChange = viewModel::onLastNameChange,
-                label = { Text("Sobrenome") },
-                isError = state.lastNameError != null,
+                value = state.nickname,
+                onValueChange = viewModel::onNicknameChange,
+                label = { Text("Apelido") },
+                isError = state.nicknameError != null,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
-            state.lastNameError?.let { err ->
+            state.nicknameError?.let { err ->
                 Text(text = err, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
             }
             Spacer(Modifier.height(8.dp))
@@ -151,28 +153,35 @@ fun RegisterScreen(
                     }
                 }
             }
-            Row(modifier = Modifier.align(Alignment.Start).padding(top = 8.dp)) {
-                RadioButton(
-                    selected = state.role == "morador",
-                    onClick = { viewModel.onRoleChange("morador") }
-                )
-                Text(
-                    text = "Morador",
-                    modifier = Modifier
-                        .padding(start = 4.dp, end = 16.dp)
-                        .align(Alignment.CenterVertically)
-                )
+            Spacer(Modifier.height(12.dp))
 
-                RadioButton(
-                    selected = state.role == "administrador",
-                    onClick = { viewModel.onRoleChange("administrador") }
-                )
-                Text(
-                    text = "Administrador",
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .align(Alignment.CenterVertically)
-                )
+            Text(
+                text = "Selecione as funções do morador:",
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+
+            FlowRow(
+                mainAxisSpacing = 8.dp,
+                crossAxisSpacing = 8.dp,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                RolesEnum.values().forEach { role ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .widthIn(min = 150.dp) // força largura mínima para colunas
+                    ) {
+                        Checkbox(
+                            checked = state.selectedRoles.contains(role),
+                            onCheckedChange = { viewModel.onRoleToggle(role) }
+                        )
+                        Text(
+                            text = role.label,
+                            modifier = Modifier.padding(start = 4.dp)
+                        )
+                    }
+                }
             }
             Spacer(Modifier.height(16.dp))
 

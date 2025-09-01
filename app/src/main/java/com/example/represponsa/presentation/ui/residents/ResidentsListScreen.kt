@@ -80,7 +80,8 @@ fun ResidentItem(user: User) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 8.dp)) {
-        Text(text = "${user.firstName} ${user.lastName}", style = MaterialTheme.typography.bodyLarge)
+        Text(text = user.userName + " (${user.nickName})", style = MaterialTheme.typography.bodyLarge)
+        Text(text = user.role.lowercase(), style = MaterialTheme.typography.bodyMedium)
         Text(text = user.email, style = MaterialTheme.typography.bodySmall, color = Color.Black)
     }
     Divider()

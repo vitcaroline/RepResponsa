@@ -65,11 +65,12 @@ fun ProfileScreen(
                             Text("Informações Pessoais", style = MaterialTheme.typography.titleMedium)
                             Spacer(Modifier.height(16.dp))
 
-                            ProfileField(label = "Nome", value = "${user!!.firstName} ${user!!.lastName}")
+                            ProfileField(label = "Nome", value = user!!.userName)
+                            ProfileField(label = "Apelido", value = user!!.nickName)
                             ProfileField(label = "Email", value = user!!.email)
                             ProfileField(label = "Telefone", value = user!!.phone)
                             ProfileField(label = "República", value = user!!.republicName)
-                            ProfileField(label = "Função", value = user!!.role.capitalize())
+                            ProfileField(label = "Função", value = user!!.role.lowercase())
                         }
                     }
                 }

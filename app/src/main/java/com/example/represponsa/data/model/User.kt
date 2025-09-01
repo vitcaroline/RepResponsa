@@ -2,8 +2,8 @@ package com.example.represponsa.data.model
 
 data class User(
     val uid: String = "",
-    val firstName: String = "",
-    val lastName: String = "",
+    val userName: String = "",
+    val nickName: String = "",
     val email: String = "",
     val phone: String = "",
     val republicName: String = "",

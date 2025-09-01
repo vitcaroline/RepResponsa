@@ -115,7 +115,7 @@ fun AssignmentForm(
                     }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = user.firstName)
+                Text(text = user.nickName)
             }
         }
 
