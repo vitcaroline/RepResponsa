@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.represponsa.data.repository.AuthRepository
+import com.example.represponsa.data.repository.ReceiptRepository
 import com.example.represponsa.domain.useCases.UploadReceiptUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,11 +15,37 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UploadReceiptViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+    private val receiptRepository: ReceiptRepository,
     private val uploadReceiptUseCase: UploadReceiptUseCase,
 ) : ViewModel() {
 
     private val _uploadState = MutableStateFlow<UploadState>(UploadState.Idle)
     val uploadState: StateFlow<UploadState> = _uploadState
+
+    private val _alreadyUploaded = MutableStateFlow<Boolean?>(null)
+    val alreadyUploaded: StateFlow<Boolean?> = _alreadyUploaded
+
+    init {
+        checkAlreadyUploaded()
+    }
+
+    private fun checkAlreadyUploaded() {
+        viewModelScope.launch {
+            _alreadyUploaded.value = null // loading
+            val user = authRepository.getCurrentUser()
+            if (user == null) {
+                _alreadyUploaded.value = false
+                return@launch
+            }
+
+            val sdf = java.text.SimpleDateFormat("yyyy-MM", java.util.Locale.getDefault())
+            val currentMonth = sdf.format(System.currentTimeMillis())
+
+            val hasPaid = receiptRepository.hasUserPaidForMonth(user.uid, user.republicId, currentMonth)
+            _alreadyUploaded.value = hasPaid
+        }
+    }
 
     fun uploadReceipt(fileUri: Uri, context: Context) {
         viewModelScope.launch {
