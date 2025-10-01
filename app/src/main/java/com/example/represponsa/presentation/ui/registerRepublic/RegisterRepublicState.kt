@@ -11,6 +11,7 @@ data class RegisterRepublicState(
     val isLoading: Boolean = false,
     val billsDueDay: Int = 1,
     val rentDueDay: Int = 1,
+    val rentDueFixed: Boolean = true,
 
     val nameError: String? = null,
     val addressError: String? = null,

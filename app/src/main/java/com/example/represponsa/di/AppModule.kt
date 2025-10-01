@@ -48,8 +48,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRepublicRepository(
+        authRepository: AuthRepository,
         firestore: FirebaseFirestore
-    ): RepublicRepository = RepublicRepository(firestore)
+    ): RepublicRepository = RepublicRepository(authRepository, firestore)
 
     @Provides
     @Singleton
