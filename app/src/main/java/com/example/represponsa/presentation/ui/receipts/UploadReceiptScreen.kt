@@ -151,7 +151,8 @@ fun UploadReceiptScreen(
                             Text(
                                 "Você já enviou o comprovante deste mês.",
                                 textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.titleMedium
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(horizontal = 24.dp)
                             )
                         }
                     }
