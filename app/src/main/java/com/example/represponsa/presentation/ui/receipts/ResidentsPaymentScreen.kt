@@ -23,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +50,6 @@ fun ResidentsPaymentScreen(
 
     val configUiState by rentPaymentConfigViewModel.uiState.collectAsState()
 
-
     Scaffold(
         topBar = {
             TopBar(
@@ -65,7 +65,8 @@ fun ResidentsPaymentScreen(
         ) {
             if (isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            } else {
+            }
+            else {
                 Column(modifier = Modifier.fillMaxSize()) {
                     Text(
                         "Moradores Pagantes",
