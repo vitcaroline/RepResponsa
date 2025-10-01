@@ -25,11 +25,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Dialog
 import com.example.represponsa.presentation.ui.commons.DayOfMonthDropdown
-import com.example.represponsa.presentation.ui.receipts.viewModel.RentPaymentConfigViewModel
+import com.example.represponsa.presentation.ui.receipts.viewModel.ResidentsPaymentListViewModel
 
 @Composable
 fun RentPaymentConfigDialog(
-    viewModel: RentPaymentConfigViewModel = hiltViewModel(),
+    viewModel: ResidentsPaymentListViewModel = hiltViewModel(),
     onConfigSaved: () -> Unit,
     onDismiss: () -> Unit
 ) {

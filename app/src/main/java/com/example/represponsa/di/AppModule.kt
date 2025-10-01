@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.represponsa.data.repository.AssignmentRepository
 import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.data.repository.MinutesRepository
+import com.example.represponsa.data.repository.ReceiptRepository
 import com.example.represponsa.data.repository.RepublicRepository
 import com.example.represponsa.data.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -66,4 +67,10 @@ object AppModule {
         firestore: FirebaseFirestore
     ): MinutesRepository = MinutesRepository(authRepository, firestore)
 
+    @Provides
+    @Singleton
+    fun provideReceiptRepository(
+        authRepository: AuthRepository,
+        firestore: FirebaseFirestore
+    ): ReceiptRepository = ReceiptRepository(firestore, authRepository)
 }

@@ -9,11 +9,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.represponsa.presentation.ui.receipts.ResidentsPaymentScreen
 import com.example.represponsa.presentation.ui.receipts.UploadReceiptScreen
-import com.example.represponsa.presentation.ui.receipts.viewModel.RentPaymentConfigViewModel
+import com.example.represponsa.presentation.ui.receipts.viewModel.ResidentsPaymentListViewModel
 
 fun NavGraphBuilder.receiptNavGraph(navController: NavController) {
     composable("receipts") { backStackEntry ->
-        val viewModel: RentPaymentConfigViewModel = hiltViewModel(backStackEntry)
+        val viewModel: ResidentsPaymentListViewModel = hiltViewModel(backStackEntry)
         val uiState by viewModel.uiState.collectAsState()
 
         LaunchedEffect(uiState.isAuthorized, uiState.isLoading) {
@@ -27,7 +27,7 @@ fun NavGraphBuilder.receiptNavGraph(navController: NavController) {
         if (!uiState.isLoading && uiState.isAuthorized) {
             ResidentsPaymentScreen(
                 onNavigateBack = { navController.popBackStack() },
-                rentPaymentConfigViewModel = viewModel
+                residentsPaymentListViewModel = viewModel
             )
         }
     }
