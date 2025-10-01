@@ -1,14 +1,40 @@
 package com.example.represponsa.presentation.navigation
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.represponsa.presentation.ui.receipts.SubmitReceiptScreen
+import com.example.represponsa.presentation.ui.receipts.ResidentsPaymentScreen
+import com.example.represponsa.presentation.ui.receipts.UploadReceiptScreen
+import com.example.represponsa.presentation.ui.receipts.viewModel.ResidentsPaymentListViewModel
 
 fun NavGraphBuilder.receiptNavGraph(navController: NavController) {
-    composable("receipts"){
-        SubmitReceiptScreen(
-            onNavigateBack = { navController.popBackStack() },
+    composable("receipts") { backStackEntry ->
+        val viewModel: ResidentsPaymentListViewModel = hiltViewModel(backStackEntry)
+        val uiState by viewModel.uiState.collectAsState()
+
+        LaunchedEffect(uiState.isAuthorized, uiState.isLoading) {
+            if (!uiState.isLoading && !uiState.isAuthorized) {
+                navController.navigate("upload_receipt") {
+                    popUpTo("receipts") { inclusive = true }
+                }
+            }
+        }
+
+        if (!uiState.isLoading && uiState.isAuthorized) {
+            ResidentsPaymentScreen(
+                onNavigateBack = { navController.popBackStack() },
+                residentsPaymentListViewModel = viewModel
+            )
+        }
+    }
+
+    composable("upload_receipt") {
+        UploadReceiptScreen(
+            onNavigateBack = { navController.popBackStack() }
         )
     }
 }

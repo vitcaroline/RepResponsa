@@ -7,8 +7,4 @@ enum class RolesEnum(val label: String) {
     PRODUTOS("Produtos"),
     MARKETING("Marketing"),
     SECRETARIA("Secretaria");
-    
-    companion object {
-        fun fromLabel(label: String): RolesEnum? = values().find { it.label == label }
-    }
 }

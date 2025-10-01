@@ -1,10 +1,12 @@
 package com.example.represponsa.data.repository
 
+import com.example.represponsa.data.model.RentPaymentConfig
 import com.example.represponsa.data.model.Republic
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
 class RepublicRepository(
+    private val authRepo: AuthRepository,
     private val firestore: FirebaseFirestore
 ) {
     suspend fun createRepublic(republic: Republic): Result<Unit> {
@@ -28,5 +30,13 @@ class RepublicRepository(
             .addOnFailureListener { e ->
                 onResult(Result.failure(e))
             }
+    }
+
+    suspend fun saveRentPaymentConfig(config: RentPaymentConfig) {
+        val currentUser = authRepo.getCurrentUser() ?: throw Exception("User not logged in")
+        firestore.collection("republics")
+            .document(currentUser.republicId)
+            .update("rentPaymentConfig", config)
+            .await()
     }
 }

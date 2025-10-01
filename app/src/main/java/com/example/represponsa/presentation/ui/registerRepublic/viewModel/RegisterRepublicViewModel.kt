@@ -12,6 +12,7 @@ import com.example.represponsa.presentation.ui.commons.validateResidentCount
 import com.example.represponsa.presentation.ui.registerRepublic.RegisterRepublicState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import com.example.represponsa.data.model.RentPaymentConfig
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,6 +31,7 @@ class RegisterRepublicViewModel @Inject constructor(
     fun onResidentCountChange(s: String) = updateState { copy(residentCount = s, residentCountError = null) }
     fun onBillsDueDayChange(day: Int) = updateState{ copy(billsDueDay = day) }
     fun onRentDueDayChange(day: Int) = updateState{ copy(rentDueDay = day) }
+    fun onRentDueFixedChange(fixed: Boolean) = updateState { copy(rentDueFixed = fixed) }
 
     fun onRoleToggle(role: RolesEnum) = updateState {
         val updated = if (selectedRoles.contains(role)) {
@@ -56,8 +58,11 @@ class RegisterRepublicViewModel @Inject constructor(
             petCount = petCount,
             residentCount = residentCount,
             roles = state.value.selectedRoles.map { it.name },
-            rentDueDay = state.value.rentDueDay,
-            billsDueDay = state.value.billsDueDay
+            billsDueDay = state.value.billsDueDay,
+            rentPaymentConfig = RentPaymentConfig(
+                day = state.value.rentDueDay,
+                isFixed = state.value.rentDueFixed
+            )
         )
 
         val result = repository.createRepublic(republic)
