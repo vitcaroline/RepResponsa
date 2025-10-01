@@ -1,7 +1,6 @@
 package com.example.represponsa.presentation.ui.receipts
 
 import android.net.Uri
-import android.text.Layout
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
