@@ -87,10 +87,6 @@ class ProfileViewModel @Inject constructor(
 
         return listOf(nameError, nicknameError, emailError, phoneError).all { it == null }
     }
-
-    fun resetUpdateState() {
-        _updateState.value = UpdateState.Idle
-    }
 }
 
 sealed class UpdateState {
