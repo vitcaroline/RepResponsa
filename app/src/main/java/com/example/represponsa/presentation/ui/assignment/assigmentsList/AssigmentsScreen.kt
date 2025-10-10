@@ -72,25 +72,27 @@ fun AssignmentScreen(
             )
         },
         floatingActionButton = {
-            ExpandableFab(
-                actions = listOf(
-                    FabAction(
-                        icon = Icons.Default.Add,
-                        label = "Adicionar",
-                        onClick = onNavigateToCreateAssignment
-                    ),
-                    FabAction(
-                        icon = Icons.Default.Edit,
-                        label = "Editar",
-                        onClick = onNavigateToEditAssignment
-                    ),
-                    FabAction(
-                        icon = Icons.Default.Delete,
-                        label = "Excluir",
-                        onClick = onNavigateToRemoveAssignment
+            if (viewModel.canManageAssignments.value) {
+                ExpandableFab(
+                    actions = listOf(
+                        FabAction(
+                            icon = Icons.Default.Add,
+                            label = "Adicionar",
+                            onClick = onNavigateToCreateAssignment
+                        ),
+                        FabAction(
+                            icon = Icons.Default.Edit,
+                            label = "Editar",
+                            onClick = onNavigateToEditAssignment
+                        ),
+                        FabAction(
+                            icon = Icons.Default.Delete,
+                            label = "Excluir",
+                            onClick = onNavigateToRemoveAssignment
+                        )
                     )
                 )
-            )
+            }
         }
     ) { innerPadding ->
         when {
