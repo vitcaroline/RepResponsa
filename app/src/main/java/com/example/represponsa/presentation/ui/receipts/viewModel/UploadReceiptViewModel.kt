@@ -30,7 +30,7 @@ class UploadReceiptViewModel @Inject constructor(
         checkAlreadyUploaded()
     }
 
-    private fun checkAlreadyUploaded() {
+    fun checkAlreadyUploaded() {
         viewModelScope.launch {
             _alreadyUploaded.value = null // loading
             val user = authRepository.getCurrentUser()

@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -118,7 +119,16 @@ fun UploadReceiptScreen(
 
                             when (uploadState) {
                                 is UploadState.Loading -> CircularProgressIndicator()
-                                is UploadState.Success -> Toast.makeText(context, "Comprovante enviado com sucesso!", Toast.LENGTH_SHORT).show()
+                                is UploadState.Success -> {
+                                    Toast.makeText(
+                                        context,
+                                        "Comprovante enviado com sucesso!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    LaunchedEffect(Unit) {
+                                        viewModel.checkAlreadyUploaded()
+                                    }
+                                }
                                 is UploadState.Error -> Text(
                                     (uploadState as UploadState.Error).message,
                                     color = Color.Red
