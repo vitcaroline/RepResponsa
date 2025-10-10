@@ -78,4 +78,14 @@ class AuthRepository(
             null
         }
     }
+
+    suspend fun updateUser(updatedUser: User) {
+        val uid = firebaseAuth.currentUser?.uid ?: throw Exception("Usuário não autenticado")
+
+        firestore.collection("users").document(uid)
+            .set(updatedUser)
+            .await()
+
+        UserPreferences.saveUser(context, updatedUser)
+    }
 }

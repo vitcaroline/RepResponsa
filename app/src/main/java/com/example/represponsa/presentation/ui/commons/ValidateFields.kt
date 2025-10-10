@@ -15,6 +15,15 @@ fun String.validatePhone(): String? =
         else -> null
     }
 
+fun validateEmail(email: String): String? {
+    val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
+    return when {
+        email.isBlank() -> "O email não pode estar em branco."
+        !email.matches(emailRegex) -> "Formato de email inválido."
+        else -> null
+    }
+}
+
 fun String.validatePassword(): String? =
     if (this.length < 6) "Senha deve ter ao menos 6 caracteres"
     else null
