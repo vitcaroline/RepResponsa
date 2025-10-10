@@ -55,14 +55,17 @@ class ResidentsPaymentListViewModel @Inject constructor(
             try {
                 val residents = userRepository.getResidentsByRepublic(user.republicId)
 
-                val sdf = java.text.SimpleDateFormat("yyyy-MM", java.util.Locale.getDefault())
-                val currentMonth = sdf.format(System.currentTimeMillis())
+                val sdf = java.text.SimpleDateFormat("MMMM yyyy", java.util.Locale("pt", "BR"))
+                val currentMonth = sdf.format(System.currentTimeMillis()).replaceFirstChar { it.uppercase() }
 
                 val updatedList = residents.map { resident ->
+                    val monthKey = java.text.SimpleDateFormat("yyyy-MM", java.util.Locale.getDefault())
+                        .format(System.currentTimeMillis())
+
                     val hasPaid = checkUserPaymentStatusUseCase(
                         resident.uid,
                         user.republicId,
-                        currentMonth
+                        monthKey
                     )
                     ResidentPaymentStatus(resident, hasPaid)
                 }
@@ -71,7 +74,8 @@ class ResidentsPaymentListViewModel @Inject constructor(
                     isAuthorized = true,
                     residentsWithStatus = updatedList,
                     user = user,
-                    isLoading = false
+                    isLoading = false,
+                    currentMonth = currentMonth
                 )
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
@@ -113,7 +117,8 @@ data class RentPaymentConfigUiState(
     val isFixed: Boolean = true,
     val user: User? = null,
     val isLoading: Boolean = true,
-    val residentsWithStatus: List<ResidentPaymentStatus> = emptyList()
+    val residentsWithStatus: List<ResidentPaymentStatus> = emptyList(),
+    val currentMonth: String = ""
 )
 
 data class ResidentPaymentStatus(

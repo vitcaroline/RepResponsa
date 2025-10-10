@@ -18,6 +18,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -54,12 +55,13 @@ fun ResidentsListScreen(
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "Moradores da República",
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                     Spacer(Modifier.height(8.dp))
 
                     if (isLoading) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                     } else if (residents.isEmpty()) {
                         Text("Nenhum morador encontrado.")
                     } else {

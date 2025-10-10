@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.presentation.ui.commons.TopBar
@@ -62,7 +63,10 @@ fun ProfileScreen(
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            Text("Informações Pessoais", style = MaterialTheme.typography.titleMedium)
+                            Text("Informações Pessoais",
+                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            )
                             Spacer(Modifier.height(16.dp))
 
                             ProfileField(label = "Nome", value = user!!.userName)
