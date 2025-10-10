@@ -78,10 +78,14 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = state.email,
                 onValueChange = viewModel::onEmailChange,
+                isError = state.emailError != null,
                 label = { Text("Email") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
+            state.emailError?.let { err ->
+                Text(text = err, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+            }
             Spacer(Modifier.height(8.dp))
             OutlinedTextField(
                 value = state.phone,
