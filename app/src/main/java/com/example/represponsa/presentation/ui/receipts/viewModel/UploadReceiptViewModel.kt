@@ -26,6 +26,9 @@ class UploadReceiptViewModel @Inject constructor(
     private val _alreadyUploaded = MutableStateFlow<Boolean?>(null)
     val alreadyUploaded: StateFlow<Boolean?> = _alreadyUploaded
 
+    private val _uploadedMonth = MutableStateFlow<String?>(null)
+    val uploadedMonth: StateFlow<String?> = _uploadedMonth
+
     init {
         checkAlreadyUploaded()
     }
@@ -44,6 +47,13 @@ class UploadReceiptViewModel @Inject constructor(
 
             val hasPaid = receiptRepository.hasUserPaidForMonth(user.uid, user.republicId, currentMonth)
             _alreadyUploaded.value = hasPaid
+
+            _uploadedMonth.value = if (hasPaid) {
+                val dateFormat = java.text.SimpleDateFormat("MMMM 'de' yyyy", java.util.Locale("pt", "BR"))
+                dateFormat.format(java.text.SimpleDateFormat("yyyy-MM").parse(currentMonth)!!)
+            } else {
+                null
+            }
         }
     }
 

@@ -51,6 +51,7 @@ fun UploadReceiptScreen(
     val uploadState by viewModel.uploadState.collectAsState()
 
     val alreadyUploaded by viewModel.alreadyUploaded.collectAsState()
+    val uploadedMonth by viewModel.uploadedMonth.collectAsState()
 
 
     val filePickerLauncher = rememberLauncherForActivityResult(
@@ -159,7 +160,7 @@ fun UploadReceiptScreen(
                             )
                             Spacer(Modifier.height(16.dp))
                             Text(
-                                "Você já enviou o comprovante deste mês.",
+                                "Você já enviou o comprovante referente a ${uploadedMonth ?: "este mês"}.",
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.titleMedium,
                                 modifier = Modifier.padding(horizontal = 24.dp)
