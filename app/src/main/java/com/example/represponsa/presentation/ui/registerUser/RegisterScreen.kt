@@ -170,11 +170,11 @@ fun RegisterScreen(
                 crossAxisSpacing = 8.dp,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                RolesEnum.values().forEach { role ->
+                RolesEnum.entries.forEach { role ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .widthIn(min = 150.dp) // força largura mínima para colunas
+                            .widthIn(min = 150.dp)
                     ) {
                         Checkbox(
                             checked = state.selectedRoles.contains(role),
