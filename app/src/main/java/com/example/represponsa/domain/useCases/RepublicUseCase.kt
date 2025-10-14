@@ -3,7 +3,6 @@ package com.example.represponsa.domain.useCases
 import com.example.represponsa.data.model.Republic
 import com.example.represponsa.data.repository.RepublicRepository
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import kotlin.coroutines.resumeWithException
 
