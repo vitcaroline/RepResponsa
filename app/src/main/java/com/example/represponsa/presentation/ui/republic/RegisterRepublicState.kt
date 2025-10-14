@@ -1,4 +1,4 @@
-package com.example.represponsa.presentation.ui.registerRepublic
+package com.example.represponsa.presentation.ui.republic
 
 import com.example.represponsa.data.model.RolesEnum
 

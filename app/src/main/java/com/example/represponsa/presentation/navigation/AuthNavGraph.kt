@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import com.example.represponsa.presentation.ui.login.LoginScreen
 import com.example.represponsa.presentation.ui.login.SplashScreen
 import com.example.represponsa.presentation.ui.profile.ProfileScreen
-import com.example.represponsa.presentation.ui.registerRepublic.RegisterRepublicScreen
+import com.example.represponsa.presentation.ui.republic.RegisterRepublicScreen
 import com.example.represponsa.presentation.ui.registerUser.RegisterScreen
 
 fun NavGraphBuilder.authNavGraph(navController: NavController) {
