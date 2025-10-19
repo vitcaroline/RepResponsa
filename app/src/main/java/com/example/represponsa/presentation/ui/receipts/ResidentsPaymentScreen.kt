@@ -114,7 +114,6 @@ fun ResidentsPaymentScreen(
                 }
             }
 
-            if (!configUiState.isFixed) {
                 FloatingActionButton(
                     onClick = { showDialog = true },
                     containerColor = MaterialTheme.colorScheme.tertiary,
@@ -124,7 +123,6 @@ fun ResidentsPaymentScreen(
                 ) {
                     Icon(Icons.Default.CalendarToday, contentDescription = "Configurar Pagamento")
                 }
-            }
 
             if (showDialog) {
                 RentPaymentConfigDialog(

@@ -38,7 +38,6 @@ import com.example.represponsa.presentation.ui.minutes.minutesList.viewModel.Min
 
 @Composable
 fun MinuteDetailsScreen(
-    minuteId: String,
     onNavigateBack: () -> Unit,
     onNavigateToEdit: (Minute) -> Unit,
     viewModel: MinuteDetailsViewModel = hiltViewModel()
@@ -87,7 +86,6 @@ fun MinuteDetailsScreen(
                 Card(
                     shape = MaterialTheme.shapes.medium,
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(

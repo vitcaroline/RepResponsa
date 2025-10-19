@@ -51,7 +51,7 @@ fun EditRepublicScreen(
             }
         }
     }
-            Scaffold(
+    Scaffold(
         topBar = {
             TopBar(
                 title = "Editar República",

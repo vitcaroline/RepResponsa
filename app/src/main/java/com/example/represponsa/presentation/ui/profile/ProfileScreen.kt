@@ -186,7 +186,11 @@ fun ProfileField(label: String, value: String) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 4.dp)) {
-        Text(text = label, style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+        )
         Text(text = value, style = MaterialTheme.typography.bodyLarge)
         Divider(modifier = Modifier.padding(vertical = 4.dp))
     }
@@ -234,7 +238,6 @@ fun EditableMultiRoleChips(
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = Color.Gray,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
