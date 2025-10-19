@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import com.example.represponsa.presentation.ui.home.HomeScreen
 import com.example.represponsa.presentation.ui.home.SettingsScreen
 import com.example.represponsa.presentation.ui.republic.editRepublic.EditRepublicScreen
+import com.example.represponsa.presentation.ui.residents.removeResidents.RemoveResidentsScreen
 
 fun NavGraphBuilder.homeNavGraph(navController: NavController) {
     composable("home") {
@@ -27,11 +28,16 @@ fun NavGraphBuilder.homeNavGraph(navController: NavController) {
         SettingsScreen(
             onNavigateBack = { navController.popBackStack()},
             onEditRepublic = { navController.navigate("edit-republic") },
-            onRemoveResident = {}
+            onRemoveResident = { navController.navigate("remove-user") },
         )
     }
     composable("edit-republic") {
         EditRepublicScreen(
+            onNavigateBack = { navController.popBackStack()},
+        )
+    }
+    composable("remove-user") {
+        RemoveResidentsScreen(
             onNavigateBack = { navController.popBackStack()},
         )
     }
