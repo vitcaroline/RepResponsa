@@ -41,7 +41,7 @@ class EditRepublicViewModel @Inject constructor(
             try {
                 val user = authRepo.getCurrentUser()
                     ?: throw Exception("Usuário não logado")
-                val republicId = user.republicId ?: throw Exception("República não encontrada")
+                val republicId = user.republicId
                 val republic = getRepublicByIdUseCase(republicId)
                     ?: throw Exception("República não encontrada")
 
@@ -111,7 +111,7 @@ class EditRepublicViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val user = authRepo.getCurrentUser() ?: throw Exception("Usuário não logado")
-                val republicId = user.republicId ?: throw Exception("República não encontrada")
+                val republicId = user.republicId
 
                 val republic = Republic(
                     id = republicId,
