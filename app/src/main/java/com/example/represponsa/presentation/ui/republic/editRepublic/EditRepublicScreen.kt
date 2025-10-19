@@ -3,6 +3,7 @@ package com.example.represponsa.presentation.ui.republic.editRepublic
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
@@ -46,7 +47,7 @@ fun EditRepublicScreen(
             }
 
             else -> {
-                // Idle ou Loading — nada especial aqui
+
             }
         }
     }
@@ -114,14 +115,22 @@ fun EditRepublicScreen(
                                     value = republicState.numResidents,
                                     error = republicState.numResidentsError,
                                     keyboardType = KeyboardType.Number,
-                                    onValueChange = viewModel::onNumResidentsChange
+                                    onValueChange = { newValue ->
+                                        if (newValue.all { it.isDigit() }) {
+                                            viewModel.onNumResidentsChange(newValue)
+                                        }
+                                    }
                                 )
                                 EditableTextField(
                                     label = "Número de Pets",
                                     value = republicState.numPets,
                                     error = republicState.numPetsError,
                                     keyboardType = KeyboardType.Number,
-                                    onValueChange = viewModel::onNumPetsChange
+                                    onValueChange = { newValue ->
+                                        if (newValue.all { it.isDigit() }) {
+                                            viewModel.onNumPetsChange(newValue)
+                                        }
+                                    }
                                 )
 
                                 Button(
@@ -176,17 +185,27 @@ fun EditableTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     onValueChange: (String) -> Unit
 ) {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 4.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp)
     ) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
-            label = {
-                Text(label)
-            }
+            label = { Text(label) },
+            isError = error != null,
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            singleLine = true
         )
+        if (error != null) {
+            Text(
+                text = error,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.padding(top = 2.dp)
+            )
+        }
     }
 }
