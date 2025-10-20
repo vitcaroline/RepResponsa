@@ -1,11 +1,21 @@
 package com.example.represponsa.presentation.ui.assignment.assigmentsList
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddTask
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -15,8 +25,8 @@ import java.util.*
 
 @Composable
 fun AssignmentList(
-    modifier: Modifier,
-    assignments: List<Assignment>
+    assignments: List<Assignment>,
+    onCompleteClicked: (Assignment) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
@@ -24,11 +34,8 @@ fun AssignmentList(
     ) {
         items(assignments) { assignment ->
             AssignmentItem(
-                modifier = modifier,
-                title = assignment.title,
-                description = assignment.description,
-                assignedResidents = assignment.assignedResidentsNames,
-                dueDate = assignment.dueDate,
+                assignment = assignment,
+                onCompleteClicked = onCompleteClicked
             )
         }
     }
@@ -36,71 +43,53 @@ fun AssignmentList(
 
 @Composable
 fun AssignmentItem(
-    modifier: Modifier = Modifier,
-    title: String,
-    description: String,
-    assignedResidents: List<String>,
-    dueDate: Date,
+    assignment: Assignment,
+    onCompleteClicked: (Assignment) -> Unit
 ) {
-    val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(dueDate)
+    val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(assignment.dueDate)
 
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodyMedium,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column {
+                    Text(text = assignment.title, style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        text = assignment.description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                IconButton(onClick = { onCompleteClicked(assignment) }) {
+                    Icon(Icons.Default.AddTask,
+                        contentDescription = "Concluir tarefa",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .background(Color.White)
+                            .size(50.dp)
+                    )
+                }
+            }
+
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Designado(s): ${assignedResidents.joinToString(", ")}",
+                text = "Designado(s): ${assignment.assignedResidentsNames.joinToString(", ")}",
                 style = MaterialTheme.typography.labelLarge
             )
-            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "Data limite: $formattedDate",
                 style = MaterialTheme.typography.labelLarge
-                )
-            }
-        }
-}
-
-@Preview
-@Composable
-fun AssignmentListPreview(){
-    AssignmentList(
-        modifier = Modifier,
-        assignments = listOf(
-            Assignment(
-                id = "id1",
-                title = "Limpeza da cozinha",
-                description = "Organizar limpeza semanal com todos os moradores.",
-                assignedResidentsNames = listOf("Vitória","Beto"),
-                assignedResidentsIds = listOf("1,2"),
-                dueDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 3) }.time
-            ),
-            Assignment(
-                id = "id2",
-                title = "Revisar contas",
-                description = "Verificar pendências da luz e internet.",
-                assignedResidentsNames = listOf("Lucas","Beto"),
-                assignedResidentsIds = listOf("1,2"),
-                dueDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 7) }.time
             )
-        )
-    )
+        }
+    }
 }
 

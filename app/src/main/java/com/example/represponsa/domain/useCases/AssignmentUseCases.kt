@@ -38,3 +38,15 @@ class GetFilteredAssignmentsUseCase @Inject constructor(
         }
     }
 }
+
+class CompleteAssignmentUseCase @Inject constructor(
+    private val repository: AssignmentRepository
+) {
+    suspend operator fun invoke(assignment: Assignment, userId: String) {
+        val updatedCompletedBy = assignment.completedBy.toMutableMap()
+        updatedCompletedBy[userId] = true
+
+        val updatedAssignment = assignment.copy(completedBy = updatedCompletedBy)
+        repository.updateAssignment(updatedAssignment)
+    }
+}
