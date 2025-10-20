@@ -4,8 +4,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.represponsa.data.model.Assignment
 import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.data.repository.UserRepository
+import com.example.represponsa.domain.useCases.GetFilteredAssignmentsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val getFilteredAssignmentsUseCase: GetFilteredAssignmentsUseCase
 ) : ViewModel() {
 
     private val _userName = mutableStateOf("")
@@ -28,16 +31,19 @@ class HomeViewModel @Inject constructor(
     private val _residentsPoints = mutableStateOf<List<UserPoints>>(emptyList())
     val residentsPoints: State<List<UserPoints>> = _residentsPoints
 
+    private val _pendingAssignments = mutableStateOf<List<Assignment>>(emptyList())
+    val pendingAssignments: State<List<Assignment>> = _pendingAssignments
+
     private val _isLoading = mutableStateOf(true)
     val isLoading: State<Boolean> = _isLoading
 
     init {
         viewModelScope.launch {
-            loadUserData()
+            loadHomeData()
         }
     }
 
-    private suspend fun loadUserData() {
+    private suspend fun loadHomeData() {
         _isLoading.value = true
         try {
             val currentUser = authRepository.getCurrentUser()
@@ -50,21 +56,31 @@ class HomeViewModel @Inject constructor(
                 _residentsPoints.value = residents.map { user ->
                     UserPoints(
                         userName = user.userName,
-                        points = user.monthlyPoints,
-                        nickname = user.nickName
+                        nickname = user.nickName,
+                        points = user.monthlyPoints
                     )
+                }.sortedByDescending { it.points }
+            }
+
+            currentUser?.let { user ->
+                val myAssignments = getFilteredAssignmentsUseCase(true) // só minhas tarefas
+                _pendingAssignments.value = myAssignments.filter { assignment ->
+                    assignment.completedBy[user.uid] != true
                 }
             }
+
         } catch (e: Exception) {
             _residentsPoints.value = emptyList()
+            _pendingAssignments.value = emptyList()
         } finally {
             _isLoading.value = false
         }
     }
 
+
     fun reloadHomeData() {
         viewModelScope.launch {
-          loadUserData()
+          loadHomeData()
         }
     }
 

@@ -23,15 +23,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.represponsa.data.model.Assignment
 import com.example.represponsa.presentation.ui.commons.UserAvatar
 import com.example.represponsa.presentation.ui.home.viewModel.UserPoints
 
 @Composable
 fun PointsDashboard(
-    residentsPoints: List<UserPoints>
+    residentsPoints: List<UserPoints>,
+    pendingAssignments: List<Assignment>
 ) {
     val sortedResidents = residentsPoints.sortedByDescending { it.points }
 
@@ -39,6 +42,16 @@ fun PointsDashboard(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        item {
+            SectionHeader(text = "Notificações")
+        }
+
+        if (pendingAssignments.isNotEmpty()) {
+            item {
+                PendingAssignmentsNotification(pendingAssignments)
+            }
+        }
+
         item {
             SectionHeader(text = "Ranking do Mês")
         }
@@ -95,6 +108,41 @@ fun ResidentPointCard(resident: UserPoints, isTopResident: Boolean) {
                         modifier = Modifier.size(30.dp)
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun PendingAssignmentsNotification(assignments: List<Assignment>) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.LightGray),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Você tem ${assignments.size} tarefa(s) pendente(s)!",
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            assignments.take(3).forEach { assignment ->
+                Text(
+                    text = "- ${assignment.title}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFF6D4C41)
+                )
+            }
+            if (assignments.size > 3) {
+                Text(
+                    text = "...e mais ${assignments.size - 3} tarefa(s)",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color(0xFF6D4C41)
+                )
             }
         }
     }

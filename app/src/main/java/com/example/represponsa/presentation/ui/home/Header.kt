@@ -31,7 +31,7 @@ fun SectionHeader(text: String) {
                         MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f)
                     )
                 ),
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(10.dp)
             ),
         contentAlignment = Alignment.Center
     ) {
