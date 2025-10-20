@@ -17,8 +17,8 @@ private val BluePastel = lightColorScheme(
 // Rosa Pastel
 private val PinkPastel = lightColorScheme(
     primary = Pink40,
-    secondary = Color(0xFFFFD6E8),
-    tertiary = Color(0xFFFFC0D9),
+    secondary = Color(0xFFEE629F),
+    tertiary = Color(0xFFF89ABF),
     onPrimaryContainer = Color(0xFFFFE4F1),
     surfaceContainer = Color(0xFFFFF0F5),
     surfaceBright = Color(0xFFFFF5FA)
