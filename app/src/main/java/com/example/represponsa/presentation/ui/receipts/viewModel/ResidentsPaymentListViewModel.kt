@@ -51,7 +51,7 @@ class ResidentsPaymentListViewModel @Inject constructor(
 
     fun saveConfig(onSuccess: () -> Unit, onError: (String) -> Unit) {
         val state = _uiState.value
-        val config = RentPaymentConfig(day = state.day, isFixed = state.isFixed)
+        val config = RentPaymentConfig(day = state.day, billsDueDay = state.billsDay, isFixed = state.isFixed)
 
         viewModelScope.launch {
             try {
@@ -78,7 +78,7 @@ class ResidentsPaymentListViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(
                 user = user,
                 day = republic?.rentPaymentConfig?.day ?: 1,
-                billsDay = republic?.billsDueDay ?: 1,
+                billsDay = republic?.rentPaymentConfig?.billsDueDay ?: 1,
                 isFixed = republic?.rentPaymentConfig?.isFixed ?: true
             )
 
@@ -144,18 +144,14 @@ class ResidentsPaymentListViewModel @Inject constructor(
         val isFinanceiro = RolesEnum.FINANCEIRO.name in roles
 
         val dayToNotify = if (isFinanceiro) {
-            getRepublicByIdUseCase(user.republicId)?.billsDueDay ?: 1
+            getRepublicByIdUseCase(user.republicId)?.rentPaymentConfig?.billsDueDay ?: 1
         } else {
             defaultDay
         }
 
         val calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.DAY_OF_MONTH, dayToNotify)
-            set(Calendar.HOUR_OF_DAY, 9)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            add(Calendar.DAY_OF_MONTH, -1)
+            add(Calendar.MINUTE, 1)
         }
 
         val triggerDate = calendar.time

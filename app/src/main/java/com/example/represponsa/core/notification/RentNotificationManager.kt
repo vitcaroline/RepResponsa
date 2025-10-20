@@ -16,14 +16,14 @@ class RentNotificationManager @Inject constructor(
         amount: Double = 0.0,
         isBillsNotification: Boolean = false
     ) {
-        val title = if (isBillsNotification) "Pagamento de contas" else "Pagamento de aluguel"
+        val title = if (isBillsNotification) "Pagamento de Contas" else "Pagamento de Aluguel"
         val message = if (isBillsNotification) {
-            "Lembre-se de pagar as contas da república $republicName."
+            "Lembre-se de pagar as contas da república $republicName até amanhã."
         } else {
             if (amount > 0) {
                 "Lembre-se de pagar R$$amount do aluguel da república $republicName."
             } else {
-                "Lembre-se de pagar o aluguel da república $republicName."
+                "Lembre-se de pagar o aluguel da república $republicName até amanhã."
             }
         }
 

@@ -58,9 +58,9 @@ class RegisterRepublicViewModel @Inject constructor(
             petCount = petCount,
             residentCount = residentCount,
             roles = state.value.selectedRoles.map { it.name },
-            billsDueDay = state.value.billsDueDay,
             rentPaymentConfig = RentPaymentConfig(
                 day = state.value.rentDueDay,
+                billsDueDay = state.value.billsDueDay,
                 isFixed = state.value.rentDueFixed
             )
         )
