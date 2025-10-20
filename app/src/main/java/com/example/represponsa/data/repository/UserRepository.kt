@@ -15,4 +15,11 @@ class UserRepository(
 
         return snapshot.documents.mapNotNull { it.toObject(User::class.java) }
     }
+
+    suspend fun removeUser(userId: String) {
+        firestore.collection("users")
+            .document(userId)
+            .delete()
+            .await()
+    }
 }

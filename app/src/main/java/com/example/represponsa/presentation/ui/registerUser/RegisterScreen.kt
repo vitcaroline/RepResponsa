@@ -78,10 +78,14 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = state.email,
                 onValueChange = viewModel::onEmailChange,
+                isError = state.emailError != null,
                 label = { Text("Email") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
+            state.emailError?.let { err ->
+                Text(text = err, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+            }
             Spacer(Modifier.height(8.dp))
             OutlinedTextField(
                 value = state.phone,
@@ -166,11 +170,11 @@ fun RegisterScreen(
                 crossAxisSpacing = 8.dp,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                RolesEnum.values().forEach { role ->
+                RolesEnum.entries.forEach { role ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .widthIn(min = 150.dp) // força largura mínima para colunas
+                            .widthIn(min = 150.dp)
                     ) {
                         Checkbox(
                             checked = state.selectedRoles.contains(role),

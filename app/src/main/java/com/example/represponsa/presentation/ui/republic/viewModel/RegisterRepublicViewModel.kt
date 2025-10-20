@@ -1,4 +1,4 @@
-package com.example.represponsa.presentation.ui.registerRepublic.viewModel
+package com.example.represponsa.presentation.ui.republic.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +9,7 @@ import com.example.represponsa.presentation.ui.commons.validateAddress
 import com.example.represponsa.presentation.ui.commons.validatePetCount
 import com.example.represponsa.presentation.ui.commons.validateRepublicName
 import com.example.represponsa.presentation.ui.commons.validateResidentCount
-import com.example.represponsa.presentation.ui.registerRepublic.RegisterRepublicState
+import com.example.represponsa.presentation.ui.republic.RegisterRepublicState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import com.example.represponsa.data.model.RentPaymentConfig

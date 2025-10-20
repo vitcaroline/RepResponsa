@@ -39,6 +39,7 @@ fun HomeScreen(
     onNavigateToReceipts: () -> Unit,
     onNavigateToResidentsList: () -> Unit,
     onNavigateToProfile: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -112,7 +113,7 @@ fun HomeScreen(
                     onOptionSelected = { option ->
                         when (option) {
                             "profile" -> { onNavigateToProfile() }
-                            "config" -> { /* abrir tela de configurações */ }
+                            "config" -> { onNavigateToSettings() }
                             "logout" -> {
                                 viewModel.logout()
                                 onLogout()

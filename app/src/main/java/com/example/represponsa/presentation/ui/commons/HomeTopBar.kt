@@ -97,7 +97,7 @@ fun HomeTopBar(
                         }
                     )
                     DropdownMenuItem(
-                        leadingIcon = { Icon(Icons.Default.Settings, contentDescription = "Perfil", tint = Color(0xFF004D40)) },
+                        leadingIcon = { Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color(0xFF004D40)) },
                         text = { Text("Configurações") },
                         onClick = {
                             expanded = false
@@ -105,7 +105,7 @@ fun HomeTopBar(
                         }
                     )
                     DropdownMenuItem(
-                        leadingIcon = { Icon(Icons.Default.ExitToApp, contentDescription = "Perfil", tint = Color(0xFF004D40)) },
+                        leadingIcon = { Icon(Icons.Default.ExitToApp, contentDescription = "Exit", tint = Color(0xFF004D40)) },
                         text = { Text("Sair") },
                         onClick = {
                             expanded = false

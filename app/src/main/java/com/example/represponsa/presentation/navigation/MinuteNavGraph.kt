@@ -27,7 +27,6 @@ fun NavGraphBuilder.minuteNavGraph(navController: NavController) {
         val minuteId = backStackEntry.arguments?.getString("minuteId") ?: return@composable
 
         MinuteDetailsScreen(
-            minuteId = minuteId,
             onNavigateBack = { navController.navigate("minutes") { popUpTo("minutes") { inclusive = true } }},
             onNavigateToEdit = { minute ->
                 navController.navigate("edit-minute/${minute.id}")

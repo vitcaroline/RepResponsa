@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.represponsa.data.model.Assignment
 import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
-import com.example.represponsa.domain.useCases.GetAssignmentsUseCase
+import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.domain.useCases.GetFilteredAssignmentsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -13,6 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AssignmentListViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
     private val getFilteredAssignmentsUseCase: GetFilteredAssignmentsUseCase
 ) : ViewModel() {
 
@@ -24,8 +25,24 @@ class AssignmentListViewModel @Inject constructor(
 
     private val _showOnlyMyAssignments = mutableStateOf(false)
     val showOnlyMyAssignments: State<Boolean> = _showOnlyMyAssignments
+
+    private val _canManageAssignments = mutableStateOf(false)
+    val canManageAssignments: State<Boolean> = _canManageAssignments
+
     init {
-        fetchAssignments()
+        viewModelScope.launch {
+            loadUserRole()
+            fetchAssignments()
+        }
+    }
+
+    private suspend fun loadUserRole() {
+        try {
+            val currentUser = authRepository.getCurrentUser()
+            _canManageAssignments.value = currentUser?.role?.contains("Faxina", ignoreCase = true) == true
+        } catch (e: Exception) {
+            _canManageAssignments.value = false
+        }
     }
 
     fun setFilter(onlyMine: Boolean) {

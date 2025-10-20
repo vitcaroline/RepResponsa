@@ -2,6 +2,7 @@ package com.example.represponsa.presentation.ui.profile
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -25,21 +26,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.data.model.RolesEnum
@@ -187,7 +188,11 @@ fun ProfileField(label: String, value: String) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 4.dp)) {
-        Text(text = label, style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+        )
         Text(text = value, style = MaterialTheme.typography.bodyLarge)
         Divider(modifier = Modifier.padding(vertical = 4.dp))
     }
@@ -227,21 +232,26 @@ fun EditableMultiRoleChips(
     currentRole: String,
     onRolesChanged: (String) -> Unit
 ) {
-    val selectedRoles = remember(currentRole) {
-        currentRole.split(", ").filter { it.isNotBlank() }
-    }.toMutableStateList()
+    val roles = remember(currentRole) {
+        currentRole.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+    }
+    val selectedRoles = remember { mutableStateListOf<String>() }
+
+    LaunchedEffect(roles) {
+        selectedRoles.clear()
+        selectedRoles.addAll(roles)
+    }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = Color.Gray,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
         FlowRow(
-            horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp),
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             RolesEnum.entries.forEach { role ->
                 val isSelected = selectedRoles.contains(role.label)
@@ -255,16 +265,13 @@ fun EditableMultiRoleChips(
                 else
                     MaterialTheme.colorScheme.onSurface
 
-                androidx.compose.material3.Surface(
+                Surface(
                     color = backgroundColor,
                     shape = RoundedCornerShape(50),
                     tonalElevation = if (isSelected) 4.dp else 0.dp,
                     modifier = Modifier.clickable {
-                        if (isSelected) {
-                            selectedRoles.remove(role.label)
-                        } else {
-                            selectedRoles.add(role.label)
-                        }
+                        if (isSelected) selectedRoles.remove(role.label)
+                        else selectedRoles.add(role.label)
                         onRolesChanged(selectedRoles.joinToString(", "))
                     }
                 ) {

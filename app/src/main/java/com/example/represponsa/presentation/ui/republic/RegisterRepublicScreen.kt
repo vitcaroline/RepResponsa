@@ -1,4 +1,4 @@
-package com.example.represponsa.presentation.ui.registerRepublic
+package com.example.represponsa.presentation.ui.republic
 
 import android.widget.Toast
 import androidx.compose.runtime.*
@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.presentation.ui.commons.NumberDropdownField
 import com.example.represponsa.presentation.ui.commons.TopBar
-import com.example.represponsa.presentation.ui.registerRepublic.viewModel.RegisterRepublicViewModel
+import com.example.represponsa.presentation.ui.republic.viewModel.RegisterRepublicViewModel
 
 @Composable
 fun RegisterRepublicScreen(

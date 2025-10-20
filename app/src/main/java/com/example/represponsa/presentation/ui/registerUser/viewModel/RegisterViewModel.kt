@@ -7,6 +7,7 @@ import com.example.represponsa.data.model.RolesEnum
 import com.example.represponsa.data.model.User
 import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.data.repository.RepublicRepository
+import com.example.represponsa.presentation.ui.commons.validateEmail
 import com.example.represponsa.presentation.ui.commons.validateName
 import com.example.represponsa.presentation.ui.commons.validatePassword
 import com.example.represponsa.presentation.ui.commons.validatePasswordConfirmation
@@ -55,6 +56,13 @@ class RegisterViewModel @Inject constructor(
         ) }
     }
 
+    fun onEmailChange(value: String) {
+        _state.update { it.copy(
+            email = value,
+            emailError = validateEmail(value)
+        ) }
+    }
+
     fun onPhoneChange(value: String) {
         _state.update { it.copy(
             phone = value,
@@ -83,7 +91,6 @@ class RegisterViewModel @Inject constructor(
         }
     }
     fun onRepublicChange(s: String)  = updateState { copy(republic = s) }
-    fun onEmailChange(s: String)   = updateState { copy(email = s) }
 
     fun register(onSuccess: () -> Unit, onError: (String) -> Unit) = viewModelScope.launch {
         val st = state.value
@@ -92,14 +99,16 @@ class RegisterViewModel @Inject constructor(
         val nickNameErr    = st.nickname.validateName()
         val phoneErr       = st.phone.validatePhone()
         val passwordErr    = st.password.validatePassword()
+        val emailErr       = validateEmail(st.email)
         val confirmPwdErr = validatePasswordConfirmation(st.password, st.confirmPwd)
 
-        if (listOf(userNameErr, nickNameErr, phoneErr, passwordErr, confirmPwdErr).any { it != null }) {
+        if (listOf(userNameErr, nickNameErr, phoneErr, emailErr, passwordErr, confirmPwdErr).any { it != null }) {
             updateState {
                 copy(
                     userNameError   = userNameError,
                     nicknameError    = nicknameError,
                     phoneError       = phoneErr,
+                    emailError        = emailErr,
                     passwordError    = passwordErr,
                     confirmPwdError  = confirmPwdErr
                 )
@@ -112,6 +121,7 @@ class RegisterViewModel @Inject constructor(
                 userNameError   = null,
                 nicknameError    = null,
                 phoneError       = null,
+                emailError       = null,
                 passwordError    = null,
                 confirmPwdError  = null,
                 isLoading        = true

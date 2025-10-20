@@ -32,6 +32,25 @@ class RepublicRepository(
             }
     }
 
+    suspend fun updateRepublic(republic: Republic) {
+        try {
+            val currentUser = authRepo.getCurrentUser() ?: throw Exception("User not logged in")
+            firestore.collection("republics")
+                .document(currentUser.republicId)
+                .update(
+                    mapOf(
+                        "name" to republic.name,
+                        "address" to republic.address,
+                        "residentCount" to republic.residentCount,
+                        "petCount" to republic.petCount
+                    )
+                )
+                .await()
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
     suspend fun saveRentPaymentConfig(config: RentPaymentConfig) {
         val currentUser = authRepo.getCurrentUser() ?: throw Exception("User not logged in")
         firestore.collection("republics")

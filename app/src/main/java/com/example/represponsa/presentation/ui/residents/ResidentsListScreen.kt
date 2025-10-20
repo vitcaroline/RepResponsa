@@ -1,6 +1,7 @@
 package com.example.represponsa.presentation.ui.residents
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.data.model.User
 import com.example.represponsa.presentation.ui.commons.TopBar
+import com.example.represponsa.presentation.ui.commons.UserAvatar
 import com.example.represponsa.presentation.ui.residents.viewModel.ResidentListViewModel
 
 @Composable
@@ -52,7 +54,9 @@ fun ResidentsListScreen(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.CenterHorizontally)) {
                     Text(
                         text = "Moradores da República",
                         style = MaterialTheme.typography.titleMedium,
@@ -65,7 +69,10 @@ fun ResidentsListScreen(
                     } else if (residents.isEmpty()) {
                         Text("Nenhum morador encontrado.")
                     } else {
-                        LazyColumn {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
                             items(residents) { user ->
                                 ResidentItem(user = user)
                             }
@@ -79,12 +86,25 @@ fun ResidentsListScreen(
 
 @Composable
 fun ResidentItem(user: User) {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 8.dp)) {
-        Text(text = user.userName + " (${user.nickName})", style = MaterialTheme.typography.bodyLarge)
-        Text(text = user.role.lowercase(), style = MaterialTheme.typography.bodyMedium)
-        Text(text = user.email, style = MaterialTheme.typography.bodySmall, color = Color.Black)
+    Row(modifier = Modifier
+        .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        UserAvatar(modifier = Modifier
+            .padding(horizontal = 10.dp), userName = user.userName)
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp)
+        ) {
+            Text(
+                text = user.userName + " (${user.nickName})",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(text = user.role.lowercase(), style = MaterialTheme.typography.bodyMedium)
+            Text(text = user.email, style = MaterialTheme.typography.bodySmall, color = Color.Black)
+        }
     }
     Divider()
 }
