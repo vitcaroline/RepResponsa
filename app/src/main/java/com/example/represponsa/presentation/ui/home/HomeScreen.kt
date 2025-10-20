@@ -137,14 +137,13 @@ fun HomeScreen(
         ) { innerPadding ->
             Box(
                 modifier = Modifier
-                    .padding(innerPadding)
-                    .padding(24.dp),
+                    .padding(innerPadding),
                 contentAlignment = Alignment.Center
             ) {
                 if (viewModel.isLoading.value) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 } else {
-                    PointsDashboard(nickName = viewModel.nickName.value, residentsPoints = viewModel.residentsPoints.value)
+                    PointsDashboard(residentsPoints = viewModel.residentsPoints.value)
                 }
             }
 

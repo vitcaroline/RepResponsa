@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,11 +18,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun WelcomeHeader(nickName: String) {
+fun SectionHeader(text: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
+            .height(60.dp)
+            .padding(top =  16.dp, bottom = 10.dp)
             .background(
                 brush = Brush.horizontalGradient(
                     colors = listOf(
@@ -29,12 +31,12 @@ fun WelcomeHeader(nickName: String) {
                         MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f)
                     )
                 ),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(4.dp)
             ),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Olá, $nickName! 🌟",
+            text = text,
             style = MaterialTheme.typography.titleLarge.copy(
                 color = Color.White,
                 fontWeight = FontWeight.Bold

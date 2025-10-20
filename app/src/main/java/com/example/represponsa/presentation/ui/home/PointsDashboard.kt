@@ -31,7 +31,6 @@ import com.example.represponsa.presentation.ui.home.viewModel.UserPoints
 
 @Composable
 fun PointsDashboard(
-    nickName: String,
     residentsPoints: List<UserPoints>
 ) {
     val sortedResidents = residentsPoints.sortedByDescending { it.points }
@@ -41,22 +40,7 @@ fun PointsDashboard(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            WelcomeHeader(nickName = nickName)
-        }
-
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    "Ranking do Mês",
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
+            SectionHeader(text = "Ranking do Mês")
         }
         itemsIndexed(sortedResidents) { index, resident ->
             ResidentPointCard(
@@ -69,46 +53,48 @@ fun PointsDashboard(
 
 @Composable
 fun ResidentPointCard(resident: UserPoints, isTopResident: Boolean) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(80.dp),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
-    ) {
-        Row(
+    Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+        Card(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
+                .height(80.dp),
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(4.dp)
         ) {
-            UserAvatar(
-                modifier = Modifier.size(50.dp),
-                userName = resident.userName
-            )
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Column(
-                modifier = Modifier.weight(1f)
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = resident.nickname,
-                    style = MaterialTheme.typography.titleMedium
+                UserAvatar(
+                    modifier = Modifier.size(50.dp),
+                    userName = resident.userName
                 )
-                Text(
-                    text = "${resident.points} pontos",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
 
-            if (isTopResident) {
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = resident.nickname,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        text = "${resident.points} pontos",
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                if (isTopResident) {
                     Image(
                         painter = painterResource(id = R.drawable.medal),
                         contentDescription = "Primeiro colocado",
                         modifier = Modifier.size(30.dp)
                     )
+                }
             }
         }
     }
