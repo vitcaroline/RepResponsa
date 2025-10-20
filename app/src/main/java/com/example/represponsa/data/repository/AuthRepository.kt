@@ -1,6 +1,7 @@
 package com.example.represponsa.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.example.represponsa.data.cacheConfig.UserPreferences
 import com.example.represponsa.data.model.User
 import com.google.firebase.auth.FirebaseAuth
@@ -60,20 +61,20 @@ class AuthRepository(
         UserPreferences.clear(context)
     }
 
-    suspend fun getCurrentUser(): User? {
-        val cachedUser = UserPreferences.getUser(context)
-        if (cachedUser != null) return cachedUser
-
+    suspend fun getCurrentUser(forceRefresh: Boolean = false): User? {
         val uid = firebaseAuth.currentUser?.uid ?: return null
+
+        if (!forceRefresh) {
+            val cachedUser = UserPreferences.getUser(context)
+            if (cachedUser != null) return cachedUser
+        }
 
         return try {
             val snapshot = firestore.collection("users").document(uid).get().await()
             val user = snapshot.toObject(User::class.java)
-
             if (user != null) {
                 UserPreferences.saveUser(context, user)
             }
-
             user
         } catch (e: Exception) {
             null
@@ -91,17 +92,31 @@ class AuthRepository(
     }
 
     suspend fun addMonthlyPointToCurrentUser() {
-        val user = getCurrentUser() ?: return
+        val user = getCurrentUser(forceRefresh = true) ?: return
 
         val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
-
         val points = if (user.lastPointsResetMonth != currentMonth) 0 else user.monthlyPoints
 
+        val newPoints = points + 1
         val updatedUser = user.copy(
-            monthlyPoints = points + 1,
+            monthlyPoints = newPoints,
             lastPointsResetMonth = currentMonth
         )
 
-        updateUser(updatedUser)
+        val uid = firebaseAuth.currentUser?.uid ?: return
+
+        firestore.collection("users").document(uid)
+            .set(
+                mapOf(
+                    "monthlyPoints" to newPoints,
+                    "lastPointsResetMonth" to currentMonth
+                ),
+                com.google.firebase.firestore.SetOptions.merge()
+            )
+            .await()
+
+        UserPreferences.saveUser(context, updatedUser)
+
+        Log.d("PointsDebug", "Firestore atualizado: $newPoints pontos")
     }
 }

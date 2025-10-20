@@ -1,11 +1,14 @@
 package com.example.represponsa.presentation.ui.home.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.data.repository.UserRepository
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -59,6 +62,12 @@ class HomeViewModel @Inject constructor(
             _residentsPoints.value = emptyList()
         } finally {
             _isLoading.value = false
+        }
+    }
+
+    fun reloadHomeData() {
+        viewModelScope.launch {
+          loadUserData()
         }
     }
 
