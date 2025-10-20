@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.domain.useCases.CompleteAssignmentUseCase
 import com.example.represponsa.domain.useCases.GetFilteredAssignmentsUseCase
-import com.example.represponsa.domain.useCases.UpdateAssignmentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,7 +40,6 @@ class AssignmentListViewModel @Inject constructor(
         viewModelScope.launch {
             loadUserRole()
             fetchAssignments()
-            val currentUser = authRepository.getCurrentUser()
         }
     }
 
