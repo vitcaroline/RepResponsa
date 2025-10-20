@@ -13,13 +13,18 @@ class RentNotificationManager @Inject constructor(
         id: Int,
         triggerAt: Date,
         republicName: String,
-        amount: Double = 0.0
+        amount: Double = 0.0,
+        isBillsNotification: Boolean = false
     ) {
-        val title = "Pagamento de aluguel"
-        val message = if (amount > 0) {
-            "Lembre-se de pagar R$$amount do aluguel da república $republicName."
+        val title = if (isBillsNotification) "Pagamento de contas" else "Pagamento de aluguel"
+        val message = if (isBillsNotification) {
+            "Lembre-se de pagar as contas da república $republicName."
         } else {
-            "Lembre-se de pagar o aluguel da república $republicName."
+            if (amount > 0) {
+                "Lembre-se de pagar R$$amount do aluguel da república $republicName."
+            } else {
+                "Lembre-se de pagar o aluguel da república $republicName."
+            }
         }
 
         notificationScheduler.scheduleNotification(
@@ -27,7 +32,7 @@ class RentNotificationManager @Inject constructor(
             triggerAt = triggerAt,
             title = title,
             message = message,
-            channelId = "rent_channel"
+            channelId = if (isBillsNotification) "bills_channel" else "rent_channel"
         )
     }
 
