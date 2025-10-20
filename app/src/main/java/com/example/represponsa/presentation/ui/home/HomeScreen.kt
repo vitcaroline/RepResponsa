@@ -1,6 +1,7 @@
 package com.example.represponsa.presentation.ui.home
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
@@ -135,16 +136,15 @@ fun HomeScreen(
                 )
             }
         ) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .padding(10.dp),
-                contentAlignment = Alignment.Center
-            ) {
+            Box(modifier = Modifier.fillMaxSize()) {
                 if (viewModel.isLoading.value) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 } else {
                     PointsDashboard(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                            .padding(10.dp),
                         residentsPoints = viewModel.residentsPoints.value,
                         pendingAssignments = viewModel.pendingAssignments.value,
                         onNavigateToAssignments = { onNavigateToAssignments() }

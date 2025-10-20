@@ -34,6 +34,7 @@ import com.example.represponsa.presentation.ui.home.viewModel.UserPoints
 
 @Composable
 fun PointsDashboard(
+    modifier: Modifier,
     residentsPoints: List<UserPoints>,
     pendingAssignments: List<Assignment>,
     onNavigateToAssignments: () -> Unit,
@@ -41,6 +42,7 @@ fun PointsDashboard(
     val sortedResidents = residentsPoints.sortedByDescending { it.points }
 
     LazyColumn(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
