@@ -41,6 +41,10 @@ class ResidentsPaymentListViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(day = newDay)
     }
 
+    fun onBillsDayChange(newDay: Int) {
+        _uiState.value = _uiState.value.copy(billsDay = newDay)
+    }
+
     fun onFixedChange(newValue: Boolean) {
         _uiState.value = _uiState.value.copy(isFixed = newValue)
     }
@@ -69,6 +73,14 @@ class ResidentsPaymentListViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             val user = authRepository.getCurrentUser()
+            val republic = getRepublicByIdUseCase(user?.republicId ?: "")
+
+            _uiState.value = _uiState.value.copy(
+                user = user,
+                day = republic?.rentPaymentConfig?.day ?: 1,
+                billsDay = republic?.billsDueDay ?: 1,
+                isFixed = republic?.rentPaymentConfig?.isFixed ?: true
+            )
 
             if (user == null) {
                 _uiState.value = _uiState.value.copy(isAuthorized = false, isLoading = false)
@@ -169,6 +181,7 @@ class ResidentsPaymentListViewModel @Inject constructor(
 data class RentPaymentConfigUiState(
     val isAuthorized: Boolean = false,
     val day: Int = 1,
+    val billsDay: Int = 1,
     val isFixed: Boolean = true,
     val user: User? = null,
     val isLoading: Boolean = true,
