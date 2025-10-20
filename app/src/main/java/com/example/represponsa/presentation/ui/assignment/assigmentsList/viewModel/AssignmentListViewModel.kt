@@ -89,9 +89,12 @@ class AssignmentListViewModel @Inject constructor(
 
     fun completeAssignment(assignment: Assignment) {
         viewModelScope.launch {
+            val currentUser = authRepository.getCurrentUser() ?: return@launch
+            val currentUserId = currentUser.uid
+
             try {
-                val currentUserId = authRepository.getCurrentUser()?.uid ?: return@launch
                 completeAssignmentUseCase(assignment, currentUserId)
+                authRepository.addMonthlyPointToCurrentUser()
                 fetchAssignments()
             } catch (e: Exception) {
                 Log.e("AssignmentVM", "Erro ao completar tarefa: ${e.message}")

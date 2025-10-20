@@ -6,6 +6,7 @@ import com.example.represponsa.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import java.util.Calendar
 
 class AuthRepository(
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance(),
@@ -87,5 +88,20 @@ class AuthRepository(
             .await()
 
         UserPreferences.saveUser(context, updatedUser)
+    }
+
+    suspend fun addMonthlyPointToCurrentUser() {
+        val user = getCurrentUser() ?: return
+
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+
+        val points = if (user.lastPointsResetMonth != currentMonth) 0 else user.monthlyPoints
+
+        val updatedUser = user.copy(
+            monthlyPoints = points + 1,
+            lastPointsResetMonth = currentMonth
+        )
+
+        updateUser(updatedUser)
     }
 }
