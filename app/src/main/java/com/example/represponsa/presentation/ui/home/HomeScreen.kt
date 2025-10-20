@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.R
@@ -53,13 +54,16 @@ fun HomeScreen(
                 Text(
                     text = "República ${viewModel.republicName.value}",
                     modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.secondary
                 )
                 Divider()
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Default.List, contentDescription = "Lista de Tarefas", tint = Color(0xFF004D40)) },
-                    label = { Text("Tarefas") },
+                    label = {
+                        Text("Tarefas",
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                    ) },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -68,7 +72,10 @@ fun HomeScreen(
                 )
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Outlined.Create, contentDescription = "Lista de Atas", tint = Color(0xFF004D40)) },
-                    label = { Text("Atas") },
+                    label = {
+                        Text("Atas",
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                        ) },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -77,7 +84,10 @@ fun HomeScreen(
                 )
                 NavigationDrawerItem(
                     icon = { Icon(painter = painterResource(R.drawable.ic_receipts), contentDescription = "Comprovantes", tint = Color(0xFF004D40)) },
-                    label = { Text("Comprovantes") },
+                    label = {
+                        Text("Comprovantes",
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                        ) },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -86,7 +96,9 @@ fun HomeScreen(
                 )
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Outlined.Face, contentDescription = "Moradores", tint = Color(0xFF004D40)) },
-                    label = { Text("Moradores") },
+                    label = { Text(
+                        "Moradores",
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)) },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -95,7 +107,9 @@ fun HomeScreen(
                 )
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Outlined.ExitToApp, contentDescription = "Sair", tint = Color(0xFF004D40)) },
-                    label = { Text("Sair") },
+                    label = { Text("Sair",
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                    ) },
                     selected = false,
                     onClick = {
                         viewModel.logout()
