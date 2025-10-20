@@ -8,7 +8,6 @@ import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.annotation.meta.TypeQualifierNickname
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,7 +1,6 @@
 package com.example.represponsa.presentation.ui.home
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
@@ -63,9 +62,7 @@ fun HomeScreen(
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Default.List, contentDescription = "Lista de Tarefas", tint = Color(0xFF004D40)) },
                     label = {
-                        Text("Tarefas",
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                    ) },
+                        Text("Tarefas") },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -75,9 +72,7 @@ fun HomeScreen(
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Outlined.Create, contentDescription = "Lista de Atas", tint = Color(0xFF004D40)) },
                     label = {
-                        Text("Atas",
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                        ) },
+                        Text("Atas") },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -87,9 +82,7 @@ fun HomeScreen(
                 NavigationDrawerItem(
                     icon = { Icon(painter = painterResource(R.drawable.ic_receipts), contentDescription = "Comprovantes", tint = Color(0xFF004D40)) },
                     label = {
-                        Text("Comprovantes",
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                        ) },
+                        Text("Comprovantes") },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -98,9 +91,7 @@ fun HomeScreen(
                 )
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Outlined.Face, contentDescription = "Moradores", tint = Color(0xFF004D40)) },
-                    label = { Text(
-                        "Moradores",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)) },
+                    label = { Text("Moradores")},
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -109,9 +100,7 @@ fun HomeScreen(
                 )
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Outlined.ExitToApp, contentDescription = "Sair", tint = Color(0xFF004D40)) },
-                    label = { Text("Sair",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                    ) },
+                    label = { Text("Sair") },
                     selected = false,
                     onClick = {
                         viewModel.logout()
