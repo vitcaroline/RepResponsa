@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.R
 import com.example.represponsa.presentation.ui.commons.HomeTopBar
+import com.example.represponsa.presentation.ui.home.PointsDashboard.PointsDashboard
 import com.example.represponsa.presentation.ui.home.viewModel.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -142,12 +144,15 @@ fun HomeScreen(
         ) { innerPadding ->
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
                     .padding(innerPadding)
                     .padding(24.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Bem-vindo! ${viewModel.nickName.value}", style = MaterialTheme.typography.headlineMedium)
+                if (viewModel.isLoading.value) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                } else {
+                    PointsDashboard(nickName = viewModel.nickName.value, residentsPoints = viewModel.residentsPoints.value)
+                }
             }
         }
     }
