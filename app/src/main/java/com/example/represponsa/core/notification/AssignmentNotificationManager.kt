@@ -3,7 +3,7 @@ package com.example.represponsa.core.notification
 import java.util.Date
 import javax.inject.Inject
 
-class NotificationManager @Inject constructor(
+class AssignmentNotificationManager @Inject constructor(
     private val notificationScheduler: NotificationScheduler
 ) {
     fun scheduleNotification(

@@ -8,7 +8,7 @@ import java.util.Date
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import com.example.represponsa.core.notification.NotificationManager
+import com.example.represponsa.core.notification.AssignmentNotificationManager
 import com.example.represponsa.data.repository.UserRepository
 import com.example.represponsa.domain.useCases.CreateAssignmentUseCase
 import com.example.represponsa.presentation.ui.assignment.createAssignment.CreateAssignmentUiState
@@ -25,7 +25,7 @@ class CreateAssignmentViewModel @Inject constructor(
     private val createAssignmentUseCase: CreateAssignmentUseCase,
     private val authRepo: AuthRepository,
     private val userRepository: UserRepository,
-    private val notificationManager: NotificationManager,
+    private val notificationManager: AssignmentNotificationManager,
 ) : ViewModel() {
 
     private val _state = mutableStateOf(CreateAssignmentUiState())

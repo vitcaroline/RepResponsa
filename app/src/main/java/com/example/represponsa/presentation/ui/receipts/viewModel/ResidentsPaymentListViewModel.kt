@@ -2,6 +2,7 @@ package com.example.represponsa.presentation.ui.receipts.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.represponsa.core.notification.RentNotificationManager
 import com.example.represponsa.data.model.RentPaymentConfig
 import com.example.represponsa.data.model.RolesEnum
 import com.example.represponsa.data.model.User
@@ -13,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,10 +23,13 @@ class ResidentsPaymentListViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
     private val checkUserPaymentStatusUseCase: CheckUserPaymentStatusUseCase,
+    private val rentNotificationManager: RentNotificationManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RentPaymentConfigUiState())
     val uiState: StateFlow<RentPaymentConfigUiState> = _uiState
+
+    private var currentNotificationId: Int? = null
 
     init {
         checkAccessAndLoadResidents()
@@ -103,6 +108,31 @@ class ResidentsPaymentListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 saveConfigUseCase(config)
+
+                currentNotificationId?.let { rentNotificationManager.cancelRentNotification(it) }
+
+                state.user?.let { user ->
+                    val calendar = Calendar.getInstance().apply {
+                        timeInMillis = System.currentTimeMillis()
+                        set(Calendar.DAY_OF_MONTH, state.day)
+                        set(Calendar.HOUR_OF_DAY, 9)
+                        set(Calendar.MINUTE, 0)
+                        set(Calendar.SECOND, 0)
+                        add(Calendar.DAY_OF_MONTH, -1)
+                    }
+
+                    val triggerDate = calendar.time
+                    val notificationId = (user.republicId + state.day).hashCode()
+                    currentNotificationId = notificationId
+
+                    rentNotificationManager.scheduleRentNotification(
+                        id = notificationId,
+                        triggerAt = triggerDate,
+                        republicName = user.republicName,
+                        amount = 0.0
+                    )
+                }
+
                 onSuccess()
             } catch (e: Exception) {
                 onError(e.localizedMessage ?: "Unknown error")
