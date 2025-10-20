@@ -63,14 +63,6 @@ class RemoveResidentsViewModel @Inject constructor(
         }
     }
 
-    fun showRemoveConfirmation() {
-        if (_selectedResidents.value.isNotEmpty()) {
-            _showConfirmationDialog.value = true
-        } else {
-            _toastMessage.value = "Selecione pelo menos um morador para remover"
-        }
-    }
-
     fun dismissConfirmationDialog() {
         _showConfirmationDialog.value = false
     }
