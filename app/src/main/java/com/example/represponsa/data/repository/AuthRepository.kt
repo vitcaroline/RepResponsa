@@ -1,11 +1,13 @@
 package com.example.represponsa.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.example.represponsa.data.cacheConfig.UserPreferences
 import com.example.represponsa.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import java.util.Calendar
 
 class AuthRepository(
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance(),
@@ -59,20 +61,20 @@ class AuthRepository(
         UserPreferences.clear(context)
     }
 
-    suspend fun getCurrentUser(): User? {
-        val cachedUser = UserPreferences.getUser(context)
-        if (cachedUser != null) return cachedUser
-
+    suspend fun getCurrentUser(forceRefresh: Boolean = false): User? {
         val uid = firebaseAuth.currentUser?.uid ?: return null
+
+        if (!forceRefresh) {
+            val cachedUser = UserPreferences.getUser(context)
+            if (cachedUser != null) return cachedUser
+        }
 
         return try {
             val snapshot = firestore.collection("users").document(uid).get().await()
             val user = snapshot.toObject(User::class.java)
-
             if (user != null) {
                 UserPreferences.saveUser(context, user)
             }
-
             user
         } catch (e: Exception) {
             null
@@ -82,10 +84,52 @@ class AuthRepository(
     suspend fun updateUser(updatedUser: User) {
         val uid = firebaseAuth.currentUser?.uid ?: throw Exception("Usuário não autenticado")
 
+        val currentUserSnapshot = firestore.collection("users").document(uid).get().await()
+        val currentUser = currentUserSnapshot.toObject(User::class.java)
+
+        val userToSave = currentUser?.copy(
+            userName = updatedUser.userName,
+            nickName = updatedUser.nickName,
+            email = updatedUser.email,
+            phone = updatedUser.phone,
+            republicName = updatedUser.republicName,
+            republicId = updatedUser.republicId,
+            role = updatedUser.role
+        ) ?: updatedUser
+
         firestore.collection("users").document(uid)
-            .set(updatedUser)
+            .set(userToSave)
+            .await()
+
+        UserPreferences.saveUser(context, userToSave)
+    }
+
+    suspend fun addMonthlyPointToCurrentUser() {
+        val user = getCurrentUser(forceRefresh = true) ?: return
+
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+        val points = if (user.lastPointsResetMonth != currentMonth) 0 else user.monthlyPoints
+
+        val newPoints = points + 1
+        val updatedUser = user.copy(
+            monthlyPoints = newPoints,
+            lastPointsResetMonth = currentMonth
+        )
+
+        val uid = firebaseAuth.currentUser?.uid ?: return
+
+        firestore.collection("users").document(uid)
+            .set(
+                mapOf(
+                    "monthlyPoints" to newPoints,
+                    "lastPointsResetMonth" to currentMonth
+                ),
+                com.google.firebase.firestore.SetOptions.merge()
+            )
             .await()
 
         UserPreferences.saveUser(context, updatedUser)
+
+        Log.d("PointsDebug", "Firestore atualizado: $newPoints pontos")
     }
 }

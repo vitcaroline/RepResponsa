@@ -8,5 +8,7 @@ data class User(
     val phone: String = "",
     val republicName: String = "",
     val republicId: String = "",
-    val role: String = ""
+    val role: String = "",
+    val monthlyPoints: Int = 0,
+    val lastPointsResetMonth: Int = -1
 )

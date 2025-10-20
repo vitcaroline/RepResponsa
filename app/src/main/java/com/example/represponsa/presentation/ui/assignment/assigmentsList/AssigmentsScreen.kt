@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -21,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -52,6 +54,26 @@ fun AssignmentScreen(
     val isLoading by viewModel.isLoading
 
     val lifecycleOwner = LocalLifecycleOwner.current
+
+    val completionDialogAssignment by viewModel.showCompletionDialog
+
+    completionDialogAssignment?.let { assignment ->
+        AlertDialog(
+            onDismissRequest = { viewModel.dismissCompletionDialog() },
+            title = { Text("Confirmar conclusão") },
+            text = { Text("Deseja marcar a tarefa '${assignment.title}' como concluída?") },
+            confirmButton = {
+                TextButton(onClick = { viewModel.completeAssignment(assignment) }) {
+                    Text("Sim")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.dismissCompletionDialog() }) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
 
     DisposableEffect(Unit) {
         val observer = LifecycleEventObserver { _, event ->
@@ -162,7 +184,10 @@ fun AssignmentScreen(
                             )
                         }
                     }
-                    AssignmentList(modifier = Modifier, assignments = assignments)
+                    AssignmentList(
+                        assignments = assignments,
+                        onCompleteClicked = { viewModel.showCompletionConfirmation(it) }
+                    )
                 }
             }
         }

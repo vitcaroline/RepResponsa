@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.represponsa.presentation.ui.home.AppTitle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,12 +42,7 @@ fun HomeTopBar(
     TopAppBar(
         title = {
             Row {
-//                Icon(
-//                    painter = painterResource(R.drawable.represponsa),
-//                    contentDescription = "logo-icon",
-//                    modifier = Modifier.size(50.dp)
-//                )
-                Text("RepResponsa")
+                AppTitle()
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

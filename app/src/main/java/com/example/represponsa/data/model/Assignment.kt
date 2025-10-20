@@ -10,5 +10,6 @@ data class Assignment (
     val description: String = "",
     val assignedResidentsIds: List<String> = emptyList(),
     val assignedResidentsNames: List<String> = emptyList(),
-    val dueDate: Date = Date()
+    val dueDate: Date = Date(),
+    val completedBy: Map<String, Boolean> = emptyMap()
 )

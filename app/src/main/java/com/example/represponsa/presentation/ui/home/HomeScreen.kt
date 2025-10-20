@@ -1,13 +1,13 @@
 package com.example.represponsa.presentation.ui.home
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -19,11 +19,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.R
@@ -45,6 +47,10 @@ fun HomeScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
+    LaunchedEffect(Unit) {
+        viewModel.reloadHomeData()
+    }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         scrimColor = MaterialTheme.colorScheme.secondary,
@@ -53,13 +59,14 @@ fun HomeScreen(
                 Text(
                     text = "República ${viewModel.republicName.value}",
                     modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.secondary
                 )
                 Divider()
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Default.List, contentDescription = "Lista de Tarefas", tint = Color(0xFF004D40)) },
-                    label = { Text("Tarefas") },
+                    label = {
+                        Text("Tarefas") },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -68,7 +75,8 @@ fun HomeScreen(
                 )
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Outlined.Create, contentDescription = "Lista de Atas", tint = Color(0xFF004D40)) },
-                    label = { Text("Atas") },
+                    label = {
+                        Text("Atas") },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -77,7 +85,8 @@ fun HomeScreen(
                 )
                 NavigationDrawerItem(
                     icon = { Icon(painter = painterResource(R.drawable.ic_receipts), contentDescription = "Comprovantes", tint = Color(0xFF004D40)) },
-                    label = { Text("Comprovantes") },
+                    label = {
+                        Text("Comprovantes") },
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -86,7 +95,7 @@ fun HomeScreen(
                 )
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Outlined.Face, contentDescription = "Moradores", tint = Color(0xFF004D40)) },
-                    label = { Text("Moradores") },
+                    label = { Text("Moradores")},
                     selected = false,
                     onClick = {
                         scope.launch { drawerState.close() }
@@ -109,7 +118,7 @@ fun HomeScreen(
         Scaffold(
             topBar = {
                 HomeTopBar(
-                    userName = viewModel.userName.value,
+                    userName = viewModel.nickName.value,
                     onOptionSelected = { option ->
                         when (option) {
                             "profile" -> { onNavigateToProfile() }
@@ -128,13 +137,21 @@ fun HomeScreen(
         ) { innerPadding ->
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
                     .padding(innerPadding)
-                    .padding(24.dp),
+                    .padding(10.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Bem-vindo! ${viewModel.nickName.value}", style = MaterialTheme.typography.headlineMedium)
+                if (viewModel.isLoading.value) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                } else {
+                    PointsDashboard(
+                        residentsPoints = viewModel.residentsPoints.value,
+                        pendingAssignments = viewModel.pendingAssignments.value,
+                        onNavigateToAssignments = { onNavigateToAssignments() }
+                    )
+                }
             }
+
         }
     }
 }
