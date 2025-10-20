@@ -1,5 +1,6 @@
 package com.example.represponsa.presentation.ui.residents.removeResidents
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -30,13 +31,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.data.model.User
 import com.example.represponsa.presentation.ui.commons.TopBar
+import com.example.represponsa.presentation.ui.commons.UserAvatar
 import com.example.represponsa.presentation.ui.residents.removeResidents.viewModel.RemoveResidentsViewModel
 
 @Composable
@@ -48,7 +54,8 @@ fun RemoveResidentsScreen(
     val selectedResidents by viewModel.selectedResidents
     val isLoading by viewModel.isLoading
     val isRemoving by viewModel.isRemoving
-    val showSuccessDialog by viewModel.showSuccessDialog
+
+    var showConfirmationDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -72,12 +79,16 @@ fun RemoveResidentsScreen(
                 .fillMaxSize()
         ) {
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(4.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.CenterHorizontally),
+                ) {
                     Text(
                         text = "Lista de Moradores",
                         style = MaterialTheme.typography.titleMedium,
@@ -113,23 +124,26 @@ fun RemoveResidentsScreen(
             }
         }
 
-        if (showSuccessDialog) {
+        if (showConfirmationDialog) {
             AlertDialog(
-                onDismissRequest = { viewModel.dismissDialog() },
+                onDismissRequest = { viewModel.dismissConfirmationDialog() },
                 confirmButton = {
-                    TextButton(onClick = {
-                        viewModel.dismissDialog()
-                        onNavigateBack()
-                    }) {
-                        Text("OK")
+                    TextButton(onClick = { viewModel.removeSelectedResidents() }) {
+                        Text("Confirmar")
                     }
                 },
-                title = { Text("Moradores removidos") },
-                text = { Text("Os moradores selecionados foram removidos com sucesso.") }
+                dismissButton = {
+                    TextButton(onClick = { viewModel.dismissConfirmationDialog() }) {
+                        Text("Cancelar")
+                    }
+                },
+                title = { Text("Remover moradores") },
+                text = { Text("Tem certeza que deseja remover os moradores selecionados?") }
             )
         }
     }
 }
+
 
 @Composable
 fun ResidentSelectableItem(
@@ -145,6 +159,7 @@ fun ResidentSelectableItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(checked = isSelected, onCheckedChange = { onSelect() })
+        UserAvatar(modifier = Modifier.padding(8.dp), userName = user.userName)
         Spacer(Modifier.width(8.dp))
         Column {
             Text("${user.userName} (${user.nickName})", style = MaterialTheme.typography.bodyLarge)

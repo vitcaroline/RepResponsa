@@ -59,7 +59,7 @@ class RegisterViewModel @Inject constructor(
     fun onEmailChange(value: String) {
         _state.update { it.copy(
             email = value,
-            emailError = value.validateName()
+            emailError = validateEmail(value)
         ) }
     }
 

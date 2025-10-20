@@ -30,8 +30,11 @@ class RemoveResidentsViewModel @Inject constructor(
     private val _isRemoving = mutableStateOf(false)
     val isRemoving: State<Boolean> = _isRemoving
 
-    private val _showSuccessDialog = mutableStateOf(false)
-    val showSuccessDialog: State<Boolean> = _showSuccessDialog
+    private val _showConfirmationDialog = mutableStateOf(false)
+    val showConfirmationDialog: State<Boolean> = _showConfirmationDialog
+
+    private val _toastMessage = mutableStateOf<String?>(null)
+    val toastMessage: State<String?> = _toastMessage
 
     init {
         loadResidents()
@@ -60,6 +63,18 @@ class RemoveResidentsViewModel @Inject constructor(
         }
     }
 
+    fun showRemoveConfirmation() {
+        if (_selectedResidents.value.isNotEmpty()) {
+            _showConfirmationDialog.value = true
+        } else {
+            _toastMessage.value = "Selecione pelo menos um morador para remover"
+        }
+    }
+
+    fun dismissConfirmationDialog() {
+        _showConfirmationDialog.value = false
+    }
+
     fun removeSelectedResidents() {
         viewModelScope.launch {
             _isRemoving.value = true
@@ -67,18 +82,20 @@ class RemoveResidentsViewModel @Inject constructor(
                 selectedResidents.value.forEach { id ->
                     userRepository.removeUser(id)
                 }
-                _showSuccessDialog.value = true
+                _toastMessage.value = "Morador(es) removido(s) com sucesso!"
                 loadResidents()
                 _selectedResidents.value = emptySet()
             } catch (e: Exception) {
                 Log.e("RemoveResidents", "Erro ao remover moradores: ${e.message}")
+                _toastMessage.value = "Erro ao remover moradores."
             } finally {
                 _isRemoving.value = false
+                _showConfirmationDialog.value = false
             }
         }
     }
 
-    fun dismissDialog() {
-        _showSuccessDialog.value = false
+    fun clearToast() {
+        _toastMessage.value = null
     }
 }
