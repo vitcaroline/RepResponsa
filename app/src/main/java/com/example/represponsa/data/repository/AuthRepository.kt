@@ -3,9 +3,11 @@ package com.example.represponsa.data.repository
 import android.content.Context
 import android.util.Log
 import com.example.represponsa.data.cacheConfig.UserPreferences
+import com.example.represponsa.data.cacheConfig.UserPreferences.republicThemeFlow
 import com.example.represponsa.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 
@@ -58,7 +60,7 @@ class AuthRepository(
 
     suspend fun logout() {
         firebaseAuth.signOut()
-        UserPreferences.clear(context)
+        UserPreferences.clearUserKeepTheme(context)
     }
 
     suspend fun getCurrentUser(forceRefresh: Boolean = false): User? {

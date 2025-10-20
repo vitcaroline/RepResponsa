@@ -59,11 +59,15 @@ object UserPreferences {
 
     val Context.republicThemeFlow: Flow<RepublicTheme>
         get() = dataStore.data.map { prefs ->
-            val name = prefs[KEY_REPUBLIC_THEME] ?: RepublicTheme.BLUE.name
+            val name = prefs[KEY_REPUBLIC_THEME] ?: RepublicTheme.AZUL.name
             RepublicTheme.valueOf(name)
         }
 
-    suspend fun clear(context: Context) {
-        context.dataStore.edit { it.clear() }
+    suspend fun clearUserKeepTheme(context: Context) {
+        val currentTheme = context.republicThemeFlow.first()
+        context.dataStore.edit { prefs ->
+            prefs.clear()
+            prefs[KEY_REPUBLIC_THEME] = currentTheme.name
+        }
     }
 }

@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val context = LocalContext.current
-            val selectedTheme by context.republicThemeFlow.collectAsState(initial = RepublicTheme.BLUE)
+            val selectedTheme by context.republicThemeFlow.collectAsState(initial = RepublicTheme.AZUL)
 
             RepResponsaTheme(selectedTheme = selectedTheme) {
                 val systemUiController = rememberSystemUiController()

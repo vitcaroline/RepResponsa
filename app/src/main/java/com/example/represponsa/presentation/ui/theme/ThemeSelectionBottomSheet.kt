@@ -1,6 +1,5 @@
 package com.example.represponsa.presentation.ui.theme
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -52,10 +51,10 @@ fun ThemeSelectionBottomSheet(
                             .size(32.dp)
                             .background(
                                 color = when (theme) {
-                                    RepublicTheme.BLUE -> Color(0xFF8AB4F8)
-                                    RepublicTheme.PINK -> Color(0xFFF8BBD0)
-                                    RepublicTheme.ORANGE -> Color(0xFFFFCC80)
-                                    RepublicTheme.GREEN -> Color(0xFFA5D6A7)
+                                    RepublicTheme.AZUL -> Blue40
+                                    RepublicTheme.ROSA -> Pink40
+                                    RepublicTheme.LARANJA -> Orange40
+                                    RepublicTheme.VERDE -> Green40
                                 },
                                 shape = RoundedCornerShape(8.dp)
                             )

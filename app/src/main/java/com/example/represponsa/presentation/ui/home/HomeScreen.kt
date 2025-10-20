@@ -44,10 +44,8 @@ fun HomeScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
+    val selectedTheme by context.republicThemeFlow.collectAsState(initial = RepublicTheme.AZUL)
     var showThemeSheet by remember { mutableStateOf(false) }
-    val republicThemeFlow = context.republicThemeFlow.collectAsState(initial = RepublicTheme.BLUE)
-    var selectedTheme by remember { mutableStateOf(republicThemeFlow.value) }
-    LaunchedEffect(republicThemeFlow.value) { selectedTheme = republicThemeFlow.value }
 
     LaunchedEffect(Unit) { viewModel.reloadHomeData() }
 
@@ -107,7 +105,6 @@ fun HomeScreen(
                     ThemeSelectionBottomSheet(
                         onDismiss = { showThemeSheet = false },
                         onThemeSelected = { theme ->
-                            selectedTheme = theme
                             scope.launch { UserPreferences.saveRepublicTheme(context, theme) }
                             showThemeSheet = false
                         }
@@ -136,7 +133,7 @@ private fun HomeDrawer(
             text = "República ${viewModel.republicName.value}",
             modifier = Modifier.padding(16.dp),
             style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-            color = MaterialTheme.colorScheme.secondary
+            color = MaterialTheme.colorScheme.primary
         )
         Divider()
         DrawerItem(Icons.Default.List, "Tarefas") {
