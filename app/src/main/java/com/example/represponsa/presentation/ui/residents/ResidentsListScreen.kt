@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -88,7 +87,7 @@ fun ResidentsListScreen(
 @Composable
 fun ResidentItem(user: User) {
     Row(modifier = Modifier
-        .wrapContentWidth(),
+        .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         UserAvatar(modifier = Modifier
@@ -96,7 +95,7 @@ fun ResidentItem(user: User) {
 
         Column(
             modifier = Modifier
-                .wrapContentWidth()
+                .fillMaxWidth()
                 .padding(vertical = 10.dp)
         ) {
             Text(
