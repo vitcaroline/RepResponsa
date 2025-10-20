@@ -5,7 +5,10 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.represponsa.data.model.User
+import com.example.represponsa.presentation.ui.theme.RepublicTheme
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 object UserPreferences {
     private val Context.dataStore by preferencesDataStore(name = "user_prefs")
@@ -18,6 +21,8 @@ object UserPreferences {
     private val KEY_ROLE = stringPreferencesKey("role")
     private val KEY_REPUBLIC_ID = stringPreferencesKey("republic_id")
     private val KEY_REPUBLIC_NAME = stringPreferencesKey("republic_name")
+    private val KEY_REPUBLIC_THEME = stringPreferencesKey("republic_theme")
+
 
     suspend fun saveUser(context: Context, user: User) {
         context.dataStore.edit { prefs ->
@@ -45,6 +50,18 @@ object UserPreferences {
             republicName = prefs[KEY_REPUBLIC_NAME] ?: ""
         )
     }
+
+    suspend fun saveRepublicTheme(context: Context, theme: RepublicTheme) {
+        context.dataStore.edit { prefs ->
+            prefs[KEY_REPUBLIC_THEME] = theme.name
+        }
+    }
+
+    val Context.republicThemeFlow: Flow<RepublicTheme>
+        get() = dataStore.data.map { prefs ->
+            val name = prefs[KEY_REPUBLIC_THEME] ?: RepublicTheme.BLUE.name
+            RepublicTheme.valueOf(name)
+        }
 
     suspend fun clear(context: Context) {
         context.dataStore.edit { it.clear() }
