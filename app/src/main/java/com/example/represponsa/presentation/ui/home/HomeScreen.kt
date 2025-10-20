@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.represponsa.R
 import com.example.represponsa.presentation.ui.commons.HomeTopBar
-import com.example.represponsa.presentation.ui.home.PointsDashboard.PointsDashboard
 import com.example.represponsa.presentation.ui.home.viewModel.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -114,7 +113,7 @@ fun HomeScreen(
         Scaffold(
             topBar = {
                 HomeTopBar(
-                    userName = viewModel.userName.value,
+                    userName = viewModel.nickName.value,
                     onOptionSelected = { option ->
                         when (option) {
                             "profile" -> { onNavigateToProfile() }
