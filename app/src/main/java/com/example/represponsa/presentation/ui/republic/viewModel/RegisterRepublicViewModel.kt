@@ -29,9 +29,6 @@ class RegisterRepublicViewModel @Inject constructor(
     fun onAddressChange(s: String) = updateState { copy(address = s, addressError = null) }
     fun onPetCountChange(s: String) = updateState { copy(petCount = s) }
     fun onResidentCountChange(s: String) = updateState { copy(residentCount = s, residentCountError = null) }
-    fun onBillsDueDayChange(day: Int) = updateState{ copy(billsDueDay = day) }
-    fun onRentDueDayChange(day: Int) = updateState{ copy(rentDueDay = day) }
-    fun onRentDueFixedChange(fixed: Boolean) = updateState { copy(rentDueFixed = fixed) }
 
     fun onRoleToggle(role: RolesEnum) = updateState {
         val updated = if (selectedRoles.contains(role)) {
