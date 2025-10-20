@@ -146,7 +146,8 @@ fun HomeScreen(
                 } else {
                     PointsDashboard(
                         residentsPoints = viewModel.residentsPoints.value,
-                        pendingAssignments = viewModel.pendingAssignments.value
+                        pendingAssignments = viewModel.pendingAssignments.value,
+                        onNavigateToAssignments = { onNavigateToAssignments() }
                     )
                 }
             }

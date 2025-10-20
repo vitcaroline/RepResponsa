@@ -1,6 +1,7 @@
 package com.example.represponsa.presentation.ui.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,7 +35,8 @@ import com.example.represponsa.presentation.ui.home.viewModel.UserPoints
 @Composable
 fun PointsDashboard(
     residentsPoints: List<UserPoints>,
-    pendingAssignments: List<Assignment>
+    pendingAssignments: List<Assignment>,
+    onNavigateToAssignments: () -> Unit,
 ) {
     val sortedResidents = residentsPoints.sortedByDescending { it.points }
 
@@ -42,13 +44,15 @@ fun PointsDashboard(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        item {
-            SectionHeader(text = "Notificações")
-        }
-
         if (pendingAssignments.isNotEmpty()) {
             item {
-                PendingAssignmentsNotification(pendingAssignments)
+                SectionHeader(text = "Notificações")
+            }
+             item {
+                PendingAssignmentsNotification(
+                    pendingAssignments,
+                    onClick = { onNavigateToAssignments() }
+                )
             }
         }
 
@@ -114,11 +118,15 @@ fun ResidentPointCard(resident: UserPoints, isTopResident: Boolean) {
 }
 
 @Composable
-fun PendingAssignmentsNotification(assignments: List<Assignment>) {
+fun PendingAssignmentsNotification(
+    assignments: List<Assignment>,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = 24.dp)
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(4.dp)

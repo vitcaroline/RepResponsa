@@ -84,11 +84,24 @@ class AuthRepository(
     suspend fun updateUser(updatedUser: User) {
         val uid = firebaseAuth.currentUser?.uid ?: throw Exception("Usuário não autenticado")
 
+        val currentUserSnapshot = firestore.collection("users").document(uid).get().await()
+        val currentUser = currentUserSnapshot.toObject(User::class.java)
+
+        val userToSave = currentUser?.copy(
+            userName = updatedUser.userName,
+            nickName = updatedUser.nickName,
+            email = updatedUser.email,
+            phone = updatedUser.phone,
+            republicName = updatedUser.republicName,
+            republicId = updatedUser.republicId,
+            role = updatedUser.role
+        ) ?: updatedUser
+
         firestore.collection("users").document(uid)
-            .set(updatedUser)
+            .set(userToSave)
             .await()
 
-        UserPreferences.saveUser(context, updatedUser)
+        UserPreferences.saveUser(context, userToSave)
     }
 
     suspend fun addMonthlyPointToCurrentUser() {
