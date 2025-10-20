@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.represponsa.data.model.User
 import com.example.represponsa.presentation.ui.commons.DatePickerButton
+import com.example.represponsa.presentation.ui.commons.UserAvatar
 import java.util.Date
 
 data class AssignmentFormState(
@@ -114,6 +115,7 @@ fun AssignmentForm(
                         params.onResidentsSelected(updatedList)
                     }
                 )
+                UserAvatar(modifier = Modifier, userName = user.userName)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = user.nickName)
             }

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun UserAvatar(userName: String, size: Dp = 24.dp, modifier: Modifier) {
+fun UserAvatar(userName: String, size: Dp = 24.dp, modifier: Modifier = Modifier) {
     val initials = getInitials(userName)
     val bgColor = getColorFromName(userName)
 
