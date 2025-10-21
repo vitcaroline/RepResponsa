@@ -2,17 +2,20 @@ package com.example.represponsa.presentation.ui.receipts.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.represponsa.core.notification.RentNotificationManager
 import com.example.represponsa.data.model.RentPaymentConfig
 import com.example.represponsa.data.model.RolesEnum
 import com.example.represponsa.data.model.User
 import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.data.repository.UserRepository
 import com.example.represponsa.domain.useCases.CheckUserPaymentStatusUseCase
+import com.example.represponsa.domain.useCases.GetRepublicByIdUseCase
 import com.example.represponsa.domain.useCases.ReceiptsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,76 +23,26 @@ class ResidentsPaymentListViewModel @Inject constructor(
     private val saveConfigUseCase: ReceiptsUseCase,
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
+    private val getRepublicByIdUseCase: GetRepublicByIdUseCase,
     private val checkUserPaymentStatusUseCase: CheckUserPaymentStatusUseCase,
+    private val rentNotificationManager: RentNotificationManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RentPaymentConfigUiState())
     val uiState: StateFlow<RentPaymentConfigUiState> = _uiState
 
+    private var currentNotificationId: Int? = null
+
     init {
-        checkAccessAndLoadResidents()
-    }
-
-    private fun checkAccessAndLoadResidents() {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
-
-            val user = authRepository.getCurrentUser()
-            if (user == null) {
-                _uiState.value = _uiState.value.copy(isAuthorized = false, isLoading = false)
-                return@launch
-            }
-
-            val roles = user.role.split(",").map { it.trim() }
-            val isAuthorized = roles.contains(RolesEnum.FINANCEIRO.name)
-
-            if (!isAuthorized) {
-                _uiState.value = _uiState.value.copy(
-                    isAuthorized = false,
-                    user = user,
-                    isLoading = false
-                )
-                return@launch
-            }
-
-            try {
-                val residents = userRepository.getResidentsByRepublic(user.republicId)
-
-                val sdf = java.text.SimpleDateFormat("MMMM yyyy", java.util.Locale("pt", "BR"))
-                val currentMonth = sdf.format(System.currentTimeMillis()).replaceFirstChar { it.uppercase() }
-
-                val updatedList = residents.map { resident ->
-                    val monthKey = java.text.SimpleDateFormat("yyyy-MM", java.util.Locale.getDefault())
-                        .format(System.currentTimeMillis())
-
-                    val hasPaid = checkUserPaymentStatusUseCase(
-                        resident.uid,
-                        user.republicId,
-                        monthKey
-                    )
-                    ResidentPaymentStatus(resident, hasPaid)
-                }
-
-                _uiState.value = _uiState.value.copy(
-                    isAuthorized = true,
-                    residentsWithStatus = updatedList,
-                    user = user,
-                    isLoading = false,
-                    currentMonth = currentMonth
-                )
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    residentsWithStatus = emptyList(),
-                    isAuthorized = true,
-                    user = user,
-                    isLoading = false
-                )
-            }
-        }
+        loadUserAndResidents()
     }
 
     fun onDayChange(newDay: Int) {
         _uiState.value = _uiState.value.copy(day = newDay)
+    }
+
+    fun onBillsDayChange(newDay: Int) {
+        _uiState.value = _uiState.value.copy(billsDay = newDay)
     }
 
     fun onFixedChange(newValue: Boolean) {
@@ -98,15 +51,131 @@ class ResidentsPaymentListViewModel @Inject constructor(
 
     fun saveConfig(onSuccess: () -> Unit, onError: (String) -> Unit) {
         val state = _uiState.value
-        val config = RentPaymentConfig(day = state.day, isFixed = state.isFixed)
+        val config = RentPaymentConfig(day = state.day, billsDueDay = state.billsDay, isFixed = state.isFixed)
 
         viewModelScope.launch {
             try {
                 saveConfigUseCase(config)
+                currentNotificationId?.let { rentNotificationManager.cancelRentNotification(it) }
+
+                state.user?.let { user ->
+                    schedulePaymentNotificationForUser(user, state.day)
+                }
+
                 onSuccess()
             } catch (e: Exception) {
                 onError(e.localizedMessage ?: "Unknown error")
             }
+        }
+    }
+
+    private fun loadUserAndResidents() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            val user = authRepository.getCurrentUser()
+            val republic = getRepublicByIdUseCase(user?.republicId ?: "")
+
+            _uiState.value = _uiState.value.copy(
+                user = user,
+                day = republic?.rentPaymentConfig?.day ?: 1,
+                billsDay = republic?.rentPaymentConfig?.billsDueDay ?: 1,
+                isFixed = republic?.rentPaymentConfig?.isFixed ?: true
+            )
+
+            if (user == null) {
+                _uiState.value = _uiState.value.copy(isAuthorized = false, isLoading = false)
+                return@launch
+            }
+
+            val roles = getUserRoles(user)
+            val isFinanceiro = RolesEnum.FINANCEIRO.name in roles
+
+            if (!isFinanceiro) {
+                _uiState.value = _uiState.value.copy(
+                    isAuthorized = false,
+                    user = user,
+                    isLoading = false
+                )
+                scheduleNotificationForNonFinanceUser(user)
+                return@launch
+            }
+
+            loadResidents(user, roles.contains(RolesEnum.FINANCEIRO.name))
+        }
+    }
+
+    private suspend fun loadResidents(user: User, isFinanceiro: Boolean) {
+        try {
+            val residents = userRepository.getResidentsByRepublic(user.republicId)
+            val currentMonth = getCurrentMonthName()
+
+            val updatedList = residents.map { resident ->
+                val monthKey = getCurrentMonthKey()
+                val hasPaid = checkUserPaymentStatusUseCase(resident.uid, user.republicId, monthKey)
+                ResidentPaymentStatus(resident, hasPaid)
+            }
+
+            _uiState.value = _uiState.value.copy(
+                isAuthorized = true,
+                residentsWithStatus = updatedList,
+                user = user,
+                isLoading = false,
+                currentMonth = currentMonth
+            )
+        } catch (e: Exception) {
+            _uiState.value = _uiState.value.copy(
+                residentsWithStatus = emptyList(),
+                isAuthorized = true,
+                user = user,
+                isLoading = false
+            )
+        }
+    }
+
+    private fun getUserRoles(user: User): List<String> =
+        user.role.split(",").map { it.trim() }
+
+    private fun getCurrentMonthName(): String {
+        val sdf = java.text.SimpleDateFormat("MMMM yyyy", java.util.Locale("pt", "BR"))
+        return sdf.format(System.currentTimeMillis()).replaceFirstChar { it.uppercase() }
+    }
+
+    private fun getCurrentMonthKey(): String {
+        val sdf = java.text.SimpleDateFormat("yyyy-MM", java.util.Locale.getDefault())
+        return sdf.format(System.currentTimeMillis())
+    }
+
+    private suspend fun schedulePaymentNotificationForUser(user: User, defaultDay: Int) {
+        val roles = getUserRoles(user)
+        val isFinanceiro = RolesEnum.FINANCEIRO.name in roles
+
+        val dayToNotify = if (isFinanceiro) {
+            getRepublicByIdUseCase(user.republicId)?.rentPaymentConfig?.billsDueDay ?: 1
+        } else {
+            defaultDay
+        }
+
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            add(Calendar.MINUTE, 1)
+        }
+
+        val triggerDate = calendar.time
+        val notificationId = (user.republicId + dayToNotify).hashCode()
+        currentNotificationId = notificationId
+
+        rentNotificationManager.scheduleRentNotification(
+            id = notificationId,
+            triggerAt = triggerDate,
+            republicName = user.republicName,
+            amount = 0.0,
+            isBillsNotification = isFinanceiro
+        )
+    }
+
+    private fun scheduleNotificationForNonFinanceUser(user: User) {
+        viewModelScope.launch {
+            schedulePaymentNotificationForUser(user, _uiState.value.day)
         }
     }
 }
@@ -114,6 +183,7 @@ class ResidentsPaymentListViewModel @Inject constructor(
 data class RentPaymentConfigUiState(
     val isAuthorized: Boolean = false,
     val day: Int = 1,
+    val billsDay: Int = 1,
     val isFixed: Boolean = true,
     val user: User? = null,
     val isLoading: Boolean = true,

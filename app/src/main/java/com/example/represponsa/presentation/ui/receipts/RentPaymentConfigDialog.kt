@@ -55,6 +55,12 @@ fun RentPaymentConfigDialog(
                     onDaySelected = { viewModel.onDayChange(it) }
                 )
 
+                DayOfMonthDropdown(
+                    label = "Dia do Pagamento das Contas",
+                    selectedDay = uiState.billsDay,
+                    onDaySelected = { viewModel.onBillsDayChange(it) }
+                )
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Switch(
                         checked = uiState.isFixed,

@@ -58,7 +58,7 @@ class AuthRepository(
 
     suspend fun logout() {
         firebaseAuth.signOut()
-        UserPreferences.clear(context)
+        UserPreferences.clearUserKeepTheme(context)
     }
 
     suspend fun getCurrentUser(forceRefresh: Boolean = false): User? {
