@@ -91,7 +91,13 @@ class ResidentsPaymentListViewModel @Inject constructor(
             val isFinanceiro = RolesEnum.FINANCEIRO.name in roles
 
             if (!isFinanceiro) {
+                _uiState.value = _uiState.value.copy(
+                    isAuthorized = false,
+                    user = user,
+                    isLoading = false
+                )
                 scheduleNotificationForNonFinanceUser(user)
+                return@launch
             }
 
             loadResidents(user, roles.contains(RolesEnum.FINANCEIRO.name))
