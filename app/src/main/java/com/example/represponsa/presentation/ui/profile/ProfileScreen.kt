@@ -172,8 +172,13 @@ fun ProfileScreen(
                                     ProfileField(label = "Email", value = user!!.email)
                                     ProfileField(label = "Telefone", value = user!!.phone)
                                     ProfileField(label = "República", value = user!!.republicName)
-                                    ProfileField(label = "Função", value = user!!.role.lowercase())
+                                    val rolesDisplay = user!!.role.split(",")
+                                        .mapNotNull { roleName ->
+                                            RolesEnum.entries.find { it.name.equals(roleName.trim(), ignoreCase = true) }?.label
+                                        }
+                                        .joinToString(", ")
 
+                                    ProfileField(label = "Funções", value = rolesDisplay)
                                 }
                             }
                         }
@@ -233,8 +238,11 @@ fun EditableMultiRoleChips(
     onRolesChanged: (String) -> Unit
 ) {
     val roles = remember(currentRole) {
-        currentRole.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+        currentRole.split(",")
+            .map { it.trim().uppercase() }
+            .filter { it.isNotEmpty() }
     }
+
     val selectedRoles = remember { mutableStateListOf<String>() }
 
     LaunchedEffect(roles) {
@@ -254,7 +262,7 @@ fun EditableMultiRoleChips(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             RolesEnum.entries.forEach { role ->
-                val isSelected = selectedRoles.contains(role.label)
+                val isSelected = selectedRoles.contains(role.name)
                 val backgroundColor = if (isSelected)
                     MaterialTheme.colorScheme.primary
                 else
@@ -270,9 +278,9 @@ fun EditableMultiRoleChips(
                     shape = RoundedCornerShape(50),
                     tonalElevation = if (isSelected) 4.dp else 0.dp,
                     modifier = Modifier.clickable {
-                        if (isSelected) selectedRoles.remove(role.label)
-                        else selectedRoles.add(role.label)
-                        onRolesChanged(selectedRoles.joinToString(", "))
+                        if (isSelected) selectedRoles.remove(role.name)
+                        else selectedRoles.add(role.name)
+                        onRolesChanged(selectedRoles.joinToString(","))
                     }
                 ) {
                     Text(
