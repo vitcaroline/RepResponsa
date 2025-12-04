@@ -13,7 +13,7 @@ import com.example.represponsa.presentation.ui.minutes.minutesList.MinutesScreen
 fun NavGraphBuilder.minuteNavGraph(navController: NavController) {
     composable("minutes") {
         MinutesScreen(
-            onNavigateBack = { navController.popBackStack() },
+            onNavigateBack = { navController.navigate("home") },
             onNavigateToCreateMinute = { navController.navigate("create-minute") },
             onNavigateToMinuteDetail = { minute ->
                 navController.navigate("minute-details/${minute.id}")

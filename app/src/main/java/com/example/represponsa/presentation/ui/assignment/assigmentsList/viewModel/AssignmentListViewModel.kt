@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.represponsa.data.model.Assignment
 import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
+import com.example.represponsa.data.model.RolesEnum
 import com.example.represponsa.data.repository.AuthRepository
 import com.example.represponsa.domain.useCases.CompleteAssignmentUseCase
 import com.example.represponsa.domain.useCases.GetFilteredAssignmentsUseCase
@@ -46,7 +47,7 @@ class AssignmentListViewModel @Inject constructor(
     private suspend fun loadUserRole() {
         try {
             val currentUser = authRepository.getCurrentUser()
-            _canManageAssignments.value = currentUser?.role?.contains("Faxina", ignoreCase = true) == true
+            _canManageAssignments.value = currentUser?.role?.contains(RolesEnum.FAXINA.name) == true
         } catch (e: Exception) {
             _canManageAssignments.value = false
         }

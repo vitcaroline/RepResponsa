@@ -24,7 +24,7 @@ fun NavGraphBuilder.assignmentNavGraph(
 {
     composable("assignments") {
         AssignmentScreen(
-            onNavigateBack = { navController.popBackStack() },
+            onNavigateBack = { navController.navigate("home") },
             onNavigateToCreateAssignment = { navController.navigate("create-assignment") },
             onNavigateToEditAssignment = { navController.navigate("edit-assignment") },
             onNavigateToRemoveAssignment = { navController.navigate("remove-assignment") }

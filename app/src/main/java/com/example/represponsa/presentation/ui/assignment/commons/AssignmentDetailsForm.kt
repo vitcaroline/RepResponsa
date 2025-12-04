@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -51,84 +52,95 @@ fun AssignmentForm(
     modifier: Modifier = Modifier,
     params: AssignmentFormState,
 ) {
-    Column(modifier = modifier.padding(24.dp)) {
-        OutlinedTextField(
-            value = params.title,
-            onValueChange = params.onTitleChange,
-            label = { Text("Título") },
-            isError = params.titleError != null,
-            supportingText = {
-                params.titleError?.let {
-                    Text(it, color = MaterialTheme.colorScheme.error)
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
+    LazyColumn(modifier = modifier.padding(24.dp)) {
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = params.description,
-            onValueChange = params.onDescriptionChange,
-            label = { Text("Descrição") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Text("Moradores Responsáveis", style = MaterialTheme.typography.labelLarge)
-
-        params.residents.forEach { user ->
-            val isSelected = params.selectedResidents.contains(user)
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        val updatedList = if (isSelected) {
-                            params.selectedResidents - user
-                        } else {
-                            params.selectedResidents + user
-                        }
-                        params.onResidentsSelected(updatedList)
-                    },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = isSelected,
-                    onCheckedChange = {
-                        val updatedList = if (isSelected) {
-                            params.selectedResidents - user
-                        } else {
-                            params.selectedResidents + user
-                        }
-                        params.onResidentsSelected(updatedList)
+        item {
+            OutlinedTextField(
+                value = params.title,
+                onValueChange = params.onTitleChange,
+                label = { Text("Título") },
+                isError = params.titleError != null,
+                supportingText = {
+                    params.titleError?.let {
+                        Text(it, color = MaterialTheme.colorScheme.error)
                     }
-                )
-                UserAvatar(modifier = Modifier, userName = user.userName)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = user.nickName)
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = params.description,
+                onValueChange = params.onDescriptionChange,
+                label = { Text("Descrição") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text("Moradores Responsáveis", style = MaterialTheme.typography.labelLarge)
+
+            params.residents.forEach { user ->
+                val isSelected = params.selectedResidents.contains(user)
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            val updatedList = if (isSelected) {
+                                params.selectedResidents - user
+                            } else {
+                                params.selectedResidents + user
+                            }
+                            params.onResidentsSelected(updatedList)
+                        },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = isSelected,
+                        onCheckedChange = {
+                            val updatedList = if (isSelected) {
+                                params.selectedResidents - user
+                            } else {
+                                params.selectedResidents + user
+                            }
+                            params.onResidentsSelected(updatedList)
+                        }
+                    )
+                    UserAvatar(modifier = Modifier, userName = user.userName)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = user.nickName)
+                }
             }
-        }
 
-        params.residentError?.let {
-            Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
-        }
+            params.residentError?.let {
+                Text(
+                    it,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        DatePickerButton(
-            selectedDate = params.dueDate,
-            onDateSelected = params.onDateChange
-        )
-        params.dateError?.let {
-            Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
-        }
+            DatePickerButton(
+                selectedDate = params.dueDate,
+                onDateSelected = params.onDateChange
+            )
+            params.dateError?.let {
+                Text(
+                    it,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = params.onSubmit, modifier = Modifier.fillMaxWidth()) {
-            Text(params.submitButtonText)
+            Button(onClick = params.onSubmit, modifier = Modifier.fillMaxWidth()) {
+                Text(params.submitButtonText)
+            }
         }
     }
 }
